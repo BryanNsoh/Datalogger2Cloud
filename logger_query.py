@@ -22,6 +22,15 @@ stop = datetime.datetime(2022, 8, 30 , 22, 0, 0)
 # Getting data to be stored
 table_data = fxns.get_data(datalogger, table_names[1].decode('utf-8'), start, stop)
 
+local_file = r"C:\Users\Bryan\OneDrive - University of Nebraska-Lincoln\Documents\Research\Datalogger Cellular\Data Files\CR800data.json"
+
+try:
+    with open(local_file, 'w') as f:
+        ndjson.dump(table_data,f)
+except FileNotFoundError:
+    with open(local_file, 'x') as f:
+        ndjson.dump(table_data,f)
+
 #send stored data to GCloud
 GCloud.send_to_cloud()
     

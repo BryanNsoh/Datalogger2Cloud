@@ -9,20 +9,7 @@ local_file = r"C:\Users\Bryan\OneDrive - University of Nebraska-Lincoln\Document
 bucket_name = "logger1-bucket"
 blob_name = "plt-34/logger.json"
     
-    
-# Convert Json to NDJson
-with open(local_file, "r") as f:
-    new_data = []
-    old_data = ndjson.load(f)
-    #copying old_data listdict into new_data while cutting out b' and ' strings
-    for obj in old_data:
-        dict_entry = {}
-        for key, value in obj.items():
-            dict_entry[key] = value
-        new_data.append(dict_entry)          
-with open(local_file, "w") as f:
-    print(new_data)
-    ndjson.dump(new_data,f)
+
 
 def write_read(bucket_name, blob_name):
     """Write and read a blob from GCS using file-like IO"""
@@ -37,4 +24,6 @@ def write_read(bucket_name, blob_name):
     with open(local_file, "r") as from_, blob.open("w") as to_:
         to_.write(from_.read())
 
-write_read(bucket_name, blob_name)
+def send_to_cloud(bucket_name, blob_name):
+    """Send data to cloud"""
+    write_read(bucket_name, blob_name)
