@@ -34,19 +34,27 @@ def get_tables(datalogger):
             
 def get_data(datalogger, table_name, start, stop):
     """Gets the data for a given table in the table_names list. leave blank to get all data"""
+    
     while True:
+        
         table_data = []
         cleaned_data = []
+        
         try:
             table_data = datalogger.get_data(table_name, start, stop)
-            # Clean table data by removing b' and ' characters
-            for name in table_data:
-                dict_entry = {}
-                for key, value in name.items():
+            # Cleaning table data 
+            for label in table_data:
+                dict_entry = {} 
+                for key, value in label.items():
+                    # Removing b' and ' characters from dict keys
                     key = key.replace("b\'", "")
                     key = key.replace("\'", "")
                     dict_entry[key] = value
+                    # Converting all datetime objects to ISO-formatted strings
+                    if isinstance(value, datetime.datetime):
+                        dict_entry[key] = value.isoformat()
                 cleaned_data.append(dict_entry) 
+                
         except Exception:
             # Store exception in a text file in the local directory
             try:
