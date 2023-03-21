@@ -7,7 +7,7 @@ import json
 import tempfile
 
 # Retreiving service account key using key_location.txt stored on local machine
-file_path = "~/keys/key_location.txt"
+file_path = "~/.keys/key_location.txt"
 expanded_file_path = os.path.expanduser(
     file_path
 )  # Replacing the ~ character with the expanded file name

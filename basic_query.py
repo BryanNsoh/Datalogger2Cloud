@@ -4,36 +4,66 @@ import traceback
 import ndjson
 import logger_query_functions as fxns
 import gcloud_functions as gcloud
+from serial import SerialException
+from pypakbus import PakBusClient, PakBusError
 
 """ Program using pycampbell library to collect and store data from datalogger 
     See here for documentation: https://pycampbellcr1000.readthedocs.io/en/latest/index.html
 """
 
-# atalogger = CR1000.from_url('serial:COM5:38400')
-datalogger = CR1000.from_url("serial:/dev/ttyUSB0:38400")
 
-# Getting names of tables containing data
-table_names = fxns.get_tables(datalogger)
+# Configure the necessary parameters
+device = "/dev/ttyUSB0"
+local_ip = "192.168.27.236"
+remote_ip = "10.0.0.1"
 
-
-start = datetime.datetime(2022, 8, 20, 16, 0, 0)
-stop = datetime.datetime(2022, 8, 30, 22, 0, 0)
-
-# Getting data to be stored
-table_data = fxns.get_data(datalogger, table_names[1].decode("utf-8"), start, stop)
-
-local_file = "./CR800data.json"
-
-# Changing the default json class to
+client = PakBusClient(
+    host="192.168.0.100",  # Replace with the device's IP address if using Ethernet
+    port=6785,  # Replace with the device's port number if using Ethernet
+    serial_port="/dev/ttyUSB0",  # Replace with the appropriate serial port if using a serial connection
+    baudrate=9600,  # Replace with the appropriate baud rate if using a serial connection
+    station_id=1,
+    timeout=5,
+)
 
 try:
-    with open(local_file, "w") as f:
-        ndjson.dump(table_data, f)
-except FileNotFoundError:
-    with open(local_file, "x") as f:
-        ndjson.dump(table_data, f)
+    client.connect()
+    print("Connected to the device")
 
-# send stored data to GCloud
-# Gcloud.update_bucket()
-schema = gcloud.get_schema(table_data)
-gcloud.update_bqtable(schema, table_data)
+    # Read data from the device here
+    # ...
+
+except PakBusError as e:
+    print(f"PakBus error: {e}")
+
+finally:
+    client.disconnect()
+    print("Disconnected from the device")
+
+
+while True:
+
+    # Get names of tables containing data
+    table_names = fxns.get_tables(datalogger)
+
+    # Get data collection interval
+    start, stop = fxns.track_and_manage_time()
+
+    # Ge data to be stored
+    table_data = fxns.get_data(datalogger, table_names[1].decode("utf-8"), start, stop)
+
+    local_file = "./CR800data.json"
+
+    # Changing the default json class to
+
+    try:
+        with open(local_file, "w") as f:
+            ndjson.dump(table_data, f)
+    except FileNotFoundError:
+        with open(local_file, "x") as f:
+            ndjson.dump(table_data, f)
+
+    # send stored data to GCloud
+    # Gcloud.update_bucket()
+    schema = gcloud.get_schema(table_data)
+    gcloud.update_bqtable(schema, table_data)

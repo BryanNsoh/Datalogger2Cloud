@@ -1,11 +1,28 @@
 from pycampbellcr1000 import CR1000
 from datetime import timedelta
 import traceback
+import subprocess
 import os
 import sys
 from datetime import datetime, timedelta
 import os.path
 import time
+
+
+# Function to establish a PPP connection
+def establish_ppp_connection(device, local_ip, remote_ip, baud_rate=115200):
+    ppp_command = (
+        f"sudo pppd {device} {baud_rate} debug noauth nodetach {local_ip}:{remote_ip}"
+    )
+    subprocess.run(ppp_command, shell=True, check=True)
+    time.sleep(5)  # Wait for the connection to be established
+
+
+# Function to check the connection by pinging the remote IP
+def check_ppp_connection(remote_ip):
+    ping_command = f"ping -c 1 {remote_ip}"
+    result = subprocess.run(ping_command, shell=True)
+    return result.returncode == 0
 
 
 def get_tables(datalogger):

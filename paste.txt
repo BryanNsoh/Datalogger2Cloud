@@ -1,0 +1,15 @@
+try:
+    datalogger = CR1000.from_url(f"serial:{device}:38400")
+except SerialException:
+    # Establish the PPP connection
+    fxns.establish_ppp_connection(device, local_ip, remote_ip)
+
+    # Check the connection
+    if fxns.check_ppp_connection(remote_ip):
+        print("PPP connection established")
+    else:
+        print("Failed to establish PPP connection")
+        exit(1)
+
+    # Connect to the CR1000 datalogger using the PyCampbellCR1000 library
+    datalogger = CR1000.from_url(f"http://{remote_ip}")

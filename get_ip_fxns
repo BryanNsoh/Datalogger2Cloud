@@ -1,0 +1,76 @@
+from zeroconf import Zeroconf, ServiceBrowser, ServiceListener
+import time
+import os
+import socket
+import struct
+
+
+# Configuration
+CR1000X_PORT = 6785  # Default PakBus port
+BUFFER_SIZE = 4096
+TIMEOUT = 5
+
+
+class CR1000XListener(ServiceListener):
+    def __init__(self):
+        self.ip_address = None
+
+    def remove_service(self, zeroconf, service_type, name):
+        pass
+
+    def add_service(self, zeroconf, service_type, name):
+        info = zeroconf.get_service_info(service_type, name)
+        if info:
+            self.ip_address = socket.inet_ntoa(info.addresses[0])
+
+
+def discover_cr1000x_ip_address(timeout=5):
+    listener = CR1000XListener()
+    zeroconf = Zeroconf()
+    browser = ServiceBrowser(zeroconf, "_http._tcp.local.", listener)
+
+    start_time = time.time()
+    while not listener.ip_address and time.time() - start_time < timeout:
+        time.sleep(0.1)
+
+    zeroconf.close()
+    return listener.ip_address
+
+
+def connect(ip_address, port):
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.settimeout(TIMEOUT)
+    s.connect((ip_address, port))
+    return s
+
+
+def send_pakbus_command(sock, command):
+    pakbus_header = b"\x0A\x0D"
+    sock.send(pakbus_header + command)
+
+
+def recv_pakbus_response(sock):
+    response = sock.recv(BUFFER_SIZE)
+    return response[2:]  # Remove PakBus header
+
+
+def get_file_listing(sock):
+    command = b"\x02\x01\x80\x01\x00"  # PakBus command to request file listing
+    send_pakbus_command(sock, command)
+    response = recv_pakbus_response(sock)
+    return response
+
+
+def get_file(sock, file_name):
+    command = (
+        b"\x02\x01\x80\x04\x00" + struct.pack(">H", len(file_name)) + file_name.encode()
+    )
+    send_pakbus_command(sock, command)
+
+
+# Example usage:
+cr1000x_ip_address = discover_cr1000x_ip_address()
+if cr1000x_ip_address:
+    print(f"CR1000X IP Address: {cr1000x_ip_address}")
+else:
+    print("Unable to find the CR1000X IP Address")
