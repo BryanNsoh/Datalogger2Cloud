@@ -5,46 +5,21 @@ import ndjson
 import logger_query_functions as fxns
 import gcloud_functions as gcloud
 from serial import SerialException
-from pypakbus import PakBusClient, PakBusError
+
 
 """ Program using pycampbell library to collect and store data from datalogger 
     See here for documentation: https://pycampbellcr1000.readthedocs.io/en/latest/index.html
 """
 
 
-# Configure the necessary parameters
-device = "/dev/ttyUSB0"
-local_ip = "192.168.27.236"
-remote_ip = "10.0.0.1"
+# Establish connection to datalogger
+datalogger = CR1000.from_url("serial:/dev/ttyUSB0:38400")
 
-client = PakBusClient(
-    host="192.168.0.100",  # Replace with the device's IP address if using Ethernet
-    port=6785,  # Replace with the device's port number if using Ethernet
-    serial_port="/dev/ttyUSB0",  # Replace with the appropriate serial port if using a serial connection
-    baudrate=9600,  # Replace with the appropriate baud rate if using a serial connection
-    station_id=1,
-    timeout=5,
-)
-
-try:
-    client.connect()
-    print("Connected to the device")
-
-    # Read data from the device here
-    # ...
-
-except PakBusError as e:
-    print(f"PakBus error: {e}")
-
-finally:
-    client.disconnect()
-    print("Disconnected from the device")
+# Get names of tables containing data
+table_names = fxns.get_tables(datalogger)
 
 
 while True:
-
-    # Get names of tables containing data
-    table_names = fxns.get_tables(datalogger)
 
     # Get data collection interval
     start, stop = fxns.track_and_manage_time()

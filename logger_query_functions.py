@@ -7,6 +7,7 @@ import sys
 from datetime import datetime, timedelta
 import os.path
 import time
+import math
 
 
 # Function to establish a PPP connection
@@ -45,41 +46,36 @@ def get_tables(datalogger):
 def get_data(datalogger, table_name, start, stop):
     """Gets the data for a given table in the table_names list. leave blank to get all data"""
 
-    while True:
+    table_data = []
+    cleaned_data = []
 
-        table_data = []
-        cleaned_data = []
+    table_data = datalogger.get_data(table_name, start, stop)
 
-        try:
-            table_data = datalogger.get_data(table_name, start, stop)
-            # Cleaning table data
-            for label in table_data:
-                dict_entry = {}
-                for key, value in label.items():
-                    # Removing b' and ' characters from dict keys
-                    key = key.replace("b'", "")
-                    key = key.replace("'", "")
-                    dict_entry[key] = value
-                    # Converting all datetime objects to ISO-formatted strings
-                    if isinstance(value, datetime):
-                        dict_entry[key] = value.isoformat()
-                cleaned_data.append(dict_entry)
-
-        except Exception:
-            # Store exception in a text file in the local directory
+    # Cleaning table data
+    for label in table_data:
+        dict_entry = {}
+        for key, value in label.items():
+            # Removing b' and ' characters from dict keys
+            key = key.replace("b'", "")
+            key = key.replace("'", "")
+            dict_entry[key] = value
+            # Converting all datetime objects to ISO-formatted strings
+            if isinstance(value, datetime):
+                dict_entry[key] = value.isoformat()
+            # Converting all NAN entries to python's 'None' value
             try:
-                with open(os.path.join("", "error_msg.txt"), "x") as err_msg:
-                    traceback.print_exc(limit=None, file=err_msg, chain=True)
-            except FileExistsError:
-                with open(os.path.join("", "error_msg.txt"), "w") as err_msg:
-                    traceback.print_exc(limit=None, file=err_msg, chain=True)
+                if math.isnan(value):
+                    dict_entry[key] = -9999
+            except TypeError:
+                # Continue iterating if the value is not a float
+                continue
+        cleaned_data.append(dict_entry)
 
-        # If something has been stored in table_data, exit loop.
-        # Otherwise, continue
-        if cleaned_data:
-            return cleaned_data
-        else:
-            print("failed to get data")
+    if cleaned_data:
+        return cleaned_data
+    else:
+        print("No data available")
+        return []
 
 
 def parse_datetime_input(input_string):
@@ -119,6 +115,6 @@ def track_and_manage_time(input_datetime=None, delay=60):
         f.write(stop.isoformat())
 
     # Delay for the given number of minutes
-    time.sleep(delay * 60)
+    time.sleep(delay * 60 * 0)  # remove zero multiplier
 
     return start, stop
