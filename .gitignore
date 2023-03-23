@@ -1,0 +1,6 @@
+# .gitignore
+
+.vscode/
+__pycache__/
+timekeeper.txt
+CR800data.json
