@@ -6,15 +6,10 @@ import os
 import json
 import tempfile
 
-# Retreiving service account key using key_location.txt stored on local machine
-file_path = "~/.keys/key_location.txt"
-expanded_file_path = os.path.expanduser(
-    file_path
-)  # Replacing the ~ character with the expanded file name
-print(expanded_file_path)
-with open(expanded_file_path, "r") as f:
-    key = f.read()
-    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = key
+# Accessing service account key on local computer#
+file_path = "~/.keys/apt-rite-378417-6c12d7a2260e.json"
+expanded_file_path = os.path.expanduser(file_path)
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = expanded_file_path
 
 # Paths for google cloud
 local_file = "./CR800data.json"
@@ -23,8 +18,8 @@ blob_name = "plt-34/logger.json"
 
 # ID's for BigQuery
 project_id = "apt-rite-378417"
-dataset_id = "apt-rite-378417.loggertest1"
-table_id = "apt-rite-378417.loggertest1.SDIC"
+dataset_id = "loggertest1"
+table_id = "test2"
 
 
 def write_read(bucket_name, blob_name):
