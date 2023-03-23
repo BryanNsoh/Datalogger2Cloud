@@ -118,3 +118,5 @@ def update_bqtable(schema, table_data):
     os.remove(temp_file_path)
 
     print(f"Loaded {load_job.output_rows} rows into {dataset_id}:{table_id}.")
+
+    return True

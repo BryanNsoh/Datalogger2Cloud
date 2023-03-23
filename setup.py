@@ -12,7 +12,7 @@ def run_command(command):
 
 # Set your project path and virtual environment path
 project_path = os.getcwd()
-venv_path = "/path/to/your/venv"
+venv_path = os.path.expanduser("~/logger_env")
 
 # 1. Create and Activate Virtual Environment
 commands = [
