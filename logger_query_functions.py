@@ -62,7 +62,7 @@ def get_data(datalogger, table_name, start, stop):
             # Converting all datetime objects to ISO-formatted strings
             if isinstance(value, datetime):
                 dict_entry[key] = value.isoformat()
-            # Converting all NAN entries to python's 'None' value
+            # Converting all NAN entries to -9999
             try:
                 if math.isnan(value):
                     dict_entry[key] = -9999
