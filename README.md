@@ -10,19 +10,19 @@ The purpose of this program is to collect data from a Campbell CR800 datalogger,
 
 ### 1. Install and Upgrade Python Modules
 
-    Open a terminal on your Raspberry Pi and run the following commands:
+Open a terminal on your Raspberry Pi and run the following commands:
 
-    #### Create a virtual environment
+#### Create a virtual environment
     `python3 -m venv venv`
-    #### Activate the virtual environment
+#### Activate the virtual environment
     `source venv/bin/activate`
-    #### Upgrade pip
+#### Upgrade pip
     `pip install --upgrade pip`
-    #### Install required packages
+#### Install required packages
     `pip install pycampbellcr1000 pandas ndjson`
-    #### Upgrade google-cloud-storage
+#### Upgrade google-cloud-storage
     `pip install --upgrade google-cloud-storage`
-    #### Install google-cloud-bigquery
+#### Install google-cloud-bigquery
     `pip install --upgrade google-cloud-bigquery`
 
 
@@ -30,14 +30,14 @@ The purpose of this program is to collect data from a Campbell CR800 datalogger,
 
 #### 2.1. Configure the Raspberry Pi to Shut Down after Running the Python Script
 
-    Edit the `basic_query.py` script to include the following line at the end of the script: `os.system("sudo shutdown -h now")`. 
+Edit the `basic_query.py` script to include the following line at the end of the script: `os.system("sudo shutdown -h now")`. 
 
 
-    This line will shut down the Raspberry Pi after the script has finished executing.
+This line will shut down the Raspberry Pi after the script has finished executing.
 
 #### 2.2. Configure the Raspberry Pi to Automatically Update the Time from the Internet
 
-    To ensure the Raspberry Pi's clock stays accurate, install the `ntp` package by running the following command: `sudo apt-get install ntp`
+To ensure the Raspberry Pi's clock stays accurate, install the `ntp` package by running the following command: `sudo apt-get install ntp`
 
 
 #### 2.3. Configure the Raspberry Pi to Run the Python Script on Startup
