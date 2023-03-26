@@ -5,11 +5,18 @@ from typing import List, Dict
 import os
 import json
 import tempfile
+import glob
 
-# Accessing service account key on local computer#
-file_path = "~/.keys/apt-rite-378417-6c12d7a2260e.json"
-expanded_file_path = os.path.expanduser(file_path)
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = expanded_file_path
+# Accessing service account key on local computer
+folder_path = "~/.keys"
+expanded_folder_path = os.path.expanduser(folder_path)
+json_keys = glob.glob(os.path.join(expanded_folder_path, "*.json"))
+# checking if there's only one key in the .json file
+if len(json_keys) == 1:
+    json_filename = json_keys[0]
+    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = json_keys[0] + ".json"
+else:
+    print("There should be exactly one JSON file in the folder.")
 
 # Paths for google cloud
 local_file = "./CR800data.json"

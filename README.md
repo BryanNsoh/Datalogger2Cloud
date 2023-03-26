@@ -23,13 +23,22 @@ The system consists of four Python programs:
 
 ### 1. Prepare the Hardware
 
-Set up the linux, the Campbell CR800 datalogger, the solar-powered battery, and the cellular network connection according to their respective user guides.
+Set up the linux, the Campbell CR800 datalogger, the solar-powered battery, and the cellular network connection according to their respective user guides. If using a gsm moule, add the connection's APN with the following command:
 
-### 2. Run the Automated Setup Script
+    nmcli c add connection.type gsm apn mobile.three.com.hk
 
-The provided `setup.py` script automates most of the setup process. First, download the script to your Raspberry Pi. Then, open a terminal, navigate to the directory containing the script, and run the following command:
+### 2. Prepare the google cloud keys
 
-    sudo python3 setup.py
+The program accesses google cloud services and so needs a google cloud key. In the home directory, create a folder named `.keys`. Download your json security key to this folder. Ensure that there is only a single key in this directory. See [here](https://cloud.google.com/iam/docs/keys-create-delete) for more details.
+
+### 3. Run the Automated Setup Script
+
+The provided `setup.py` script automates most of the setup process. First, download the script to your Raspberry Pi. Then, open a terminal, navigate to the directory containing the script, and run the following commands:
+
+    sudo apt-get install chrony
+    chmod +x setup.py
+    sudo python3 ./setup.py
+    
 
 Enter your password when prompted. The script will create and activate a virtual environment, install necessary packages, create required files, and configure the linux computer to run the `main_query.py` script on startup after an internet connection has been established.
 
