@@ -1,16 +1,19 @@
 import os
 import subprocess
+import shlex
 
 
 def run_command(command):
-    process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    stdout, stderr = process.communicate()
+    print(f"Running Command: {''.join(command)}")
+    result = subprocess.run(
+        command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, shell=True
+    )
 
-    if process.returncode != 0:
-        print(f"Error: {stderr.decode()}")
+    if result.returncode != 0:
+        print(f"Error: {result.stderr}")
         exit(1)
 
-    return stdout, stderr
+    return result.stdout, result.stderr
 
 
 def source_venv(venv_path, command):
@@ -28,8 +31,8 @@ commands = [
 ]
 
 for cmd in commands:
-    stdout, stderr = run_command(cmd.split())
-    print(stdout.decode())
+    stdout, stderr = run_command(cmd)
+    print(stdout)
 
 # 2. Install and Upgrade Python Modules
 commands = [
@@ -40,14 +43,10 @@ commands = [
 ]
 
 for cmd in commands:
-    stdout, stderr = run_command(source_venv(venv_path, cmd).split())
-    print(stdout.decode())
+    stdout, stderr = run_command(cmd)
+    print(stdout)
 
-# 3.1 Create first_start_flag.txt
-with open("first_start_flag.txt", "w") as f:
-    f.write("0")
-
-# 3.2 Create main_query.service
+# 3.1 Create main_query.service
 service_content = f"""[Unit]
 Description=Run main_query.py after an Internet connection is established
 Wants=network-online.target main_query.timer
@@ -62,7 +61,7 @@ Restart=on-failure
 with open("main_query.service", "w") as f:
     f.write(service_content)
 
-# 3.3 Create main_query.timer
+# 3.2 Create main_query.timer
 timer_content = f"""[Unit]
 Description=Run main_query.service every hour
 
@@ -78,7 +77,7 @@ WantedBy=timers.target
 with open("main_query.timer", "w") as f:
     f.write(timer_content)
 
-# 3.4 Create run_on_connection.sh
+# 3.3 Create run_on_connection.sh
 run_on_connection_content = f"""#!/bin/bash
 # Wait for an internet connection
 while ! ping -c 1 -W 1 8.8.8.8; do
@@ -96,17 +95,15 @@ with open("run_on_connection.sh", "w") as f:
     f.write(run_on_connection_content)
 
 # Make the script executable
-run_command(["chmod", "+x", "run_on_connection.sh"])
+run_command("chmod +x run_on_connection.sh")
 
 # Copy the systemd service and timer files
-run_command(
-    ["sudo", "cp", "main_query.service", "/etc/systemd/system/main_query.service"]
-)
-run_command(["sudo", "cp", "main_query.timer", "/etc/systemd/system/main_query.timer"])
+run_command("sudo cp main_query.service /etc/systemd/system/main_query.service")
+run_command("sudo cp main_query.timer /etc/systemd/system/main_query.timer")
 
 # Enable the systemd service and timer
-run_command(["sudo", "systemctl", "enable", "main_query.service"])
-run_command(["sudo", "systemctl", "enable", "main_query.timer"])
+run_command("sudo systemctl enable main_query.service")
+run_command("sudo systemctl enable main_query.timer")
 
 # Start the systemd service and timer
-run_command(["sudo", "systemctl", "start", "main_query.service"])
+run_command("sudo systemctl start main_query.service")

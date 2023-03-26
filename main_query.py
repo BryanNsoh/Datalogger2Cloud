@@ -5,7 +5,7 @@ import logger_query_functions as fxns
 import gcloud_functions as gcloud
 
 
-""" Program using pycampbell library to collect and store data from datalogger 
+""" Program using pycampbell library to collect and store data from a CR800 or CR1000 datalogger
     See here for documentation: https://pycampbellcr1000.readthedocs.io/en/latest/index.html
 """
 
@@ -17,28 +17,17 @@ datalogger = CR1000.from_url("serial:/dev/ttyUSB0:38400")
 table_names = fxns.get_tables(datalogger)
 
 
-while True:
+# Get data collection interval
+start, stop = fxns.track_and_manage_time(datalogger)
 
-    # Get data collection interval
-    start, stop = fxns.track_and_manage_time()
+# Get table data
+table_data = fxns.get_data(datalogger, table_names[1].decode("utf-8"), start, stop)
 
-    # Getting data to be stored
-    table_data = fxns.get_data(datalogger, table_names[1].decode("utf-8"), start, stop)
 
-    local_file = "./CR800data.json"
+# Storing the data to a local ndjson file
+fxns.store_in_ndjson(table_data)
 
-    # Storing the data to a local ndjson file
-    try:
-        with open(local_file, "w") as f:
-            ndjson.dump(table_data, f)
-    except FileNotFoundError:
-        with open(local_file, "x") as f:
-            ndjson.dump(table_data, f)
-
-    # send stored data to GCloud
-    # Gcloud.update_bucket()
-    schema = gcloud.get_schema(table_data)
-    update_table = gcloud.update_bqtable(schema, table_data)
-
-    if update_table:
-        os.system("sudo shutdown -h now")
+# send stored data to GCloud
+# Gcloud.update_bucket()
+schema = gcloud.get_schema(table_data)
+update_table = gcloud.update_bqtable(schema, table_data)

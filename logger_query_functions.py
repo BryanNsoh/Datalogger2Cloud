@@ -1,29 +1,9 @@
-from pycampbellcr1000 import CR1000
-from datetime import timedelta
-import traceback
-import subprocess
+from datetime import datetime
 import os
 import sys
-from datetime import datetime, timedelta
 import os.path
-import time
 import math
-
-
-# Function to establish a PPP connection
-def establish_ppp_connection(device, local_ip, remote_ip, baud_rate=115200):
-    ppp_command = (
-        f"sudo pppd {device} {baud_rate} debug noauth nodetach {local_ip}:{remote_ip}"
-    )
-    subprocess.run(ppp_command, shell=True, check=True)
-    time.sleep(5)  # Wait for the connection to be established
-
-
-# Function to check the connection by pinging the remote IP
-def check_ppp_connection(remote_ip):
-    ping_command = f"ping -c 1 {remote_ip}"
-    result = subprocess.run(ping_command, shell=True)
-    return result.returncode == 0
+import ndjson
 
 
 def get_tables(datalogger):
@@ -78,6 +58,18 @@ def get_data(datalogger, table_name, start, stop):
         return []
 
 
+def store_in_ndjson(list_dict):
+    """Stores a given listdict as ndjson in the current directory"""
+
+    local_file = "./CR800data.json"
+    try:
+        with open(local_file, "w") as f:
+            ndjson.dump(list_dict, f)
+    except FileNotFoundError:
+        with open(local_file, "x") as f:
+            ndjson.dump(list_dict, f)
+
+
 def parse_datetime_input(input_string):
     try:
         return datetime.fromisoformat(input_string)
@@ -85,15 +77,15 @@ def parse_datetime_input(input_string):
         return None
 
 
-def track_and_manage_time(input_datetime=None, delay=60):
-    timekeeper_file = "./timekeeper.txt"
+def get_start_time():
+    """Gets the time to start and stop collecting data"""
 
-    if input_datetime is not None:
-        input_datetime = parse_datetime_input(input_datetime)
-        if input_datetime is None:
-            print("Invalid datetime input.")
-            sys.exit(1)
 
+def track_and_manage_time(datalogger, delay=60):
+    """ "Returns the appropriate start and stop time for data collection"""
+    timekeeper_file = os.path.join(os.getcwd(), "./timekeeper.txt")
+
+    # If timekeeper file exists, start collection at stored time and end now
     if os.path.exists(timekeeper_file):
         with open(timekeeper_file, "r") as f:
             stored_datetime_str = f.read().strip()
@@ -102,19 +94,17 @@ def track_and_manage_time(input_datetime=None, delay=60):
                 print("Invalid datetime in timekeeper file.")
                 sys.exit(1)
             start = stored_datetime
+            stop = datalogger.gettime()
+    # Else, create timekeeper file and collect all data until now
     else:
-        # Create the full file path by joining the directory and file name
-        full_path = os.path.join(os.getcwd(), timekeeper_file)
-        # Create timekeeper file
-        with open(full_path, "x") as f:
+        with open(timekeeper_file, "x") as f:
             pass
-        start = input_datetime or datetime.now()
+        start = None
+        stop = None
 
+    # Set next data collection time to current time
     with open(timekeeper_file, "w") as f:
-        stop = start + timedelta(minutes=delay)
-        f.write(stop.isoformat())
-
-    # Delay for the given number of minutes
-    time.sleep(delay * 60 * 0)  # remove zero multiplier
+        next_start = datalogger.gettime()
+        f.write(next_start.isoformat())
 
     return start, stop

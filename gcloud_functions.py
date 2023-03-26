@@ -8,15 +8,12 @@ import tempfile
 import glob
 
 # Accessing service account key on local computer
-folder_path = "~/.keys"
-expanded_folder_path = os.path.expanduser(folder_path)
-json_keys = glob.glob(os.path.join(expanded_folder_path, "*.json"))
-# checking if there's only one key in the .json file
-if len(json_keys) == 1:
-    json_filename = json_keys[0]
-    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = json_keys[0] + ".json"
-else:
-    print("There should be exactly one JSON file in the folder.")
+folder_path = "/home/bryan/.keys"
+file_name = os.listdir(folder_path)
+
+key_path = os.path.join(folder_path, file_name[0])
+print(key_path)
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = key_path
 
 # Paths for google cloud
 local_file = "./CR800data.json"
@@ -26,7 +23,7 @@ blob_name = "plt-34/logger.json"
 # ID's for BigQuery
 project_id = "apt-rite-378417"
 dataset_id = "loggertest1"
-table_id = "test2"
+table_id = "RBpiTest"
 
 
 def write_read(bucket_name, blob_name):
