@@ -57,8 +57,7 @@ logger.debug("Script started")
 
 # Set your project path and virtual environment path
 project_path = os.getcwd()
-username = os.environ.get("USER")
-venv_path = f"home/{username}/logger_env"
+venv_path = f"{project_path}/logger_env"
 
 # 1. Create and Activate Virtual Environment
 commands = [
@@ -72,10 +71,10 @@ for cmd in commands:
 
 # 2. Install and Upgrade Python Modules
 commands = [
-    "pip install --upgrade pip",
-    "pip install pycampbellcr1000 pandas ndjson",
-    "pip install --upgrade google-cloud-storage",
-    "pip install --upgrade google-cloud-bigquery",
+    "pip install --upgrade pip --user",
+    "pip install pycampbellcr1000 pandas ndjson --user",
+    "pip install --upgrade google-cloud-storage --user",
+    "pip install --upgrade google-cloud-bigquery --user",
 ]
 
 for cmd in commands:
@@ -103,7 +102,7 @@ WantedBy=timers.target
 """,
         "service": f"""[Unit]
 Description=Run main_query.py after an Internet connection is established
-Wants=network-online.target main_query.timer
+Wants= main_query.timer
 Conflicts=shutdown.service
 
 [Service]
@@ -111,26 +110,6 @@ Type=simple
 User=pi
 ExecStart={venv_path}/bin/python {project_path}/run_on_connection.sh
 Restart=on-failure
-""",
-    },
-    {
-        "name": "shutdown",
-        "timer": f"""[Unit]
-Description=Run shutdown.service at 9 PM every day
-
-[Timer]
-OnCalendar=*-*-* 21:00:00
-Unit=shutdown.service
-
-[Install]
-WantedBy=timers.target
-""",
-        "service": f"""[Unit]
-Description=Shut down the computer at 9 PM every day
-
-[Service]
-Type=oneshot
-ExecStart={sudo_path} {shutdown_path} -h now
 """,
     },
     {
@@ -163,6 +142,26 @@ Type=oneshot
 ExecStart=/bin/bash -c 'echo 0 > /sys/devices/platform/soc/3f980000.usb/buspower; echo 0 > /sys/devices/platform/soc/3f980000.usb/power/control; setterm -blank 0 -powersave off -powerdown 0'
 """,
     },
+    {
+        "name": "shutdown",
+        "timer": f"""[Unit]
+Description=Run shutdown.service at 9 PM every day
+
+[Timer]
+OnCalendar=*-*-* 21:00:00
+Unit=shutdown.service
+
+[Install]
+WantedBy=timers.target
+""",
+        "service": f"""[Unit]
+Description=Shut down the computer at 9 PM every day
+
+[Service]
+Type=oneshot
+ExecStart={sudo_path} {shutdown_path} -h now
+""",
+    },
 ]
 
 
@@ -188,7 +187,6 @@ run_on_connection_content = f"""#!/bin/bash
 set -x
 
 log_file="run_on_conn_log.txt"
-
 # Redirect both stdout and stderr to the log file
 exec > >(tee -a "$log_file") 2>&1
 
@@ -215,6 +213,6 @@ echo "Script finished"
 create_file("run_on_connection.sh", run_on_connection_content)
 
 # Make the script executable
-run_command("chmod --verbose +x run_on_connection.sh", continue_on_error=True)
+run_command("chmod +x run_on_connection.sh", continue_on_error=True)
 
 logger.debug("Script finished")
