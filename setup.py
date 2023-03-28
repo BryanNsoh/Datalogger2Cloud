@@ -96,6 +96,8 @@ Type=simple
 User=pi
 ExecStart=python {project_path}/run_on_connection.sh
 Restart=on-failure
+StandardOutput=file:{project_path}/systemd_reports
+StandardError=file:{project_path}/systemd_reports
 """,
     },
     {
@@ -116,6 +118,8 @@ Description=Power on the computer 8 hours after shutdown
 [Service]
 Type=oneshot
 ExecStart={sudo_path} {rtcwake_path} -m no -s 28800
+StandardOutput=file:{project_path}/systemd_reports
+StandardError=file:{project_path}/systemd_reports
 """,
     },
     {
@@ -126,6 +130,8 @@ Description=Disable sleep and power management features
 [Service]
 Type=oneshot
 ExecStart=/bin/bash -c 'echo 0 > /sys/devices/platform/soc/3f980000.usb/buspower; echo 0 > /sys/devices/platform/soc/3f980000.usb/power/control; setterm -blank 0 -powersave off -powerdown 0'
+StandardOutput=file:{project_path}/systemd_reports
+StandardError=file:{project_path}/systemd_reports
 """,
     },
     {
@@ -146,6 +152,8 @@ Description=Shut down the computer at 9 PM every day
 [Service]
 Type=oneshot
 ExecStart={sudo_path} {shutdown_path} -h now
+StandardOutput=file:{project_path}/systemd_reports
+StandardError=file:{project_path}/systemd_reports
 """,
     },
 ]
