@@ -36,10 +36,6 @@ def run_command(command, continue_on_error=False):
     return result.stdout, result.stderr
 
 
-def source_venv(venv_path, command):
-    return f". {venv_path}/bin/activate && {command}"
-
-
 def create_file(file_name, content):
     with open(file_name, "w") as f:
         f.write(content)
@@ -55,26 +51,16 @@ check_permissions()
 
 logger.debug("Script started")
 
-# Set your project path and virtual environment path
+
+# Set your project path
 project_path = os.getcwd()
-venv_path = f"{project_path}/logger_env"
-
-# 1. Create and Activate Virtual Environment
-commands = [
-    f"python3 -m venv {venv_path}",
-    f". {venv_path}/bin/activate",
-]
-
-for cmd in commands:
-    stdout, stderr = run_command(cmd, continue_on_error=True)
-    logger.debug(stdout)
 
 # 2. Install and Upgrade Python Modules
 commands = [
-    "pip install --upgrade pip --user",
-    "pip install pycampbellcr1000 pandas ndjson --user",
-    "pip install --upgrade google-cloud-storage --user",
-    "pip install --upgrade google-cloud-bigquery --user",
+    "pip install --upgrade pip",
+    "pip install pycampbellcr1000 pandas ndjson",
+    "pip install --upgrade google-cloud-storage",
+    "pip install --upgrade google-cloud-bigquery",
 ]
 
 for cmd in commands:
@@ -108,7 +94,7 @@ Conflicts=shutdown.service
 [Service]
 Type=simple
 User=pi
-ExecStart={venv_path}/bin/python {project_path}/run_on_connection.sh
+ExecStart=python {project_path}/run_on_connection.sh
 Restart=on-failure
 """,
     },
@@ -205,7 +191,7 @@ sudo chronyc -a makestep
 
 # Run the Python script
 echo "Running main_query.py"
-{venv_path}/bin/python {project_path}/main_query.py
+python {project_path}/main_query.py
 
 echo "Script finished"
 """
