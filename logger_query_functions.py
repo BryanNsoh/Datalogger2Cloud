@@ -61,7 +61,7 @@ def get_data(datalogger, table_name, start, stop):
 def store_in_ndjson(list_dict):
     """Stores a given listdict as ndjson in the current directory"""
 
-    local_file = "./CR800data.json"
+    local_file = "./table_data.json"
     try:
         with open(local_file, "w") as f:
             ndjson.dump(list_dict, f)
