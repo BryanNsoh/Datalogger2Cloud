@@ -3,6 +3,7 @@ import subprocess
 import shutil
 from pathlib import Path
 import logging
+import json
 
 # Set up logging
 logging.basicConfig(
@@ -12,6 +13,10 @@ logging.basicConfig(
 )
 
 logger = logging.getLogger()
+
+# Load configuration from config.json
+with open("./config.json", "r") as config_file:
+    config = json.load(config_file)
 
 
 def check_permissions():
@@ -60,12 +65,7 @@ systemd_reports_path = os.path.join(project_path, "systemd_reports")
 os.makedirs(systemd_reports_path, exist_ok=True)
 
 # Install and Upgrade Python Modules
-commands = [
-    "pip install --upgrade pip",
-    "pip install pycampbellcr1000 pandas ndjson",
-    "pip install --upgrade google-cloud-storage",
-    "pip install --upgrade google-cloud-bigquery",
-]
+commands = config["commands"]
 
 for cmd in commands:
     stdout, stderr = run_command(cmd, continue_on_error=True)
@@ -74,51 +74,15 @@ for cmd in commands:
 sudo_path = shutil.which("sudo")
 
 # Create and Configure Systemd Services and Timers
-units = [
-    {
-        "name": "main_query",
-        "timer": f"""[Unit]
-Description=Run main_query.service every hour and after booting
-
-[Timer]
-OnBootSec=5min
-OnCalendar=*-*-* *:*:10
-Unit=main_query.service
-
-[Install]
-WantedBy=timers.target
-""",
-        "service": f"""[Unit]
-Description=Run main_query.py after an Internet connection is established
-Wants= main_query.timer
-Conflicts=shutdown.service
-
-[Service]
-Type=simple
-User=root
-ExecStart=python {project_path}/main_query.py
-Restart=on-failure
-StandardOutput=file:{systemd_reports_path}/main_query.stdout
-StandardError=file:{systemd_reports_path}/main_query.stderr
-""",
-    },
-    {
-        "name": "disable_sleep",
-        "service": f"""[Unit]
-Description=Disable sleep and power management features
-
-[Service]
-Type=oneshot
-ExecStart=/bin/bash -c 'echo 0 > /sys/devices/platform/soc/3f980000.usb/buspower; echo 0 > /sys/devices/platform/soc/3f980000.usb/power/control; setterm -blank 0 -powersave off -powerdown 0'
-StandardOutput=file:{systemd_reports_path}/disable_sleep.stdout
-StandardError=file:{systemd_reports_path}/disable_sleep.stderr
-""",
-    },
-]
+units = config["units"]
 
 # Create, enable, and start the systemd units
 for unit in units:
-    service_file = create_file(f"{unit['name']}.service", unit["service"])
+    logger.debug(f"Creating systemd unit: {unit['name']}.service")
+    service_content = unit["service"].format(
+        project_path=project_path, systemd_reports_path=systemd_reports_path
+    )
+    service_file = create_file(f"{unit['name']}.service", service_content)
     run_command(
         f"sudo cp {service_file} /etc/systemd/system/{service_file}",
         continue_on_error=True,
@@ -126,6 +90,7 @@ for unit in units:
     enable_and_start_systemd(service_file)
 
     if "timer" in unit:
+        logger.debug(f"Creating systemd timer: {unit['name']}.timer")
         timer_file = create_file(f"{unit['name']}.timer", unit["timer"])
         run_command(
             f"sudo cp {timer_file} /etc/systemd/system/{timer_file}",

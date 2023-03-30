@@ -1,0 +1,19 @@
+{
+    "commands": [
+        "pip install --upgrade pip",
+        "pip install pycampbellcr1000 pandas ndjson",
+        "pip install --upgrade google-cloud-storage",
+        "pip install --upgrade google-cloud-bigquery"
+    ],
+    "units": [
+        {
+            "name": "main_query",
+            "timer": "[Unit]\nDescription=Run main_query.service every hour and after booting\n\n[Timer]\nOnBootSec=5min\nOnCalendar=*-*-* *:*:10\nUnit=main_query.service\n\n[Install]\nWantedBy=timers.target\n",
+            "service": "[Unit]\nDescription=Run main_query.py after an Internet connection is established\nWants= main_query.timer\nConflicts=shutdown.service\n\n[Service]\nType=simple\nUser=root\nExecStart=python {project_path}/main_query.py\nRestart=on-failure\nStandardOutput=file:{systemd_reports_path}/main_query.stdout\nStandardError=file:{systemd_reports_path}/main_query.stderr\n"
+        },
+        {
+            "name": "disable_sleep",
+            "service": "[Unit]\nDescription=Disable sleep and power management features\n\n[Service]\nType=oneshot\nExecStart=/bin/bash -c 'echo 0 > /sys/devices/platform/soc/3f980000.usb/buspower; echo 0 > /sys/devices/platform/soc/3f980000.usb/power/control; setterm -blank 0 -powersave off -powerdown 0'\nStandardOutput=file:{systemd_reports_path}/disable_sleep.stdout\nStandardError=file:{systemd_reports_path}/disable_sleep.stderr\n"
+        }
+    ]
+}
