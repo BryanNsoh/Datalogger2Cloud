@@ -43,6 +43,7 @@ def create_file(file_name, content):
 
 
 def enable_and_start_systemd(unit_name):
+    logger.debug(f"Enabling and starting systemd unit: {unit_name}")
     run_command(f"sudo systemctl enable {unit_name}", continue_on_error=True)
     run_command(f"sudo systemctl start {unit_name}", continue_on_error=True)
 
@@ -55,7 +56,8 @@ logger.debug("Script started")
 project_path = os.getcwd()
 
 # Create systemd_reports directory
-os.makedirs(f"{project_path}/systemd_reports", exist_ok=True)
+systemd_reports_path = os.path.join(project_path, "systemd_reports")
+os.makedirs(systemd_reports_path, exist_ok=True)
 
 # Install and Upgrade Python Modules
 commands = [
@@ -96,8 +98,8 @@ Type=simple
 User=root
 ExecStart=python {project_path}/main_query.py
 Restart=on-failure
-StandardOutput=file:{project_path}/systemd_reports/{'main_query'}.stdout
-StandardError=file:{project_path}/systemd_reports/{'main_query'}.stderr
+StandardOutput=file:{systemd_reports_path}/main_query.stdout
+StandardError=file:{systemd_reports_path}/main_query.stderr
 """,
     },
     {
@@ -108,12 +110,11 @@ Description=Disable sleep and power management features
 [Service]
 Type=oneshot
 ExecStart=/bin/bash -c 'echo 0 > /sys/devices/platform/soc/3f980000.usb/buspower; echo 0 > /sys/devices/platform/soc/3f980000.usb/power/control; setterm -blank 0 -powersave off -powerdown 0'
-StandardOutput=file:{project_path}/systemd_reports/{'disable_sleep'}.stdout
-StandardError=file:{project_path}/systemd_reports/{'disable_sleep'}.stderr
+StandardOutput=file:{systemd_reports_path}/disable_sleep.stdout
+StandardError=file:{systemd_reports_path}/disable_sleep.stderr
 """,
     },
 ]
-
 
 # Create, enable, and start the systemd units
 for unit in units:
