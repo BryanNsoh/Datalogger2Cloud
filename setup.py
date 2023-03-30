@@ -23,7 +23,7 @@ def check_permissions():
 
 
 def run_command(command, continue_on_error=False):
-    logger.debug(f"Running Command: {''.join(command)}")
+    logger.debug(f"Running Command: {command}")
     result = subprocess.run(
         command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, shell=True
     )
@@ -51,11 +51,13 @@ check_permissions()
 
 logger.debug("Script started")
 
-
 # Set your project path
 project_path = os.getcwd()
 
-# 2. Install and Upgrade Python Modules
+# Create systemd_reports directory
+os.makedirs(f"{project_path}/systemd_reports", exist_ok=True)
+
+# Install and Upgrade Python Modules
 commands = [
     "pip install --upgrade pip",
     "pip install pycampbellcr1000 pandas ndjson",
@@ -67,11 +69,9 @@ for cmd in commands:
     stdout, stderr = run_command(cmd, continue_on_error=True)
     logger.debug(stdout)
 
-shutdown_path = shutil.which("shutdown")
-rtcwake_path = shutil.which("rtcwake")
 sudo_path = shutil.which("sudo")
 
-# 3. Create and Configure Systemd Services and Timers
+# Create and Configure Systemd Services and Timers
 units = [
     {
         "name": "main_query",
@@ -93,33 +93,11 @@ Conflicts=shutdown.service
 
 [Service]
 Type=simple
-User=pi
-ExecStart=python {project_path}/run_on_connection.sh
+User=root
+ExecStart=python {project_path}/main_query.py
 Restart=on-failure
-StandardOutput=file:{project_path}/systemd_reports
-StandardError=file:{project_path}/systemd_reports
-""",
-    },
-    {
-        "name": "rtcwake",
-        "timer": f"""[Unit]
-Description=Run rtcwake.service 1min before shutdown.service
-
-[Timer]
-OnCalendar=*-*-* 20:59:00
-Unit=rtcwake.service
-
-[Install]
-WantedBy=timers.target
-""",
-        "service": f"""[Unit]
-Description=Power on the computer 8 hours after shutdown
-
-[Service]
-Type=oneshot
-ExecStart={sudo_path} {rtcwake_path} -m no -s 28800
-StandardOutput=file:{project_path}/systemd_reports
-StandardError=file:{project_path}/systemd_reports
+StandardOutput=file:{project_path}/systemd_reports/{'main_query'}.stdout
+StandardError=file:{project_path}/systemd_reports/{'main_query'}.stderr
 """,
     },
     {
@@ -130,30 +108,8 @@ Description=Disable sleep and power management features
 [Service]
 Type=oneshot
 ExecStart=/bin/bash -c 'echo 0 > /sys/devices/platform/soc/3f980000.usb/buspower; echo 0 > /sys/devices/platform/soc/3f980000.usb/power/control; setterm -blank 0 -powersave off -powerdown 0'
-StandardOutput=file:{project_path}/systemd_reports
-StandardError=file:{project_path}/systemd_reports
-""",
-    },
-    {
-        "name": "shutdown",
-        "timer": f"""[Unit]
-Description=Run shutdown.service at 9 PM every day
-
-[Timer]
-OnCalendar=*-*-* 21:00:00
-Unit=shutdown.service
-
-[Install]
-WantedBy=timers.target
-""",
-        "service": f"""[Unit]
-Description=Shut down the computer at 9 PM every day
-
-[Service]
-Type=oneshot
-ExecStart={sudo_path} {shutdown_path} -h now
-StandardOutput=file:{project_path}/systemd_reports
-StandardError=file:{project_path}/systemd_reports
+StandardOutput=file:{project_path}/systemd_reports/{'disable_sleep'}.stdout
+StandardError=file:{project_path}/systemd_reports/{'disable_sleep'}.stderr
 """,
     },
 ]
@@ -175,38 +131,5 @@ for unit in units:
             continue_on_error=True,
         )
         enable_and_start_systemd(timer_file)
-
-
-run_on_connection_content = f"""#!/bin/bash
-set -x
-
-log_file="run_on_conn_log.txt"
-# Redirect both stdout and stderr to the log file
-exec > >(tee -a "$log_file") 2>&1
-
-echo "Starting script"
-
-# Wait for an internet connection
-echo "Checking for internet connection"
-while ! ping -c 1 -W 1 8.8.8.8; do
-  sleep 1
-done
-echo "Internet connection established"
-
-# Update the system time
-echo "Updating system time"
-sudo chronyc -a makestep
-
-# Run the Python script
-echo "Running main_query.py"
-python {project_path}/main_query.py
-
-echo "Script finished"
-"""
-
-create_file("run_on_connection.sh", run_on_connection_content)
-
-# Make the script executable
-run_command("chmod +x run_on_connection.sh", continue_on_error=True)
 
 logger.debug("Script finished")
