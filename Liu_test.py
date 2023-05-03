@@ -1,46 +1,26 @@
+"""
+Simple SDI-12 Sensor Reader
+Based on code by Dr. John Liu
+"""
+
 import serial.tools.list_ports
 import serial
 import time
 from datetime import datetime
 import json
 
-rev_date = "2018-12-03"
-version = "1.0"
-
-print("+-" * 40)
-print("Simple SDI-12 Sensor Reader", version)
-print(
-    "Designed for Dr. Liu's family of SDI-12 USB adapters (standard,analog,GPS)\n\tDr. John Liu Saint Cloud MN USA",
-    rev_date,
-    "\n\t\tFree software GNU GPL V3.0",
-)
-print(
-    "\nCompatible with PCs running Win 7/10, GNU/Linux, Mac OSX, Raspberry PI, Beagle Bone Black"
-)
-print("\nThis program requires Python 3.4, Pyserial 3.0")
-print("\nFor assistance with customization, telemetry etc., contact Dr. Liu.")
-print("\nhttps://liudr.wordpress.com/gadget/sdi-12-usb-adapter/")
-print("+-" * 40)
-
+# Detect available serial ports
 port_names = []
 a = serial.tools.list_ports.comports()
-print("\nDetected the following serial ports:")
-i = 0
-for w in a:
-    vidn = w.vid if (type(w.vid) is int) else 0
-    print("%d)\t%s\t(USB VID=%04X)" % (i, w.device, vidn))
-    i = i + 1
+
 user_port_selection = input(
     "\nSelect port from list (0,1,2...). SDI-12 adapter has USB VID=0403:"
 )
-# Store the device name to open port with later in the script.
 port_device = a[int(user_port_selection)].device
 
 ser = serial.Serial(port=port_device, baudrate=9600, timeout=10)
-time.sleep(2.5)  # delay for arduino bootloader and the 1 second delay of the adapter.
+time.sleep(2.5)
 
-
-# Initialize sensor data dictionary
 sensor_data = {}
 
 
@@ -49,15 +29,12 @@ def read_sensor_data(ser, sdi_12_address, measurement_code):
     ser.write(sdi_12_address + b"M" + measurement_code + b"!")
     # Read and discard the first line of the response
     sdi_12_line = ser.readline()
-
     # Read and discard the second line of the response
     sdi_12_line = ser.readline()
-
     # Send the data command to the sensor
     ser.write(sdi_12_address + b"D0!")
     # Read the third line of the response, which contains the data
     sdi_12_line = ser.readline()
-
     # Remove the newline characters from the end of the line
     sdi_12_line = sdi_12_line[:-2]
     # Split the response into a list of values, excluding the first element (sensor address)
@@ -74,8 +51,7 @@ def read_sensor_data(ser, sdi_12_address, measurement_code):
     return sensor_values
 
 
-# Rest of the code for setting up the serial connection
-
+# Initialize sensor data variables
 sensor_0_temperature = None
 sensor_1_soil_moisture = None
 

@@ -1,3 +1,11 @@
+#
+#
+#
+##  Modufy the functions to to accept the table name so it doesn't have to be hard coded
+#
+#
+
+
 # Imports the Google Cloud client library
 from google.cloud import storage
 from google.cloud import bigquery

@@ -1,0 +1,19 @@
+{
+    "0": {
+        "info": "\u0000\u0000014Apogee  SI-4H13.7B077218",
+        "reading": "0+24.6588"
+    },
+    "1": {
+        "info": "aampbellCS65X 000Std.02=17810",
+        "reading": "1+0+.0002+24.7497"
+    }
+}{"timestamp": "2023-05-03T23:28:05.282581", "apogee_temperature": {"value": 25.1044, "unit": "\u00b0C"}, "cs655_soil_moisture": {"value": 1.0147, "unit": "cm^3/cm^3"}}
+{"timestamp": "2023-05-03T23:28:07.795959", "apogee_temperature": {"value": 25.1046, "unit": "\u00b0C"}, "cs655_soil_moisture": {"value": 1.0128, "unit": "cm^3/cm^3"}}
+{"timestamp": "2023-05-03T23:28:10.293169", "apogee_temperature": {"value": 25.1046, "unit": "\u00b0C"}, "cs655_soil_moisture": {"value": 1.0128, "unit": "cm^3/cm^3"}}
+{"timestamp": "2023-05-03T23:28:12.790592", "apogee_temperature": {"value": 25.1048, "unit": "\u00b0C"}, "cs655_soil_moisture": {"value": 1.0099, "unit": "cm^3/cm^3"}}
+{"timestamp": "2023-05-03T23:28:15.271864", "apogee_temperature": {"value": 25.1047, "unit": "\u00b0C"}, "cs655_soil_moisture": {"value": 1.0128, "unit": "cm^3/cm^3"}}
+{"timestamp": "2023-05-03T23:28:17.769142", "apogee_temperature": {"value": 25.1048, "unit": "\u00b0C"}, "cs655_soil_moisture": {"value": 1.0109, "unit": "cm^3/cm^3"}}
+{"timestamp": "2023-05-03T23:28:20.234492", "apogee_temperature": {"value": 25.1049, "unit": "\u00b0C"}, "cs655_soil_moisture": {"value": 1.0142, "unit": "cm^3/cm^3"}}
+{"timestamp": "2023-05-03T23:28:22.700231", "apogee_temperature": {"value": 25.1049, "unit": "\u00b0C"}, "cs655_soil_moisture": {"value": 1.0147, "unit": "cm^3/cm^3"}}
+{"timestamp": "2023-05-03T23:28:25.197042", "apogee_temperature": {"value": 25.1049, "unit": "\u00b0C"}, "cs655_soil_moisture": {"value": 1.0128, "unit": "cm^3/cm^3"}}
+{"timestamp": "2023-05-03T23:28:27.694028", "apogee_temperature": {"value": 25.1049, "unit": "\u00b0C"}, "cs655_soil_moisture": {"value": 1.0132, "unit": "cm^3/cm^3"}}
