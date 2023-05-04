@@ -1,29 +1,38 @@
-"""
-Simple SDI-12 Sensor Reader
-Adapted from code by Dr. John Liu
-"""
-
 import serial.tools.list_ports
 import serial
 import time
-from datetime import datetime
+from datetime import datetime, timedelta
 import json
 from typing import List, Dict
 import gcloud_functions as gcloud
+import logging
 
-# Detect available serial ports
-port_names = []
-a = serial.tools.list_ports.comports()
-
-user_port_selection = input(
-    "\nSelect port from list (0,1,2...). SDI-12 adapter has USB VID=0403:"
+# Configure logging
+logging.basicConfig(
+    filename="SDI12toUSB.log",
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] - %(message)s",
 )
-port_device = a[int(user_port_selection)].device
+logging.getLogger("google").setLevel(logging.WARNING)
 
-ser = serial.Serial(port=port_device, baudrate=9600, timeout=10)
+# Serial port detection
+ports = list(serial.tools.list_ports.comports())
+if len(ports) == 0:
+    raise ValueError("No serial ports found")
+elif len(ports) > 1:
+    logging.warning("Multiple serial ports detected, using the first one")
+serial_port = str(ports[0].device)
+
+# Serial connection
+ser = serial.Serial(serial_port, 9600, timeout=10)
 time.sleep(2.5)
 
-sensor_data = {}
+# BigQuery and Google Cloud Storage configurations
+project_id = "apt-rite-378417"
+dataset_id = "loggertest1"
+table_id = "SDI12Test"
+bucket_name = "logger1-bucket"
+blob_name = "plt-34/logger.json"
 
 
 def read_sensor_data(ser, sdi_12_address, measurement_code):
@@ -56,18 +65,15 @@ def read_sensor_data(ser, sdi_12_address, measurement_code):
 # Initialize sensor data variables
 sensor_0_temperature = None
 sensor_1_soil_moisture = None
-
-# BigQuery and Google Cloud Storage configurations
-project_id = "apt-rite-378417"
-dataset_id = "loggertest1"
-table_id = "DRLiuTest"
-bucket_name = "logger1-bucket"
-blob_name = "plt-34/logger.json"
-
 sensor_data_list = []
+sampling_interval = 1  # 1 minute (60)
+upload_interval = 3  # 1 hour(3600)
+last_upload_time = datetime.now() - timedelta(seconds=upload_interval)
 
-while True:
-    try:
+try:
+    while True:
+        current_time = datetime.now()
+
         # Read sensor data
         sensor_0_values = read_sensor_data(ser, b"0", b"1")
         if len(sensor_0_values) >= 2:
@@ -75,49 +81,45 @@ while True:
 
         sensor_1_values = read_sensor_data(ser, b"1", b"1")
         if len(sensor_1_values) >= 2:
-            sensor_1_soil_moisture = float(sensor_1_values[0])
-
-        # Print sensor data
-        if sensor_0_temperature is not None:
-            print("Apogee temperature: {:.4f} °C".format(sensor_0_temperature))
-
-        if sensor_1_soil_moisture is not None:
-            print("CS655 soil moisture: {:.4f} cm^3/cm".format(sensor_1_soil_moisture))
+            sensor_1_soil_moisture = float(sensor_1_values[1])
 
         # Store sensor data in a dictionary
         sensor_data = {
-            "Datetime": datetime.utcnow().isoformat(),
+            "Datetime": current_time.isoformat(),
             "ApogeeT": sensor_0_temperature,
             "CS655_SoilMoisture": sensor_1_soil_moisture,
         }
 
         # Append sensor data to the list
-        sensor_data_list.append(sensor_data)
+        if sensor_0_temperature is not None and sensor_1_soil_moisture is not None:
+            sensor_data_list.append(sensor_data)
 
         # Save sensor data to a file
         with open("./sensor_data.json", "a") as f:
             json.dump(sensor_data, f)
             f.write("\n")
 
-        # Push sensor data to BigQuery and Google Cloud Storage
-        bq_schema = gcloud.get_schema(sensor_data_list)
-        if bq_schema:
-            gcloud.update_bqtable(
-                schema=bq_schema,
-                table_data=sensor_data_list,
-                project_id=project_id,
-                dataset_id=dataset_id,
-                table_id=table_id,
-            )
-            gcloud.update_bucket(
-                bucket_name=bucket_name,
-                blob_name=blob_name,
-            )
+        # Push sensor data to BigQuery and Google Cloud Storage every hour
+        if (current_time - last_upload_time).total_seconds() >= upload_interval:
+            bq_schema = gcloud.get_schema(sensor_data_list)
+            if bq_schema:
+                gcloud.update_bqtable(
+                    schema=bq_schema,
+                    table_data=sensor_data_list,
+                    project_id=project_id,
+                    dataset_id=dataset_id,
+                    table_id=table_id,
+                )
+                gcloud.update_bucket(
+                    bucket_name=bucket_name,
+                    blob_name=blob_name,
+                )
+            last_upload_time = current_time
+            sensor_data_list = []
 
-        time.sleep(1)
+        time.sleep(sampling_interval)
 
-    except KeyboardInterrupt:
-        print("Interrupted by user. Exiting...")
-        break
-    except Exception as e:
-        print(f"Error: {str(e)}")
+except KeyboardInterrupt:
+    logging.info("Interrupted by user. Exiting...")
+except Exception as e:
+    logging.error(f"An error occurred: {e}", exc_info=True)
