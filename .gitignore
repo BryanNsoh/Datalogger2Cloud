@@ -4,3 +4,4 @@
 __pycache__/
 timekeeper.txt
 CR800data.json
+sensor_data.json

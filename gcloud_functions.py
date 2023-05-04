@@ -1,12 +1,3 @@
-#
-#
-#
-##  Modufy the functions to to accept the table name so it doesn't have to be hard coded
-#
-#
-
-
-# Imports the Google Cloud client library
 from google.cloud import storage
 from google.cloud import bigquery
 from typing import List, Dict
@@ -18,55 +9,34 @@ import glob
 # Accessing service account key on local computer
 folder_path = "/home/bryan/.keys"
 file_name = os.listdir(folder_path)
-
 key_path = os.path.join(folder_path, file_name[0])
-print(key_path)
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = key_path
 
-# Paths for google cloud
+# Paths for Google Cloud
 local_file = "./CR800data.json"
 bucket_name = "logger1-bucket"
 blob_name = "plt-34/logger.json"
 
-# ID's for BigQuery
-project_id = "apt-rite-378417"
-dataset_id = "loggertest1"
-table_id = "RBpiTest"
 
-
-def write_read(bucket_name, blob_name):
-    """Write and read a blob from GCS using file-like IO"""
-
+def write_read(bucket_name: str, blob_name: str) -> None:
+    """Write and read a blob from GCS using file-like IO."""
     storage_client = storage.Client()
     bucket = storage_client.bucket(bucket_name)
     blob = bucket.blob(blob_name)
-
-    # Mode can be specified as wb/rb for bytes mode.
-    # See: https://docs.python.org/3/library/io.html
 
     with open(local_file, "r") as from_, blob.open("w") as to_:
         to_.write(from_.read())
 
 
-def update_bucket():
-    """Send data to cloud"""
+def update_bucket(bucket_name: str, blob_name: str) -> None:
+    """Send data to cloud."""
 
     write_read(bucket_name, blob_name)
 
 
 def get_schema(list_dicts: List[Dict]) -> List[bigquery.SchemaField]:
-    """
-    Generate BigQuery schema for a list of dictionaries.
-
-    This function takes a list of dictionaries as input and generates a BigQuery schema
-    with appropriate field names and types.
-
-    Args:
-        list_dicts (List[Dict])-: A list of dictionaries with data.
-
-    Returns:
-        List[bigquery.SchemaField]: A list of BigQuery schema fields.
-    """
+    """Takes a list of dictionaries as input and generates a BigQuery schema
+    with appropriate field names and types."""
 
     if not list_dicts:
         return []
@@ -78,7 +48,6 @@ def get_schema(list_dicts: List[Dict]) -> List[bigquery.SchemaField]:
         str: "STRING",
         bool: "BOOLEAN",
         bytes: "BYTES",
-        # Add more mappings if needed
     }
 
     # Get the first dictionary from the list to infer schema
@@ -93,10 +62,16 @@ def get_schema(list_dicts: List[Dict]) -> List[bigquery.SchemaField]:
     return schema
 
 
-def update_bqtable(schema, table_data):
-    """Update the bigquery table with newly obtained data from the logger"""
+def update_bqtable(
+    schema: List[bigquery.SchemaField],
+    table_data: List[Dict],
+    project_id: str,
+    dataset_id: str,
+    table_id: str,
+) -> bool:
+    """Update the BigQuery table with newly obtained data from the logger."""
 
-    bigquery_client = bigquery.Client()
+    bigquery_client = bigquery.Client(project=project_id)
 
     job_config = bigquery.LoadJobConfig(
         schema=schema,
@@ -123,12 +98,18 @@ def update_bqtable(schema, table_data):
             job_config=job_config,
         )
 
-    # Wait for the load job to complete
-    load_job.result()
+        # Wait for the load job to complete
+        load_job.result()
 
-    # Remove the temporary file
-    os.remove(temp_file_path)
+        # Remove the temporary file
+        os.remove(temp_file_path)
 
-    print(f"Loaded {load_job.output_rows} rows into {dataset_id}:{table_id}.")
+        print(f"Loaded {load_job.output_rows} rows into {dataset_id}:{table_id}.")
 
-    return True
+        return True
+
+
+# ID's for BigQuery
+project_id = "apt-rite-378417"
+dataset_id = "loggertest1"
+table_id = "RBpiTest"
