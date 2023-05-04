@@ -1,6 +1,6 @@
 """
 Simple SDI-12 Sensor Reader
-Based on code by Dr. John Liu
+Adapted from code by Dr. John Liu
 """
 
 import serial.tools.list_ports
@@ -8,6 +8,8 @@ import serial
 import time
 from datetime import datetime
 import json
+from typing import List, Dict
+import gcloud_functions as gcloud
 
 # Detect available serial ports
 port_names = []
@@ -55,8 +57,18 @@ def read_sensor_data(ser, sdi_12_address, measurement_code):
 sensor_0_temperature = None
 sensor_1_soil_moisture = None
 
+# BigQuery and Google Cloud Storage configurations
+project_id = "apt-rite-378417"
+dataset_id = "loggertest1"
+table_id = "DRLiuTest"
+bucket_name = "logger1-bucket"
+blob_name = "plt-34/logger.json"
+
+sensor_data_list = []
+
 while True:
     try:
+        # Read sensor data
         sensor_0_values = read_sensor_data(ser, b"0", b"1")
         if len(sensor_0_values) >= 2:
             sensor_0_temperature = float(sensor_0_values[1])
@@ -65,24 +77,42 @@ while True:
         if len(sensor_1_values) >= 2:
             sensor_1_soil_moisture = float(sensor_1_values[0])
 
+        # Print sensor data
         if sensor_0_temperature is not None:
             print("Apogee temperature: {:.4f} °C".format(sensor_0_temperature))
 
         if sensor_1_soil_moisture is not None:
             print("CS655 soil moisture: {:.4f} cm^3/cm".format(sensor_1_soil_moisture))
 
+        # Store sensor data in a dictionary
         sensor_data = {
-            "timestamp": datetime.utcnow().isoformat(),
-            "apogee_temperature": {"value": sensor_0_temperature, "unit": "°C"},
-            "cs655_soil_moisture": {
-                "value": sensor_1_soil_moisture,
-                "unit": "cm^3/cm^3",
-            },
+            "Datetime": datetime.utcnow().isoformat(),
+            "ApogeeT": sensor_0_temperature,
+            "CS655_SoilMoisture": sensor_1_soil_moisture,
         }
 
+        # Append sensor data to the list
+        sensor_data_list.append(sensor_data)
+
+        # Save sensor data to a file
         with open("./sensor_data.json", "a") as f:
             json.dump(sensor_data, f)
             f.write("\n")
+
+        # Push sensor data to BigQuery and Google Cloud Storage
+        bq_schema = gcloud.get_schema(sensor_data_list)
+        if bq_schema:
+            gcloud.update_bqtable(
+                schema=bq_schema,
+                table_data=sensor_data_list,
+                project_id=project_id,
+                dataset_id=dataset_id,
+                table_id=table_id,
+            )
+            gcloud.update_bucket(
+                bucket_name=bucket_name,
+                blob_name=blob_name,
+            )
 
         time.sleep(1)
 
