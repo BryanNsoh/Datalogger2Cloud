@@ -40,7 +40,19 @@ def main():
 
         # Send stored data to GCloud
         schema = gcloud.get_schema(table_data)
-        update_table = gcloud.update_bqtable(schema, table_data)
+
+        # IDs and paths for Google Cloud
+        project_id = "apt-rite-378417"
+        dataset_id = "loggertest1"
+        table_id = "RBpiTest"
+        bucket_name = "logger1-bucket"
+        blob_name = "plt-34/logger.json"
+
+        # Update bucket
+        gcloud.update_bucket(bucket_name, blob_name)
+
+        # Update BigQuery table
+        gcloud.update_bqtable(schema, table_data, project_id, dataset_id, table_id)
 
         # Report Success
         logging.info("Upload success!")

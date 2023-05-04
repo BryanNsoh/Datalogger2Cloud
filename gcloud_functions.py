@@ -20,6 +20,7 @@ blob_name = "plt-34/logger.json"
 
 def write_read(bucket_name: str, blob_name: str) -> None:
     """Write and read a blob from GCS using file-like IO."""
+
     storage_client = storage.Client()
     bucket = storage_client.bucket(bucket_name)
     blob = bucket.blob(blob_name)
