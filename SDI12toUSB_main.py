@@ -66,8 +66,8 @@ def read_sensor_data(ser, sdi_12_address, measurement_code):
 sensor_0_temperature = None
 sensor_1_soil_moisture = None
 sensor_data_list = []
-sampling_interval = 1  # 1 minute (60)
-upload_interval = 3  # 1 hour(3600)
+sampling_interval = 60 * 10  # 1 minute (60)
+upload_interval = 3600  # 1 hour(3600)
 last_upload_time = datetime.now() - timedelta(seconds=upload_interval)
 
 try:
