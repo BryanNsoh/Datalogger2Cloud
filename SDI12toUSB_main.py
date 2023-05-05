@@ -66,7 +66,7 @@ def read_sensor_data(ser, sdi_12_address, measurement_code):
 sensor_0_temperature = None
 sensor_1_soil_moisture = None
 sensor_data_list = []
-sampling_interval = 60 * 10  # 1 minute (60)
+sampling_interval = 600  # 1 minute (60)
 upload_interval = 3600  # 1 hour(3600)
 last_upload_time = datetime.now() - timedelta(seconds=upload_interval)
 
@@ -109,10 +109,6 @@ try:
                     project_id=project_id,
                     dataset_id=dataset_id,
                     table_id=table_id,
-                )
-                gcloud.update_bucket(
-                    bucket_name=bucket_name,
-                    blob_name=blob_name,
                 )
             last_upload_time = current_time
             sensor_data_list = []
