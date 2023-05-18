@@ -8,3 +8,4 @@ Traceback (most recent call last):
     with open(local_file, "r") as from_, blob.open("w") as to_:
          ^^^^^^^^^^^^^^^^^^^^^
 FileNotFoundError: [Errno 2] No such file or directory: './CR800data.json'
+2023-05-05 11:02:32,888 [INFO] - Interrupted by user. Exiting...
