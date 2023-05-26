@@ -4,21 +4,19 @@ from typing import List, Dict
 import os
 import json
 import tempfile
-import glob
 
-# Accessing service account key on local computer
-folder_path = "/home/bryan/.keys"
-file_name = os.listdir(folder_path)
-key_path = os.path.join(folder_path, file_name[0])
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = key_path
+# Load the keys from the JSON file
+with open("/home/bryan/.keys/api_keys.json", "r") as file:
+    keys = json.load(file)
 
-# Paths for Google Cloud
-local_file = "./CR800data.json"
-bucket_name = "logger1-bucket"
-blob_name = "plt-34/logger.json"
+# Access keys for google service
+google_creds = keys["google"]["application_credentials"]
+
+# Set environment variable for Google credentials
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = google_creds
 
 
-def write_read(bucket_name: str, blob_name: str) -> None:
+def write_read(bucket_name: str, blob_name: str, local_file: str) -> None:
     """Write and read a blob from GCS using file-like IO."""
 
     storage_client = storage.Client()
@@ -29,10 +27,10 @@ def write_read(bucket_name: str, blob_name: str) -> None:
         to_.write(from_.read())
 
 
-def update_bucket(bucket_name: str, blob_name: str) -> None:
+def update_bucket(bucket_name: str, blob_name: str, local_file: str) -> None:
     """Send data to cloud."""
 
-    write_read(bucket_name, blob_name)
+    write_read(bucket_name, blob_name, local_file)
 
 
 def get_schema(list_dicts: List[Dict]) -> List[bigquery.SchemaField]:
@@ -108,9 +106,3 @@ def update_bqtable(
         print(f"Loaded {load_job.output_rows} rows into {dataset_id}:{table_id}.")
 
         return True
-
-
-# ID's for BigQuery
-project_id = "apt-rite-378417"
-dataset_id = "loggertest1"
-table_id = "RBpiTest"

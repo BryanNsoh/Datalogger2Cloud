@@ -53,10 +53,13 @@ def read_sensor_data(ser, sdi_12_address, measurement_code):
 
     # Iterate through the sensor values
     for i, value in enumerate(sensor_values):
-        # If a negative sign is found in the value (indicating a diagnostic value)
         if "-" in value:
-            # Split the value at the negative sign, keeping only the first part (soil moisture value)
-            sensor_values[i] = value.split("-")[0]
+            # Split the value at the negative sign
+            parts = value.split("-")
+            # Add the - sign to the second part
+            parts[1] = "-" + parts[1]
+            # Replace the value in the array with the modified parts
+            sensor_values[i] = parts
 
     # Return the list of cleaned sensor values
     return sensor_values
@@ -66,8 +69,8 @@ def read_sensor_data(ser, sdi_12_address, measurement_code):
 sensor_0_temperature = None
 sensor_1_soil_moisture = None
 sensor_data_list = []
-sampling_interval = 600  # 1 minute (60)
-upload_interval = 3600  # 1 hour(3600)
+sampling_interval = 6  # 1 minute (60)
+upload_interval = 36  # 1 hour(3600)
 last_upload_time = datetime.now() - timedelta(seconds=upload_interval)
 
 try:
@@ -87,7 +90,7 @@ try:
         sensor_data = {
             "Datetime": current_time.isoformat(),
             "ApogeeT": sensor_0_temperature,
-            "CS655_SoilMoisture": sensor_1_soil_moisture,
+            "TDR": sensor_1_soil_moisture,
         }
 
         # Append sensor data to the list

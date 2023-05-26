@@ -1,11 +1,1 @@
-2023-05-05 11:00:31,999 [ERROR] - An error occurred: [Errno 2] No such file or directory: './CR800data.json'
-Traceback (most recent call last):
-  File "/home/bryan/.Repositories/Datalogger2Cloud/SDI12toUSB_main.py", line 113, in <module>
-    gcloud.update_bucket(
-  File "/home/bryan/.Repositories/Datalogger2Cloud/gcloud_functions.py", line 35, in update_bucket
-    write_read(bucket_name, blob_name)
-  File "/home/bryan/.Repositories/Datalogger2Cloud/gcloud_functions.py", line 28, in write_read
-    with open(local_file, "r") as from_, blob.open("w") as to_:
-         ^^^^^^^^^^^^^^^^^^^^^
-FileNotFoundError: [Errno 2] No such file or directory: './CR800data.json'
-2023-05-05 11:02:32,888 [INFO] - Interrupted by user. Exiting...
+2023-05-12 08:43:41,393 [INFO] - Interrupted by user. Exiting...
