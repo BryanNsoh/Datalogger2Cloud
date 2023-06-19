@@ -79,8 +79,7 @@ ser.write(sdi_12_address + b"I!")
 sdi_12_line = ser.readline()
 print("Sensor info:", sdi_12_line.decode("utf-8"))
 
-# user_sdi_12_address = input("\nEnter new address (0-9, A-Z, a-z)")
-user_sdi_12_address = "1"
+user_sdi_12_address = input("\nEnter new address (0-9, A-Z, a-z)")
 
 if (
     ((user_sdi_12_address >= "0") and (user_sdi_12_address <= "9"))
@@ -91,17 +90,6 @@ if (
     ser.write(b"%sA%s!" % (sdi_12_address, user_sdi_12_address.encode("utf-8")))
     ser.readline()
     print("\nConfiguration complete.")
-
-    # Query the sensor for data
-    print("\nQuerying sensor for data...")
-    measurement_code = b"MC!"
-    sensor_data = read_sensor_data(
-        ser, user_sdi_12_address.encode("utf-8"), measurement_code
-    )
-    print("Sensor_data: ")
-    # print sensor_data array
-    for value in sensor_data:
-        print(value)
 
 else:
     print("Address is invalid. No change was made.")
