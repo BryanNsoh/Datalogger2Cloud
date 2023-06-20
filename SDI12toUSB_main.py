@@ -31,8 +31,6 @@ time.sleep(2.5)
 project_id = "apt-rite-378417"
 dataset_id = "loggertest1"
 table_id = "SDI12Test2"
-bucket_name = "logger1-bucket"
-blob_name = "plt-34/logger.json"
 
 
 def read_sensor_data(ser, sdi_12_address, measurement_code):

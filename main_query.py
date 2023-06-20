@@ -43,13 +43,8 @@ def main():
 
         # IDs and paths for Google Cloud
         project_id = "apt-rite-378417"
-        dataset_id = "loggertest1"
-        table_id = "RBpiTest"
-        bucket_name = "logger1-bucket"
-        blob_name = "plt-34/logger.json"
-
-        # Update bucket
-        gcloud.update_bucket(bucket_name, blob_name)
+        dataset_id = "final_test"
+        table_id = "corn_test"
 
         # Update BigQuery table
         gcloud.update_bqtable(schema, table_data, project_id, dataset_id, table_id)
