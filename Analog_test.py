@@ -23,7 +23,7 @@ sdi_12_line = ser.readline()
 sdi_12_line = sdi_12_line[:-2]  # remove \r and \n since [0-9]$ has trouble with \r
 m = re.search(b"[0-9a-zA-Z]$", sdi_12_line)  # having trouble with the \r
 
-ser.write(b"zM8!")
+ser.write(b"zM0!")
 sdi_12_line = ser.readline()
 sdi_12_line = ser.readline()
 ser.write(b"zD0!")
