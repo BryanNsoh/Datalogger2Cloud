@@ -1,0 +1,1239 @@
+2023-06-21 11:10:22,624 [ERROR] - An error occurred: [Errno 2] could not open port /dev/ttyUSB0: [Errno 2] No such file or directory: '/dev/ttyUSB0'
+Traceback (most recent call last):
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/serial/serialposix.py", line 322, in open
+    self.fd = os.open(self.portstr, os.O_RDWR | os.O_NOCTTY | os.O_NONBLOCK)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/dev/ttyUSB0'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/bryan/.Repositories/Datalogger2Cloud/main_query.py", line 25, in main
+    datalogger = CR1000.from_url("serial:/dev/ttyUSB0:38400")
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/pycampbellcr1000/device.py", line 71, in from_url
+    link.settimeout(timeout)
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/pylink/link.py", line 241, in settimeout
+    self.serial.timeout = self.timeout
+    ^^^^^^^^^^^
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/pylink/link.py", line 254, in serial
+    self.open()
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/pylink/link.py", line 231, in open
+    self._serial = serial.Serial(self.port, self.baudrate,
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/serial/serialutil.py", line 244, in __init__
+    self.open()
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/serial/serialposix.py", line 325, in open
+    raise SerialException(msg.errno, "could not open port {}: {}".format(self._port, msg))
+serial.serialutil.SerialException: [Errno 2] could not open port /dev/ttyUSB0: [Errno 2] No such file or directory: '/dev/ttyUSB0'
+2023-06-21 11:10:32,987 [ERROR] - An error occurred: [Errno 2] could not open port /dev/ttyUSB0: [Errno 2] No such file or directory: '/dev/ttyUSB0'
+Traceback (most recent call last):
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/serial/serialposix.py", line 322, in open
+    self.fd = os.open(self.portstr, os.O_RDWR | os.O_NOCTTY | os.O_NONBLOCK)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/dev/ttyUSB0'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/bryan/.Repositories/Datalogger2Cloud/main_query.py", line 25, in main
+    datalogger = CR1000.from_url("serial:/dev/ttyUSB0:38400")
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/pycampbellcr1000/device.py", line 71, in from_url
+    link.settimeout(timeout)
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/pylink/link.py", line 241, in settimeout
+    self.serial.timeout = self.timeout
+    ^^^^^^^^^^^
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/pylink/link.py", line 254, in serial
+    self.open()
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/pylink/link.py", line 231, in open
+    self._serial = serial.Serial(self.port, self.baudrate,
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/serial/serialutil.py", line 244, in __init__
+    self.open()
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/serial/serialposix.py", line 325, in open
+    raise SerialException(msg.errno, "could not open port {}: {}".format(self._port, msg))
+serial.serialutil.SerialException: [Errno 2] could not open port /dev/ttyUSB0: [Errno 2] No such file or directory: '/dev/ttyUSB0'
+2023-06-21 11:11:20,214 [INFO] - new <SerialLink serial:/dev/ttyUSB1:38400:8N1> was initialized
+2023-06-21 11:11:20,214 [INFO] - init client
+2023-06-21 11:11:20,214 [INFO] - Get the node attention
+2023-06-21 11:11:20,214 [INFO] - Write : <BD BD BD BD BD BD>
+2023-06-21 11:11:20,214 [INFO] - Wait packet with transaction None
+2023-06-21 11:11:20,214 [INFO] - Read : <'\x00'>
+2023-06-21 11:11:20,214 [INFO] - Read byte: 00
+2023-06-21 11:11:21,617 [INFO] - Read : <'\x00'>
+2023-06-21 11:11:21,618 [INFO] - Read byte: 00
+2023-06-21 11:11:31,623 [INFO] - Read byte: 
+2023-06-21 11:11:31,623 [INFO] - 0
+2023-06-21 11:11:31,624 [INFO] - Create header
+2023-06-21 11:11:31,624 [INFO] - Packet data: 90 01 58 02 00 01 08 02 09 01 00 02 07 08
+2023-06-21 11:11:31,624 [INFO] - Calculate signature for packet
+2023-06-21 11:11:31,624 [INFO] - Calculate signature nullifier to create packet
+2023-06-21 11:11:31,624 [INFO] - Quote packet
+2023-06-21 11:11:31,624 [INFO] - Write: BD 90 01 58 02 00 01 08 02 09 01 00 02 07 08 F6 86 BD
+2023-06-21 11:11:31,625 [INFO] - Write : <BD 90 01 58 02 00 01 08 02 09 01 00 02 07 08 F6 86 BD>
+2023-06-21 11:11:31,625 [INFO] - Wait packet with transaction 1
+2023-06-21 11:11:41,635 [INFO] - Read byte: 
+2023-06-21 11:11:41,635 [INFO] - Connection <SerialLink serial:/dev/ttyUSB1:38400:8N1> was closed
+2023-06-21 11:11:41,636 [INFO] - new <SerialLink serial:/dev/ttyUSB1:38400:8N1> was initialized
+2023-06-21 11:11:41,636 [INFO] - 1
+2023-06-21 11:11:41,636 [INFO] - Create header
+2023-06-21 11:11:41,636 [INFO] - Packet data: 90 01 58 02 00 01 08 02 09 02 00 02 07 08
+2023-06-21 11:11:41,636 [INFO] - Calculate signature for packet
+2023-06-21 11:11:41,636 [INFO] - Calculate signature nullifier to create packet
+2023-06-21 11:11:41,637 [INFO] - Quote packet
+2023-06-21 11:11:41,637 [INFO] - Write: BD 90 01 58 02 00 01 08 02 09 02 00 02 07 08 AF 69 BD
+2023-06-21 11:11:41,637 [INFO] - Write : <BD 90 01 58 02 00 01 08 02 09 02 00 02 07 08 AF 69 BD>
+2023-06-21 11:11:41,637 [INFO] - Wait packet with transaction 2
+2023-06-21 11:11:51,647 [INFO] - Read byte: 
+2023-06-21 11:11:51,649 [INFO] - Connection <SerialLink serial:/dev/ttyUSB1:38400:8N1> was closed
+2023-06-21 11:11:51,651 [INFO] - new <SerialLink serial:/dev/ttyUSB1:38400:8N1> was initialized
+2023-06-21 11:11:51,651 [INFO] - 2
+2023-06-21 11:11:51,651 [INFO] - Create header
+2023-06-21 11:11:51,652 [INFO] - Packet data: 90 01 58 02 00 01 08 02 09 03 00 02 07 08
+2023-06-21 11:11:51,652 [INFO] - Calculate signature for packet
+2023-06-21 11:11:51,652 [INFO] - Calculate signature nullifier to create packet
+2023-06-21 11:11:51,652 [INFO] - Quote packet
+2023-06-21 11:11:51,652 [INFO] - Write: BD 90 01 58 02 00 01 08 02 09 03 00 02 07 08 69 4C BD
+2023-06-21 11:11:51,653 [INFO] - Write : <BD 90 01 58 02 00 01 08 02 09 03 00 02 07 08 69 4C BD>
+2023-06-21 11:11:51,653 [INFO] - Wait packet with transaction 3
+2023-06-21 11:12:01,663 [INFO] - Read byte: 
+2023-06-21 11:12:01,664 [INFO] - Connection <SerialLink serial:/dev/ttyUSB1:38400:8N1> was closed
+2023-06-21 11:12:01,665 [INFO] - new <SerialLink serial:/dev/ttyUSB1:38400:8N1> was initialized
+2023-06-21 11:12:01,665 [INFO] - 3
+2023-06-21 11:12:01,665 [INFO] - Create header
+2023-06-21 11:12:01,665 [INFO] - Packet data: 90 01 58 02 00 01 08 02 09 04 00 02 07 08
+2023-06-21 11:12:01,665 [INFO] - Calculate signature for packet
+2023-06-21 11:12:01,665 [INFO] - Calculate signature nullifier to create packet
+2023-06-21 11:12:01,665 [INFO] - Quote packet
+2023-06-21 11:12:01,665 [INFO] - Write: BD 90 01 58 02 00 01 08 02 09 04 00 02 07 08 23 2F BD
+2023-06-21 11:12:01,665 [INFO] - Write : <BD 90 01 58 02 00 01 08 02 09 04 00 02 07 08 23 2F BD>
+2023-06-21 11:12:01,666 [INFO] - Wait packet with transaction 4
+2023-06-21 11:12:11,676 [INFO] - Read byte: 
+2023-06-21 11:12:11,677 [INFO] - Connection <SerialLink serial:/dev/ttyUSB1:38400:8N1> was closed
+2023-06-21 11:12:11,679 [INFO] - new <SerialLink serial:/dev/ttyUSB1:38400:8N1> was initialized
+2023-06-21 11:12:11,679 [INFO] - 4
+2023-06-21 11:12:11,679 [INFO] - Create header
+2023-06-21 11:12:11,679 [INFO] - Packet data: 90 01 58 02 00 01 08 02 09 05 00 02 07 08
+2023-06-21 11:12:11,680 [INFO] - Calculate signature for packet
+2023-06-21 11:12:11,680 [INFO] - Calculate signature nullifier to create packet
+2023-06-21 11:12:11,680 [INFO] - Quote packet
+2023-06-21 11:12:11,680 [INFO] - Write: BD 90 01 58 02 00 01 08 02 09 05 00 02 07 08 DD 12 BD
+2023-06-21 11:12:11,681 [INFO] - Write : <BD 90 01 58 02 00 01 08 02 09 05 00 02 07 08 DD 12 BD>
+2023-06-21 11:12:11,681 [INFO] - Wait packet with transaction 5
+2023-06-21 11:12:21,691 [INFO] - Read byte: 
+2023-06-21 11:12:21,692 [INFO] - Connection <SerialLink serial:/dev/ttyUSB1:38400:8N1> was closed
+2023-06-21 11:12:21,694 [INFO] - new <SerialLink serial:/dev/ttyUSB1:38400:8N1> was initialized
+2023-06-21 11:12:21,694 [INFO] - 5
+2023-06-21 11:12:21,694 [INFO] - Create header
+2023-06-21 11:12:21,694 [INFO] - Packet data: 90 01 58 02 00 01 08 02 09 06 00 02 07 08
+2023-06-21 11:12:21,694 [INFO] - Calculate signature for packet
+2023-06-21 11:12:21,695 [INFO] - Calculate signature nullifier to create packet
+2023-06-21 11:12:21,695 [INFO] - Quote packet
+2023-06-21 11:12:21,695 [INFO] - Write: BD 90 01 58 02 00 01 08 02 09 06 00 02 07 08 98 F5 BD
+2023-06-21 11:12:21,695 [INFO] - Write : <BD 90 01 58 02 00 01 08 02 09 06 00 02 07 08 98 F5 BD>
+2023-06-21 11:12:21,695 [INFO] - Wait packet with transaction 6
+2023-06-21 11:12:31,706 [INFO] - Read byte: 
+2023-06-21 11:12:31,707 [INFO] - Connection <SerialLink serial:/dev/ttyUSB1:38400:8N1> was closed
+2023-06-21 11:12:31,709 [INFO] - new <SerialLink serial:/dev/ttyUSB1:38400:8N1> was initialized
+2023-06-21 11:12:31,709 [INFO] - 6
+2023-06-21 11:12:31,709 [INFO] - Create header
+2023-06-21 11:12:31,709 [INFO] - Packet data: 90 01 58 02 00 01 08 02 09 07 00 02 07 08
+2023-06-21 11:12:31,710 [INFO] - Calculate signature for packet
+2023-06-21 11:12:31,710 [INFO] - Calculate signature nullifier to create packet
+2023-06-21 11:12:31,710 [INFO] - Quote packet
+2023-06-21 11:12:31,710 [INFO] - Write: BD 90 01 58 02 00 01 08 02 09 07 00 02 07 08 52 D8 BD
+2023-06-21 11:12:31,711 [INFO] - Write : <BD 90 01 58 02 00 01 08 02 09 07 00 02 07 08 52 D8 BD>
+2023-06-21 11:12:31,711 [INFO] - Wait packet with transaction 7
+2023-06-21 11:12:41,719 [INFO] - Read byte: 
+2023-06-21 11:12:41,720 [INFO] - Connection <SerialLink serial:/dev/ttyUSB1:38400:8N1> was closed
+2023-06-21 11:12:41,722 [INFO] - new <SerialLink serial:/dev/ttyUSB1:38400:8N1> was initialized
+2023-06-21 11:12:41,722 [INFO] - 7
+2023-06-21 11:12:41,722 [INFO] - Create header
+2023-06-21 11:12:41,722 [INFO] - Packet data: 90 01 58 02 00 01 08 02 09 08 00 02 07 08
+2023-06-21 11:12:41,722 [INFO] - Calculate signature for packet
+2023-06-21 11:12:41,723 [INFO] - Calculate signature nullifier to create packet
+2023-06-21 11:12:41,723 [INFO] - Quote packet
+2023-06-21 11:12:41,723 [INFO] - Write: BD 90 01 58 02 00 01 08 02 09 08 00 02 07 08 0C BB BD
+2023-06-21 11:12:41,723 [INFO] - Write : <BD 90 01 58 02 00 01 08 02 09 08 00 02 07 08 0C BB BD>
+2023-06-21 11:12:41,723 [INFO] - Wait packet with transaction 8
+2023-06-21 11:12:51,734 [INFO] - Read byte: 
+2023-06-21 11:12:51,736 [INFO] - Connection <SerialLink serial:/dev/ttyUSB1:38400:8N1> was closed
+2023-06-21 11:12:51,737 [INFO] - new <SerialLink serial:/dev/ttyUSB1:38400:8N1> was initialized
+2023-06-21 11:12:51,737 [INFO] - 8
+2023-06-21 11:12:51,737 [INFO] - Create header
+2023-06-21 11:12:51,738 [INFO] - Packet data: 90 01 58 02 00 01 08 02 09 09 00 02 07 08
+2023-06-21 11:12:51,738 [INFO] - Calculate signature for packet
+2023-06-21 11:12:51,738 [INFO] - Calculate signature nullifier to create packet
+2023-06-21 11:12:51,738 [INFO] - Quote packet
+2023-06-21 11:12:51,738 [INFO] - Write: BD 90 01 58 02 00 01 08 02 09 09 00 02 07 08 C6 9E BD
+2023-06-21 11:12:51,739 [INFO] - Write : <BD 90 01 58 02 00 01 08 02 09 09 00 02 07 08 C6 9E BD>
+2023-06-21 11:12:51,739 [INFO] - Wait packet with transaction 9
+2023-06-21 11:13:01,747 [INFO] - Read byte: 
+2023-06-21 11:13:01,748 [INFO] - Connection <SerialLink serial:/dev/ttyUSB1:38400:8N1> was closed
+2023-06-21 11:13:01,749 [INFO] - new <SerialLink serial:/dev/ttyUSB1:38400:8N1> was initialized
+2023-06-21 11:13:01,750 [INFO] - 9
+2023-06-21 11:13:01,750 [INFO] - Create header
+2023-06-21 11:13:01,750 [INFO] - Packet data: 90 01 58 02 00 01 08 02 09 0A 00 02 07 08
+2023-06-21 11:13:01,750 [INFO] - Calculate signature for packet
+2023-06-21 11:13:01,751 [INFO] - Calculate signature nullifier to create packet
+2023-06-21 11:13:01,751 [INFO] - Quote packet
+2023-06-21 11:13:01,751 [INFO] - Write: BD 90 01 58 02 00 01 08 02 09 0A 00 02 07 08 7D 80 BD
+2023-06-21 11:13:01,751 [INFO] - Write : <BD 90 01 58 02 00 01 08 02 09 0A 00 02 07 08 7D 80 BD>
+2023-06-21 11:13:01,751 [INFO] - Wait packet with transaction 10
+2023-06-21 11:13:11,762 [INFO] - Read byte: 
+2023-06-21 11:13:11,763 [INFO] - Connection <SerialLink serial:/dev/ttyUSB1:38400:8N1> was closed
+2023-06-21 11:13:11,764 [INFO] - new <SerialLink serial:/dev/ttyUSB1:38400:8N1> was initialized
+2023-06-21 11:13:11,765 [INFO] - 10
+2023-06-21 11:13:11,765 [INFO] - Create header
+2023-06-21 11:13:11,765 [INFO] - Packet data: 90 01 58 02 00 01 08 02 09 0B 00 02 07 08
+2023-06-21 11:13:11,765 [INFO] - Calculate signature for packet
+2023-06-21 11:13:11,765 [INFO] - Calculate signature nullifier to create packet
+2023-06-21 11:13:11,765 [INFO] - Quote packet
+2023-06-21 11:13:11,766 [INFO] - Write: BD 90 01 58 02 00 01 08 02 09 0B 00 02 07 08 37 63 BD
+2023-06-21 11:13:11,766 [INFO] - Write : <BD 90 01 58 02 00 01 08 02 09 0B 00 02 07 08 37 63 BD>
+2023-06-21 11:13:11,766 [INFO] - Wait packet with transaction 11
+2023-06-21 11:13:21,775 [INFO] - Read byte: 
+2023-06-21 11:13:21,775 [INFO] - Connection <SerialLink serial:/dev/ttyUSB1:38400:8N1> was closed
+2023-06-21 11:13:21,776 [INFO] - new <SerialLink serial:/dev/ttyUSB1:38400:8N1> was initialized
+2023-06-21 11:13:21,776 [INFO] - 11
+2023-06-21 11:13:21,776 [INFO] - Create header
+2023-06-21 11:13:21,776 [INFO] - Packet data: 90 01 58 02 00 01 08 02 09 0C 00 02 07 08
+2023-06-21 11:13:21,776 [INFO] - Calculate signature for packet
+2023-06-21 11:13:21,776 [INFO] - Calculate signature nullifier to create packet
+2023-06-21 11:13:21,776 [INFO] - Quote packet
+2023-06-21 11:13:21,776 [INFO] - Write: BD 90 01 58 02 00 01 08 02 09 0C 00 02 07 08 F1 46 BD
+2023-06-21 11:13:21,777 [INFO] - Write : <BD 90 01 58 02 00 01 08 02 09 0C 00 02 07 08 F1 46 BD>
+2023-06-21 11:13:21,777 [INFO] - Wait packet with transaction 12
+2023-06-21 11:13:31,783 [INFO] - Read byte: 
+2023-06-21 11:13:31,785 [INFO] - Connection <SerialLink serial:/dev/ttyUSB1:38400:8N1> was closed
+2023-06-21 11:13:31,787 [INFO] - new <SerialLink serial:/dev/ttyUSB1:38400:8N1> was initialized
+2023-06-21 11:13:31,787 [INFO] - 12
+2023-06-21 11:13:31,787 [INFO] - Create header
+2023-06-21 11:13:31,787 [INFO] - Packet data: 90 01 58 02 00 01 08 02 09 0D 00 02 07 08
+2023-06-21 11:13:31,787 [INFO] - Calculate signature for packet
+2023-06-21 11:13:31,788 [INFO] - Calculate signature nullifier to create packet
+2023-06-21 11:13:31,788 [INFO] - Quote packet
+2023-06-21 11:13:31,788 [INFO] - Write: BD 90 01 58 02 00 01 08 02 09 0D 00 02 07 08 A6 27 BD
+2023-06-21 11:13:31,788 [INFO] - Write : <BD 90 01 58 02 00 01 08 02 09 0D 00 02 07 08 A6 27 BD>
+2023-06-21 11:13:31,788 [INFO] - Wait packet with transaction 13
+2023-06-21 11:13:41,797 [INFO] - Read byte: 
+2023-06-21 11:13:41,798 [INFO] - Connection <SerialLink serial:/dev/ttyUSB1:38400:8N1> was closed
+2023-06-21 11:13:41,800 [INFO] - new <SerialLink serial:/dev/ttyUSB1:38400:8N1> was initialized
+2023-06-21 11:13:41,800 [INFO] - 13
+2023-06-21 11:13:41,800 [INFO] - Create header
+2023-06-21 11:13:41,800 [INFO] - Packet data: 90 01 58 02 00 01 08 02 09 0E 00 02 07 08
+2023-06-21 11:13:41,801 [INFO] - Calculate signature for packet
+2023-06-21 11:13:41,801 [INFO] - Calculate signature nullifier to create packet
+2023-06-21 11:13:41,801 [INFO] - Quote packet
+2023-06-21 11:13:41,801 [INFO] - Write: BD 90 01 58 02 00 01 08 02 09 0E 00 02 07 08 60 0A BD
+2023-06-21 11:13:41,801 [INFO] - Write : <BD 90 01 58 02 00 01 08 02 09 0E 00 02 07 08 60 0A BD>
+2023-06-21 11:13:41,801 [INFO] - Wait packet with transaction 14
+2023-06-21 11:13:51,812 [INFO] - Read byte: 
+2023-06-21 11:13:51,813 [INFO] - Connection <SerialLink serial:/dev/ttyUSB1:38400:8N1> was closed
+2023-06-21 11:13:51,815 [INFO] - new <SerialLink serial:/dev/ttyUSB1:38400:8N1> was initialized
+2023-06-21 11:13:51,815 [INFO] - 14
+2023-06-21 11:13:51,815 [INFO] - Create header
+2023-06-21 11:13:51,815 [INFO] - Packet data: 90 01 58 02 00 01 08 02 09 0F 00 02 07 08
+2023-06-21 11:13:51,816 [INFO] - Calculate signature for packet
+2023-06-21 11:13:51,816 [INFO] - Calculate signature nullifier to create packet
+2023-06-21 11:13:51,816 [INFO] - Quote packet
+2023-06-21 11:13:51,816 [INFO] - Write: BD 90 01 58 02 00 01 08 02 09 0F 00 02 07 08 1B ED BD
+2023-06-21 11:13:51,816 [INFO] - Write : <BD 90 01 58 02 00 01 08 02 09 0F 00 02 07 08 1B ED BD>
+2023-06-21 11:13:51,816 [INFO] - Wait packet with transaction 15
+2023-06-21 11:14:01,823 [INFO] - Read byte: 
+2023-06-21 11:14:01,824 [INFO] - Connection <SerialLink serial:/dev/ttyUSB1:38400:8N1> was closed
+2023-06-21 11:14:01,826 [INFO] - new <SerialLink serial:/dev/ttyUSB1:38400:8N1> was initialized
+2023-06-21 11:14:01,826 [INFO] - 15
+2023-06-21 11:14:01,826 [INFO] - Create header
+2023-06-21 11:14:01,826 [INFO] - Packet data: 90 01 58 02 00 01 08 02 09 10 00 02 07 08
+2023-06-21 11:14:01,827 [INFO] - Calculate signature for packet
+2023-06-21 11:14:01,827 [INFO] - Calculate signature nullifier to create packet
+2023-06-21 11:14:01,827 [INFO] - Quote packet
+2023-06-21 11:14:01,828 [INFO] - Write: BD 90 01 58 02 00 01 08 02 09 10 00 02 07 08 D5 D0 BD
+2023-06-21 11:14:01,828 [INFO] - Write : <BD 90 01 58 02 00 01 08 02 09 10 00 02 07 08 D5 D0 BD>
+2023-06-21 11:14:01,828 [INFO] - Wait packet with transaction 16
+2023-06-21 11:14:11,835 [INFO] - Read byte: 
+2023-06-21 11:14:11,836 [INFO] - Connection <SerialLink serial:/dev/ttyUSB1:38400:8N1> was closed
+2023-06-21 11:14:11,838 [INFO] - new <SerialLink serial:/dev/ttyUSB1:38400:8N1> was initialized
+2023-06-21 11:14:11,838 [INFO] - 16
+2023-06-21 11:14:11,838 [INFO] - Create header
+2023-06-21 11:14:11,839 [INFO] - Packet data: 90 01 58 02 00 01 08 02 09 11 00 02 07 08
+2023-06-21 11:14:11,839 [INFO] - Calculate signature for packet
+2023-06-21 11:14:11,839 [INFO] - Calculate signature nullifier to create packet
+2023-06-21 11:14:11,839 [INFO] - Quote packet
+2023-06-21 11:14:11,839 [INFO] - Write: BD 90 01 58 02 00 01 08 02 09 11 00 02 07 08 8F B3 BD
+2023-06-21 11:14:11,840 [INFO] - Write : <BD 90 01 58 02 00 01 08 02 09 11 00 02 07 08 8F B3 BD>
+2023-06-21 11:14:11,840 [INFO] - Wait packet with transaction 17
+2023-06-21 11:14:21,847 [INFO] - Read byte: 
+2023-06-21 11:14:21,848 [INFO] - Connection <SerialLink serial:/dev/ttyUSB1:38400:8N1> was closed
+2023-06-21 11:14:21,848 [INFO] - new <SerialLink serial:/dev/ttyUSB1:38400:8N1> was initialized
+2023-06-21 11:14:21,849 [INFO] - 17
+2023-06-21 11:14:21,849 [INFO] - Create header
+2023-06-21 11:14:21,849 [INFO] - Packet data: 90 01 58 02 00 01 08 02 09 12 00 02 07 08
+2023-06-21 11:14:21,849 [INFO] - Calculate signature for packet
+2023-06-21 11:14:21,849 [INFO] - Calculate signature nullifier to create packet
+2023-06-21 11:14:21,849 [INFO] - Quote packet
+2023-06-21 11:14:21,849 [INFO] - Write: BD 90 01 58 02 00 01 08 02 09 12 00 02 07 08 49 96 BD
+2023-06-21 11:14:21,849 [INFO] - Write : <BD 90 01 58 02 00 01 08 02 09 12 00 02 07 08 49 96 BD>
+2023-06-21 11:14:21,849 [INFO] - Wait packet with transaction 18
+2023-06-21 11:14:31,859 [INFO] - Read byte: 
+2023-06-21 11:14:31,860 [INFO] - Connection <SerialLink serial:/dev/ttyUSB1:38400:8N1> was closed
+2023-06-21 11:14:31,861 [INFO] - new <SerialLink serial:/dev/ttyUSB1:38400:8N1> was initialized
+2023-06-21 11:14:31,861 [INFO] - 18
+2023-06-21 11:14:31,861 [INFO] - Create header
+2023-06-21 11:14:31,862 [INFO] - Packet data: 90 01 58 02 00 01 08 02 09 13 00 02 07 08
+2023-06-21 11:14:31,862 [INFO] - Calculate signature for packet
+2023-06-21 11:14:31,862 [INFO] - Calculate signature nullifier to create packet
+2023-06-21 11:14:31,862 [INFO] - Quote packet
+2023-06-21 11:14:31,862 [INFO] - Write: BD 90 01 58 02 00 01 08 02 09 13 00 02 07 08 02 79 BD
+2023-06-21 11:14:31,862 [INFO] - Write : <BD 90 01 58 02 00 01 08 02 09 13 00 02 07 08 02 79 BD>
+2023-06-21 11:14:31,863 [INFO] - Wait packet with transaction 19
+2023-06-21 11:14:41,871 [INFO] - Read byte: 
+2023-06-21 11:14:41,872 [INFO] - Connection <SerialLink serial:/dev/ttyUSB1:38400:8N1> was closed
+2023-06-21 11:14:41,873 [INFO] - new <SerialLink serial:/dev/ttyUSB1:38400:8N1> was initialized
+2023-06-21 11:14:41,874 [INFO] - 19
+2023-06-21 11:14:41,874 [INFO] - Create header
+2023-06-21 11:14:41,874 [INFO] - Packet data: 90 01 58 02 00 01 08 02 09 14 00 02 07 08
+2023-06-21 11:14:41,874 [INFO] - Calculate signature for packet
+2023-06-21 11:14:41,874 [INFO] - Calculate signature nullifier to create packet
+2023-06-21 11:14:41,874 [INFO] - Quote packet
+2023-06-21 11:14:41,874 [INFO] - Write: BD 90 01 58 02 00 01 08 02 09 14 00 02 07 08 BC DC 5C BD
+2023-06-21 11:14:41,875 [INFO] - Write : <BD 90 01 58 02 00 01 08 02 09 14 00 02 07 08 BC DC 5C BD>
+2023-06-21 11:14:41,875 [INFO] - Wait packet with transaction 20
+2023-06-21 11:14:51,886 [INFO] - Read byte: 
+2023-06-21 11:14:51,887 [INFO] - Connection <SerialLink serial:/dev/ttyUSB1:38400:8N1> was closed
+2023-06-21 11:14:51,889 [INFO] - new <SerialLink serial:/dev/ttyUSB1:38400:8N1> was initialized
+2023-06-21 11:14:51,889 [ERROR] - An error occurred: Can not access to device.
+Traceback (most recent call last):
+  File "/home/bryan/.Repositories/Datalogger2Cloud/main_query.py", line 25, in main
+    datalogger = CR1000.from_url("serial:/dev/ttyUSB1:38400")
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/pycampbellcr1000/device.py", line 72, in from_url
+    return cls(link, dest_addr, dest, src_addr, src, security_code)     #EGC Add security code to the constructor call
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/pycampbellcr1000/device.py", line 55, in __init__
+    raise NoDeviceException()
+pycampbellcr1000.exceptions.NoDeviceException: Can not access to device.
+2023-06-21 11:14:51,892 [INFO] - Send bye command
+2023-06-21 11:14:51,893 [INFO] - Connection <SerialLink serial:/dev/ttyUSB1:38400:8N1> was closed
+2023-06-21 11:57:55,795 [INFO] - new <SerialLink serial:/dev/ttyUSB1:38400:8N1> was initialized
+2023-06-21 11:57:55,795 [INFO] - init client
+2023-06-21 11:57:55,795 [INFO] - Get the node attention
+2023-06-21 11:57:55,795 [INFO] - Write : <BD BD BD BD BD BD>
+2023-06-21 11:57:55,795 [INFO] - Wait packet with transaction None
+2023-06-21 11:57:57,198 [INFO] - Read : <'\x00'>
+2023-06-21 11:57:57,199 [INFO] - Read byte: 00
+2023-06-21 11:58:07,207 [INFO] - Read byte: 
+2023-06-21 11:58:07,208 [INFO] - 0
+2023-06-21 11:58:07,208 [INFO] - Create header
+2023-06-21 11:58:07,208 [INFO] - Packet data: 90 01 58 02 00 01 08 02 09 01 00 02 07 08
+2023-06-21 11:58:07,208 [INFO] - Calculate signature for packet
+2023-06-21 11:58:07,208 [INFO] - Calculate signature nullifier to create packet
+2023-06-21 11:58:07,209 [INFO] - Quote packet
+2023-06-21 11:58:07,209 [INFO] - Write: BD 90 01 58 02 00 01 08 02 09 01 00 02 07 08 F6 86 BD
+2023-06-21 11:58:07,209 [INFO] - Write : <BD 90 01 58 02 00 01 08 02 09 01 00 02 07 08 F6 86 BD>
+2023-06-21 11:58:07,209 [INFO] - Wait packet with transaction 1
+2023-06-21 11:58:17,220 [INFO] - Read byte: 
+2023-06-21 11:58:17,222 [INFO] - Connection <SerialLink serial:/dev/ttyUSB1:38400:8N1> was closed
+2023-06-21 11:58:17,224 [INFO] - new <SerialLink serial:/dev/ttyUSB1:38400:8N1> was initialized
+2023-06-21 11:58:17,224 [INFO] - 1
+2023-06-21 11:58:17,225 [INFO] - Create header
+2023-06-21 11:58:17,225 [INFO] - Packet data: 90 01 58 02 00 01 08 02 09 02 00 02 07 08
+2023-06-21 11:58:17,225 [INFO] - Calculate signature for packet
+2023-06-21 11:58:17,225 [INFO] - Calculate signature nullifier to create packet
+2023-06-21 11:58:17,225 [INFO] - Quote packet
+2023-06-21 11:58:17,225 [INFO] - Write: BD 90 01 58 02 00 01 08 02 09 02 00 02 07 08 AF 69 BD
+2023-06-21 11:58:17,226 [INFO] - Write : <BD 90 01 58 02 00 01 08 02 09 02 00 02 07 08 AF 69 BD>
+2023-06-21 11:58:17,226 [INFO] - Wait packet with transaction 2
+2023-06-21 11:58:27,236 [INFO] - Read byte: 
+2023-06-21 11:58:27,238 [INFO] - Connection <SerialLink serial:/dev/ttyUSB1:38400:8N1> was closed
+2023-06-21 11:58:27,239 [INFO] - new <SerialLink serial:/dev/ttyUSB1:38400:8N1> was initialized
+2023-06-21 11:58:27,240 [INFO] - 2
+2023-06-21 11:58:27,240 [INFO] - Create header
+2023-06-21 11:58:27,240 [INFO] - Packet data: 90 01 58 02 00 01 08 02 09 03 00 02 07 08
+2023-06-21 11:58:27,240 [INFO] - Calculate signature for packet
+2023-06-21 11:58:27,240 [INFO] - Calculate signature nullifier to create packet
+2023-06-21 11:58:27,240 [INFO] - Quote packet
+2023-06-21 11:58:27,241 [INFO] - Write: BD 90 01 58 02 00 01 08 02 09 03 00 02 07 08 69 4C BD
+2023-06-21 11:58:27,241 [INFO] - Write : <BD 90 01 58 02 00 01 08 02 09 03 00 02 07 08 69 4C BD>
+2023-06-21 11:58:27,241 [INFO] - Wait packet with transaction 3
+2023-06-21 11:58:37,252 [INFO] - Read byte: 
+2023-06-21 11:58:37,253 [INFO] - Connection <SerialLink serial:/dev/ttyUSB1:38400:8N1> was closed
+2023-06-21 11:58:37,255 [INFO] - new <SerialLink serial:/dev/ttyUSB1:38400:8N1> was initialized
+2023-06-21 11:58:37,255 [INFO] - 3
+2023-06-21 11:58:37,256 [INFO] - Create header
+2023-06-21 11:58:37,256 [INFO] - Packet data: 90 01 58 02 00 01 08 02 09 04 00 02 07 08
+2023-06-21 11:58:37,256 [INFO] - Calculate signature for packet
+2023-06-21 11:58:37,257 [INFO] - Calculate signature nullifier to create packet
+2023-06-21 11:58:37,257 [INFO] - Quote packet
+2023-06-21 11:58:37,257 [INFO] - Write: BD 90 01 58 02 00 01 08 02 09 04 00 02 07 08 23 2F BD
+2023-06-21 11:58:37,257 [INFO] - Write : <BD 90 01 58 02 00 01 08 02 09 04 00 02 07 08 23 2F BD>
+2023-06-21 11:58:37,258 [INFO] - Wait packet with transaction 4
+2023-06-21 11:58:47,269 [INFO] - Read byte: 
+2023-06-21 11:58:47,270 [INFO] - Connection <SerialLink serial:/dev/ttyUSB1:38400:8N1> was closed
+2023-06-21 11:58:47,273 [INFO] - new <SerialLink serial:/dev/ttyUSB1:38400:8N1> was initialized
+2023-06-21 11:58:47,273 [INFO] - 4
+2023-06-21 11:58:47,273 [INFO] - Create header
+2023-06-21 11:58:47,273 [INFO] - Packet data: 90 01 58 02 00 01 08 02 09 05 00 02 07 08
+2023-06-21 11:58:47,274 [INFO] - Calculate signature for packet
+2023-06-21 11:58:47,274 [INFO] - Calculate signature nullifier to create packet
+2023-06-21 11:58:47,274 [INFO] - Quote packet
+2023-06-21 11:58:47,274 [INFO] - Write: BD 90 01 58 02 00 01 08 02 09 05 00 02 07 08 DD 12 BD
+2023-06-21 11:58:47,275 [INFO] - Write : <BD 90 01 58 02 00 01 08 02 09 05 00 02 07 08 DD 12 BD>
+2023-06-21 11:58:47,275 [INFO] - Wait packet with transaction 5
+2023-06-21 11:58:57,283 [INFO] - Read byte: 
+2023-06-21 11:58:57,284 [INFO] - Connection <SerialLink serial:/dev/ttyUSB1:38400:8N1> was closed
+2023-06-21 11:58:57,285 [INFO] - new <SerialLink serial:/dev/ttyUSB1:38400:8N1> was initialized
+2023-06-21 11:58:57,285 [INFO] - 5
+2023-06-21 11:58:57,285 [INFO] - Create header
+2023-06-21 11:58:57,285 [INFO] - Packet data: 90 01 58 02 00 01 08 02 09 06 00 02 07 08
+2023-06-21 11:58:57,285 [INFO] - Calculate signature for packet
+2023-06-21 11:58:57,286 [INFO] - Calculate signature nullifier to create packet
+2023-06-21 11:58:57,286 [INFO] - Quote packet
+2023-06-21 11:58:57,286 [INFO] - Write: BD 90 01 58 02 00 01 08 02 09 06 00 02 07 08 98 F5 BD
+2023-06-21 11:58:57,286 [INFO] - Write : <BD 90 01 58 02 00 01 08 02 09 06 00 02 07 08 98 F5 BD>
+2023-06-21 11:58:57,286 [INFO] - Wait packet with transaction 6
+2023-06-21 11:59:07,296 [INFO] - Read byte: 
+2023-06-21 11:59:07,298 [INFO] - Connection <SerialLink serial:/dev/ttyUSB1:38400:8N1> was closed
+2023-06-21 11:59:07,299 [INFO] - new <SerialLink serial:/dev/ttyUSB1:38400:8N1> was initialized
+2023-06-21 11:59:07,300 [INFO] - 6
+2023-06-21 11:59:07,300 [INFO] - Create header
+2023-06-21 11:59:07,300 [INFO] - Packet data: 90 01 58 02 00 01 08 02 09 07 00 02 07 08
+2023-06-21 11:59:07,300 [INFO] - Calculate signature for packet
+2023-06-21 11:59:07,300 [INFO] - Calculate signature nullifier to create packet
+2023-06-21 11:59:07,300 [INFO] - Quote packet
+2023-06-21 11:59:07,301 [INFO] - Write: BD 90 01 58 02 00 01 08 02 09 07 00 02 07 08 52 D8 BD
+2023-06-21 11:59:07,301 [INFO] - Write : <BD 90 01 58 02 00 01 08 02 09 07 00 02 07 08 52 D8 BD>
+2023-06-21 11:59:07,301 [INFO] - Wait packet with transaction 7
+2023-06-21 11:59:17,312 [INFO] - Read byte: 
+2023-06-21 11:59:17,313 [INFO] - Connection <SerialLink serial:/dev/ttyUSB1:38400:8N1> was closed
+2023-06-21 11:59:17,315 [INFO] - new <SerialLink serial:/dev/ttyUSB1:38400:8N1> was initialized
+2023-06-21 11:59:17,315 [INFO] - 7
+2023-06-21 11:59:17,315 [INFO] - Create header
+2023-06-21 11:59:17,316 [INFO] - Packet data: 90 01 58 02 00 01 08 02 09 08 00 02 07 08
+2023-06-21 11:59:17,316 [INFO] - Calculate signature for packet
+2023-06-21 11:59:17,316 [INFO] - Calculate signature nullifier to create packet
+2023-06-21 11:59:17,316 [INFO] - Quote packet
+2023-06-21 11:59:17,316 [INFO] - Write: BD 90 01 58 02 00 01 08 02 09 08 00 02 07 08 0C BB BD
+2023-06-21 11:59:17,317 [INFO] - Write : <BD 90 01 58 02 00 01 08 02 09 08 00 02 07 08 0C BB BD>
+2023-06-21 11:59:17,317 [INFO] - Wait packet with transaction 8
+2023-06-21 11:59:27,327 [INFO] - Read byte: 
+2023-06-21 11:59:27,329 [INFO] - Connection <SerialLink serial:/dev/ttyUSB1:38400:8N1> was closed
+2023-06-21 11:59:27,330 [INFO] - new <SerialLink serial:/dev/ttyUSB1:38400:8N1> was initialized
+2023-06-21 11:59:27,331 [INFO] - 8
+2023-06-21 11:59:27,331 [INFO] - Create header
+2023-06-21 11:59:27,331 [INFO] - Packet data: 90 01 58 02 00 01 08 02 09 09 00 02 07 08
+2023-06-21 11:59:27,331 [INFO] - Calculate signature for packet
+2023-06-21 11:59:27,331 [INFO] - Calculate signature nullifier to create packet
+2023-06-21 11:59:27,332 [INFO] - Quote packet
+2023-06-21 11:59:27,332 [INFO] - Write: BD 90 01 58 02 00 01 08 02 09 09 00 02 07 08 C6 9E BD
+2023-06-21 11:59:27,332 [INFO] - Write : <BD 90 01 58 02 00 01 08 02 09 09 00 02 07 08 C6 9E BD>
+2023-06-21 11:59:27,332 [INFO] - Wait packet with transaction 9
+2023-06-21 11:59:37,339 [INFO] - Read byte: 
+2023-06-21 11:59:37,339 [INFO] - Connection <SerialLink serial:/dev/ttyUSB1:38400:8N1> was closed
+2023-06-21 11:59:37,340 [INFO] - new <SerialLink serial:/dev/ttyUSB1:38400:8N1> was initialized
+2023-06-21 11:59:37,340 [INFO] - 9
+2023-06-21 11:59:37,341 [INFO] - Create header
+2023-06-21 11:59:37,341 [INFO] - Packet data: 90 01 58 02 00 01 08 02 09 0A 00 02 07 08
+2023-06-21 11:59:37,341 [INFO] - Calculate signature for packet
+2023-06-21 11:59:37,341 [INFO] - Calculate signature nullifier to create packet
+2023-06-21 11:59:37,341 [INFO] - Quote packet
+2023-06-21 11:59:37,341 [INFO] - Write: BD 90 01 58 02 00 01 08 02 09 0A 00 02 07 08 7D 80 BD
+2023-06-21 11:59:37,341 [INFO] - Write : <BD 90 01 58 02 00 01 08 02 09 0A 00 02 07 08 7D 80 BD>
+2023-06-21 11:59:37,341 [INFO] - Wait packet with transaction 10
+2023-06-21 11:59:47,351 [INFO] - Read byte: 
+2023-06-21 11:59:47,353 [INFO] - Connection <SerialLink serial:/dev/ttyUSB1:38400:8N1> was closed
+2023-06-21 11:59:47,354 [INFO] - new <SerialLink serial:/dev/ttyUSB1:38400:8N1> was initialized
+2023-06-21 11:59:47,354 [INFO] - 10
+2023-06-21 11:59:47,355 [INFO] - Create header
+2023-06-21 11:59:47,355 [INFO] - Packet data: 90 01 58 02 00 01 08 02 09 0B 00 02 07 08
+2023-06-21 11:59:47,355 [INFO] - Calculate signature for packet
+2023-06-21 11:59:47,355 [INFO] - Calculate signature nullifier to create packet
+2023-06-21 11:59:47,355 [INFO] - Quote packet
+2023-06-21 11:59:47,356 [INFO] - Write: BD 90 01 58 02 00 01 08 02 09 0B 00 02 07 08 37 63 BD
+2023-06-21 11:59:47,356 [INFO] - Write : <BD 90 01 58 02 00 01 08 02 09 0B 00 02 07 08 37 63 BD>
+2023-06-21 11:59:47,356 [INFO] - Wait packet with transaction 11
+2023-06-21 11:59:57,367 [INFO] - Read byte: 
+2023-06-21 11:59:57,368 [INFO] - Connection <SerialLink serial:/dev/ttyUSB1:38400:8N1> was closed
+2023-06-21 11:59:57,369 [INFO] - new <SerialLink serial:/dev/ttyUSB1:38400:8N1> was initialized
+2023-06-21 11:59:57,370 [INFO] - 11
+2023-06-21 11:59:57,370 [INFO] - Create header
+2023-06-21 11:59:57,370 [INFO] - Packet data: 90 01 58 02 00 01 08 02 09 0C 00 02 07 08
+2023-06-21 11:59:57,370 [INFO] - Calculate signature for packet
+2023-06-21 11:59:57,370 [INFO] - Calculate signature nullifier to create packet
+2023-06-21 11:59:57,370 [INFO] - Quote packet
+2023-06-21 11:59:57,370 [INFO] - Write: BD 90 01 58 02 00 01 08 02 09 0C 00 02 07 08 F1 46 BD
+2023-06-21 11:59:57,371 [INFO] - Write : <BD 90 01 58 02 00 01 08 02 09 0C 00 02 07 08 F1 46 BD>
+2023-06-21 11:59:57,371 [INFO] - Wait packet with transaction 12
+2023-06-21 12:00:07,381 [INFO] - Read byte: 
+2023-06-21 12:00:07,383 [INFO] - Connection <SerialLink serial:/dev/ttyUSB1:38400:8N1> was closed
+2023-06-21 12:00:07,384 [INFO] - new <SerialLink serial:/dev/ttyUSB1:38400:8N1> was initialized
+2023-06-21 12:00:07,384 [INFO] - 12
+2023-06-21 12:00:07,384 [INFO] - Create header
+2023-06-21 12:00:07,385 [INFO] - Packet data: 90 01 58 02 00 01 08 02 09 0D 00 02 07 08
+2023-06-21 12:00:07,385 [INFO] - Calculate signature for packet
+2023-06-21 12:00:07,385 [INFO] - Calculate signature nullifier to create packet
+2023-06-21 12:00:07,385 [INFO] - Quote packet
+2023-06-21 12:00:07,385 [INFO] - Write: BD 90 01 58 02 00 01 08 02 09 0D 00 02 07 08 A6 27 BD
+2023-06-21 12:00:07,386 [INFO] - Write : <BD 90 01 58 02 00 01 08 02 09 0D 00 02 07 08 A6 27 BD>
+2023-06-21 12:00:07,386 [INFO] - Wait packet with transaction 13
+2023-06-21 12:00:17,395 [INFO] - Read byte: 
+2023-06-21 12:00:17,396 [INFO] - Connection <SerialLink serial:/dev/ttyUSB1:38400:8N1> was closed
+2023-06-21 12:00:17,397 [INFO] - new <SerialLink serial:/dev/ttyUSB1:38400:8N1> was initialized
+2023-06-21 12:00:17,397 [INFO] - 13
+2023-06-21 12:00:17,397 [INFO] - Create header
+2023-06-21 12:00:17,397 [INFO] - Packet data: 90 01 58 02 00 01 08 02 09 0E 00 02 07 08
+2023-06-21 12:00:17,397 [INFO] - Calculate signature for packet
+2023-06-21 12:00:17,397 [INFO] - Calculate signature nullifier to create packet
+2023-06-21 12:00:17,397 [INFO] - Quote packet
+2023-06-21 12:00:17,398 [INFO] - Write: BD 90 01 58 02 00 01 08 02 09 0E 00 02 07 08 60 0A BD
+2023-06-21 12:00:17,398 [INFO] - Write : <BD 90 01 58 02 00 01 08 02 09 0E 00 02 07 08 60 0A BD>
+2023-06-21 12:00:17,398 [INFO] - Wait packet with transaction 14
+2023-06-21 12:00:27,399 [INFO] - Read byte: 
+2023-06-21 12:00:27,401 [INFO] - Connection <SerialLink serial:/dev/ttyUSB1:38400:8N1> was closed
+2023-06-21 12:00:27,403 [INFO] - new <SerialLink serial:/dev/ttyUSB1:38400:8N1> was initialized
+2023-06-21 12:00:27,403 [INFO] - 14
+2023-06-21 12:00:27,403 [INFO] - Create header
+2023-06-21 12:00:27,403 [INFO] - Packet data: 90 01 58 02 00 01 08 02 09 0F 00 02 07 08
+2023-06-21 12:00:27,403 [INFO] - Calculate signature for packet
+2023-06-21 12:00:27,404 [INFO] - Calculate signature nullifier to create packet
+2023-06-21 12:00:27,404 [INFO] - Quote packet
+2023-06-21 12:00:27,404 [INFO] - Write: BD 90 01 58 02 00 01 08 02 09 0F 00 02 07 08 1B ED BD
+2023-06-21 12:00:27,404 [INFO] - Write : <BD 90 01 58 02 00 01 08 02 09 0F 00 02 07 08 1B ED BD>
+2023-06-21 12:00:27,404 [INFO] - Wait packet with transaction 15
+2023-06-21 12:00:37,415 [INFO] - Read byte: 
+2023-06-21 12:00:37,416 [INFO] - Connection <SerialLink serial:/dev/ttyUSB1:38400:8N1> was closed
+2023-06-21 12:00:37,418 [INFO] - new <SerialLink serial:/dev/ttyUSB1:38400:8N1> was initialized
+2023-06-21 12:00:37,419 [INFO] - 15
+2023-06-21 12:00:37,419 [INFO] - Create header
+2023-06-21 12:00:37,419 [INFO] - Packet data: 90 01 58 02 00 01 08 02 09 10 00 02 07 08
+2023-06-21 12:00:37,419 [INFO] - Calculate signature for packet
+2023-06-21 12:00:37,420 [INFO] - Calculate signature nullifier to create packet
+2023-06-21 12:00:37,420 [INFO] - Quote packet
+2023-06-21 12:00:37,420 [INFO] - Write: BD 90 01 58 02 00 01 08 02 09 10 00 02 07 08 D5 D0 BD
+2023-06-21 12:00:37,420 [INFO] - Write : <BD 90 01 58 02 00 01 08 02 09 10 00 02 07 08 D5 D0 BD>
+2023-06-21 12:00:37,421 [INFO] - Wait packet with transaction 16
+2023-06-21 12:00:47,431 [INFO] - Read byte: 
+2023-06-21 12:00:47,433 [INFO] - Connection <SerialLink serial:/dev/ttyUSB1:38400:8N1> was closed
+2023-06-21 12:00:47,435 [INFO] - new <SerialLink serial:/dev/ttyUSB1:38400:8N1> was initialized
+2023-06-21 12:00:47,435 [INFO] - 16
+2023-06-21 12:00:47,435 [INFO] - Create header
+2023-06-21 12:00:47,435 [INFO] - Packet data: 90 01 58 02 00 01 08 02 09 11 00 02 07 08
+2023-06-21 12:00:47,436 [INFO] - Calculate signature for packet
+2023-06-21 12:00:47,436 [INFO] - Calculate signature nullifier to create packet
+2023-06-21 12:00:47,436 [INFO] - Quote packet
+2023-06-21 12:00:47,436 [INFO] - Write: BD 90 01 58 02 00 01 08 02 09 11 00 02 07 08 8F B3 BD
+2023-06-21 12:00:47,437 [INFO] - Write : <BD 90 01 58 02 00 01 08 02 09 11 00 02 07 08 8F B3 BD>
+2023-06-21 12:00:47,437 [INFO] - Wait packet with transaction 17
+2023-06-21 12:00:57,448 [INFO] - Read byte: 
+2023-06-21 12:00:57,449 [INFO] - Connection <SerialLink serial:/dev/ttyUSB1:38400:8N1> was closed
+2023-06-21 12:00:57,451 [INFO] - new <SerialLink serial:/dev/ttyUSB1:38400:8N1> was initialized
+2023-06-21 12:00:57,451 [INFO] - 17
+2023-06-21 12:00:57,451 [INFO] - Create header
+2023-06-21 12:00:57,452 [INFO] - Packet data: 90 01 58 02 00 01 08 02 09 12 00 02 07 08
+2023-06-21 12:00:57,452 [INFO] - Calculate signature for packet
+2023-06-21 12:00:57,452 [INFO] - Calculate signature nullifier to create packet
+2023-06-21 12:00:57,452 [INFO] - Quote packet
+2023-06-21 12:00:57,453 [INFO] - Write: BD 90 01 58 02 00 01 08 02 09 12 00 02 07 08 49 96 BD
+2023-06-21 12:00:57,453 [INFO] - Write : <BD 90 01 58 02 00 01 08 02 09 12 00 02 07 08 49 96 BD>
+2023-06-21 12:00:57,453 [INFO] - Wait packet with transaction 18
+2023-06-21 12:01:07,464 [INFO] - Read byte: 
+2023-06-21 12:01:07,465 [INFO] - Connection <SerialLink serial:/dev/ttyUSB1:38400:8N1> was closed
+2023-06-21 12:01:07,467 [INFO] - new <SerialLink serial:/dev/ttyUSB1:38400:8N1> was initialized
+2023-06-21 12:01:07,468 [INFO] - 18
+2023-06-21 12:01:07,468 [INFO] - Create header
+2023-06-21 12:01:07,468 [INFO] - Packet data: 90 01 58 02 00 01 08 02 09 13 00 02 07 08
+2023-06-21 12:01:07,468 [INFO] - Calculate signature for packet
+2023-06-21 12:01:07,468 [INFO] - Calculate signature nullifier to create packet
+2023-06-21 12:01:07,469 [INFO] - Quote packet
+2023-06-21 12:01:07,469 [INFO] - Write: BD 90 01 58 02 00 01 08 02 09 13 00 02 07 08 02 79 BD
+2023-06-21 12:01:07,469 [INFO] - Write : <BD 90 01 58 02 00 01 08 02 09 13 00 02 07 08 02 79 BD>
+2023-06-21 12:01:07,469 [INFO] - Wait packet with transaction 19
+2023-06-21 12:01:17,479 [INFO] - Read byte: 
+2023-06-21 12:01:17,481 [INFO] - Connection <SerialLink serial:/dev/ttyUSB1:38400:8N1> was closed
+2023-06-21 12:01:17,482 [INFO] - new <SerialLink serial:/dev/ttyUSB1:38400:8N1> was initialized
+2023-06-21 12:01:17,483 [INFO] - 19
+2023-06-21 12:01:17,483 [INFO] - Create header
+2023-06-21 12:01:17,483 [INFO] - Packet data: 90 01 58 02 00 01 08 02 09 14 00 02 07 08
+2023-06-21 12:01:17,483 [INFO] - Calculate signature for packet
+2023-06-21 12:01:17,484 [INFO] - Calculate signature nullifier to create packet
+2023-06-21 12:01:17,484 [INFO] - Quote packet
+2023-06-21 12:01:17,484 [INFO] - Write: BD 90 01 58 02 00 01 08 02 09 14 00 02 07 08 BC DC 5C BD
+2023-06-21 12:01:17,484 [INFO] - Write : <BD 90 01 58 02 00 01 08 02 09 14 00 02 07 08 BC DC 5C BD>
+2023-06-21 12:01:17,485 [INFO] - Wait packet with transaction 20
+2023-06-21 12:01:27,495 [INFO] - Read byte: 
+2023-06-21 12:01:27,497 [INFO] - Connection <SerialLink serial:/dev/ttyUSB1:38400:8N1> was closed
+2023-06-21 12:01:27,498 [INFO] - new <SerialLink serial:/dev/ttyUSB1:38400:8N1> was initialized
+2023-06-21 12:01:27,499 [ERROR] - An error occurred: Can not access to device.
+Traceback (most recent call last):
+  File "/home/bryan/.Repositories/Datalogger2Cloud/main_query.py", line 25, in main
+    datalogger = CR1000.from_url("serial:/dev/ttyUSB1:38400")
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/pycampbellcr1000/device.py", line 72, in from_url
+    return cls(link, dest_addr, dest, src_addr, src, security_code)     #EGC Add security code to the constructor call
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/pycampbellcr1000/device.py", line 55, in __init__
+    raise NoDeviceException()
+pycampbellcr1000.exceptions.NoDeviceException: Can not access to device.
+2023-06-21 12:01:27,501 [INFO] - Send bye command
+2023-06-21 12:01:27,501 [INFO] - Connection <SerialLink serial:/dev/ttyUSB1:38400:8N1> was closed
+2023-06-21 12:15:38,100 [INFO] - new <SerialLink serial:/dev/ttyUSB1:38400:8N1> was initialized
+2023-06-21 12:15:38,100 [INFO] - init client
+2023-06-21 12:15:38,100 [INFO] - Get the node attention
+2023-06-21 12:15:38,101 [INFO] - Write : <BD BD BD BD BD BD>
+2023-06-21 12:15:38,101 [INFO] - Wait packet with transaction None
+2023-06-21 12:15:39,503 [INFO] - Read : <'\x00'>
+2023-06-21 12:15:39,504 [INFO] - Read byte: 00
+2023-06-21 12:15:49,511 [INFO] - Read byte: 
+2023-06-21 12:15:49,511 [INFO] - 0
+2023-06-21 12:15:49,512 [INFO] - Create header
+2023-06-21 12:15:49,512 [INFO] - Packet data: 90 01 58 02 00 01 08 02 09 01 00 02 07 08
+2023-06-21 12:15:49,512 [INFO] - Calculate signature for packet
+2023-06-21 12:15:49,512 [INFO] - Calculate signature nullifier to create packet
+2023-06-21 12:15:49,512 [INFO] - Quote packet
+2023-06-21 12:15:49,512 [INFO] - Write: BD 90 01 58 02 00 01 08 02 09 01 00 02 07 08 F6 86 BD
+2023-06-21 12:15:49,513 [INFO] - Write : <BD 90 01 58 02 00 01 08 02 09 01 00 02 07 08 F6 86 BD>
+2023-06-21 12:15:49,513 [INFO] - Wait packet with transaction 1
+2023-06-21 12:15:59,523 [INFO] - Read byte: 
+2023-06-21 12:15:59,525 [INFO] - Connection <SerialLink serial:/dev/ttyUSB1:38400:8N1> was closed
+2023-06-21 12:15:59,526 [INFO] - new <SerialLink serial:/dev/ttyUSB1:38400:8N1> was initialized
+2023-06-21 12:15:59,526 [INFO] - 1
+2023-06-21 12:15:59,526 [INFO] - Create header
+2023-06-21 12:15:59,527 [INFO] - Packet data: 90 01 58 02 00 01 08 02 09 02 00 02 07 08
+2023-06-21 12:15:59,527 [INFO] - Calculate signature for packet
+2023-06-21 12:15:59,527 [INFO] - Calculate signature nullifier to create packet
+2023-06-21 12:15:59,527 [INFO] - Quote packet
+2023-06-21 12:15:59,527 [INFO] - Write: BD 90 01 58 02 00 01 08 02 09 02 00 02 07 08 AF 69 BD
+2023-06-21 12:15:59,528 [INFO] - Write : <BD 90 01 58 02 00 01 08 02 09 02 00 02 07 08 AF 69 BD>
+2023-06-21 12:15:59,528 [INFO] - Wait packet with transaction 2
+2023-06-21 12:16:09,535 [INFO] - Read byte: 
+2023-06-21 12:16:09,536 [INFO] - Connection <SerialLink serial:/dev/ttyUSB1:38400:8N1> was closed
+2023-06-21 12:16:09,537 [INFO] - new <SerialLink serial:/dev/ttyUSB1:38400:8N1> was initialized
+2023-06-21 12:16:09,537 [INFO] - 2
+2023-06-21 12:16:09,537 [INFO] - Create header
+2023-06-21 12:16:09,537 [INFO] - Packet data: 90 01 58 02 00 01 08 02 09 03 00 02 07 08
+2023-06-21 12:16:09,537 [INFO] - Calculate signature for packet
+2023-06-21 12:16:09,537 [INFO] - Calculate signature nullifier to create packet
+2023-06-21 12:16:09,537 [INFO] - Quote packet
+2023-06-21 12:16:09,538 [INFO] - Write: BD 90 01 58 02 00 01 08 02 09 03 00 02 07 08 69 4C BD
+2023-06-21 12:16:09,538 [INFO] - Write : <BD 90 01 58 02 00 01 08 02 09 03 00 02 07 08 69 4C BD>
+2023-06-21 12:16:09,538 [INFO] - Wait packet with transaction 3
+2023-06-21 12:16:19,547 [INFO] - Read byte: 
+2023-06-21 12:16:19,548 [INFO] - Connection <SerialLink serial:/dev/ttyUSB1:38400:8N1> was closed
+2023-06-21 12:16:19,549 [INFO] - new <SerialLink serial:/dev/ttyUSB1:38400:8N1> was initialized
+2023-06-21 12:16:19,549 [INFO] - 3
+2023-06-21 12:16:19,549 [INFO] - Create header
+2023-06-21 12:16:19,550 [INFO] - Packet data: 90 01 58 02 00 01 08 02 09 04 00 02 07 08
+2023-06-21 12:16:19,550 [INFO] - Calculate signature for packet
+2023-06-21 12:16:19,550 [INFO] - Calculate signature nullifier to create packet
+2023-06-21 12:16:19,550 [INFO] - Quote packet
+2023-06-21 12:16:19,550 [INFO] - Write: BD 90 01 58 02 00 01 08 02 09 04 00 02 07 08 23 2F BD
+2023-06-21 12:16:19,550 [INFO] - Write : <BD 90 01 58 02 00 01 08 02 09 04 00 02 07 08 23 2F BD>
+2023-06-21 12:16:19,550 [INFO] - Wait packet with transaction 4
+2023-06-21 12:16:29,559 [INFO] - Read byte: 
+2023-06-21 12:16:29,561 [INFO] - Connection <SerialLink serial:/dev/ttyUSB1:38400:8N1> was closed
+2023-06-21 12:16:29,562 [INFO] - new <SerialLink serial:/dev/ttyUSB1:38400:8N1> was initialized
+2023-06-21 12:16:29,562 [INFO] - 4
+2023-06-21 12:16:29,562 [INFO] - Create header
+2023-06-21 12:16:29,563 [INFO] - Packet data: 90 01 58 02 00 01 08 02 09 05 00 02 07 08
+2023-06-21 12:16:29,563 [INFO] - Calculate signature for packet
+2023-06-21 12:16:29,563 [INFO] - Calculate signature nullifier to create packet
+2023-06-21 12:16:29,563 [INFO] - Quote packet
+2023-06-21 12:16:29,563 [INFO] - Write: BD 90 01 58 02 00 01 08 02 09 05 00 02 07 08 DD 12 BD
+2023-06-21 12:16:29,563 [INFO] - Write : <BD 90 01 58 02 00 01 08 02 09 05 00 02 07 08 DD 12 BD>
+2023-06-21 12:16:29,564 [INFO] - Wait packet with transaction 5
+2023-06-21 12:16:39,571 [INFO] - Read byte: 
+2023-06-21 12:16:39,573 [INFO] - Connection <SerialLink serial:/dev/ttyUSB1:38400:8N1> was closed
+2023-06-21 12:16:39,574 [INFO] - new <SerialLink serial:/dev/ttyUSB1:38400:8N1> was initialized
+2023-06-21 12:16:39,574 [INFO] - 5
+2023-06-21 12:16:39,575 [INFO] - Create header
+2023-06-21 12:16:39,575 [INFO] - Packet data: 90 01 58 02 00 01 08 02 09 06 00 02 07 08
+2023-06-21 12:16:39,575 [INFO] - Calculate signature for packet
+2023-06-21 12:16:39,576 [INFO] - Calculate signature nullifier to create packet
+2023-06-21 12:16:39,576 [INFO] - Quote packet
+2023-06-21 12:16:39,576 [INFO] - Write: BD 90 01 58 02 00 01 08 02 09 06 00 02 07 08 98 F5 BD
+2023-06-21 12:16:39,577 [INFO] - Write : <BD 90 01 58 02 00 01 08 02 09 06 00 02 07 08 98 F5 BD>
+2023-06-21 12:16:39,577 [INFO] - Wait packet with transaction 6
+2023-06-21 12:16:49,587 [INFO] - Read byte: 
+2023-06-21 12:16:49,588 [INFO] - Connection <SerialLink serial:/dev/ttyUSB1:38400:8N1> was closed
+2023-06-21 12:16:49,590 [INFO] - new <SerialLink serial:/dev/ttyUSB1:38400:8N1> was initialized
+2023-06-21 12:16:49,590 [INFO] - 6
+2023-06-21 12:16:49,590 [INFO] - Create header
+2023-06-21 12:16:49,590 [INFO] - Packet data: 90 01 58 02 00 01 08 02 09 07 00 02 07 08
+2023-06-21 12:16:49,590 [INFO] - Calculate signature for packet
+2023-06-21 12:16:49,590 [INFO] - Calculate signature nullifier to create packet
+2023-06-21 12:16:49,590 [INFO] - Quote packet
+2023-06-21 12:16:49,591 [INFO] - Write: BD 90 01 58 02 00 01 08 02 09 07 00 02 07 08 52 D8 BD
+2023-06-21 12:16:49,591 [INFO] - Write : <BD 90 01 58 02 00 01 08 02 09 07 00 02 07 08 52 D8 BD>
+2023-06-21 12:16:49,591 [INFO] - Wait packet with transaction 7
+2023-06-21 12:16:59,602 [INFO] - Read byte: 
+2023-06-21 12:16:59,603 [INFO] - Connection <SerialLink serial:/dev/ttyUSB1:38400:8N1> was closed
+2023-06-21 12:16:59,605 [INFO] - new <SerialLink serial:/dev/ttyUSB1:38400:8N1> was initialized
+2023-06-21 12:16:59,605 [INFO] - 7
+2023-06-21 12:16:59,605 [INFO] - Create header
+2023-06-21 12:16:59,605 [INFO] - Packet data: 90 01 58 02 00 01 08 02 09 08 00 02 07 08
+2023-06-21 12:16:59,606 [INFO] - Calculate signature for packet
+2023-06-21 12:16:59,606 [INFO] - Calculate signature nullifier to create packet
+2023-06-21 12:16:59,606 [INFO] - Quote packet
+2023-06-21 12:16:59,606 [INFO] - Write: BD 90 01 58 02 00 01 08 02 09 08 00 02 07 08 0C BB BD
+2023-06-21 12:16:59,607 [INFO] - Write : <BD 90 01 58 02 00 01 08 02 09 08 00 02 07 08 0C BB BD>
+2023-06-21 12:16:59,607 [INFO] - Wait packet with transaction 8
+2023-06-21 12:17:09,615 [INFO] - Read byte: 
+2023-06-21 12:17:09,616 [INFO] - Connection <SerialLink serial:/dev/ttyUSB1:38400:8N1> was closed
+2023-06-21 12:17:09,618 [INFO] - new <SerialLink serial:/dev/ttyUSB1:38400:8N1> was initialized
+2023-06-21 12:17:09,618 [INFO] - 8
+2023-06-21 12:17:09,618 [INFO] - Create header
+2023-06-21 12:17:09,619 [INFO] - Packet data: 90 01 58 02 00 01 08 02 09 09 00 02 07 08
+2023-06-21 12:17:09,619 [INFO] - Calculate signature for packet
+2023-06-21 12:17:09,619 [INFO] - Calculate signature nullifier to create packet
+2023-06-21 12:17:09,619 [INFO] - Quote packet
+2023-06-21 12:17:09,619 [INFO] - Write: BD 90 01 58 02 00 01 08 02 09 09 00 02 07 08 C6 9E BD
+2023-06-21 12:17:09,620 [INFO] - Write : <BD 90 01 58 02 00 01 08 02 09 09 00 02 07 08 C6 9E BD>
+2023-06-21 12:17:09,620 [INFO] - Wait packet with transaction 9
+2023-06-21 12:17:19,631 [INFO] - Read byte: 
+2023-06-21 12:17:19,632 [INFO] - Connection <SerialLink serial:/dev/ttyUSB1:38400:8N1> was closed
+2023-06-21 12:17:19,634 [INFO] - new <SerialLink serial:/dev/ttyUSB1:38400:8N1> was initialized
+2023-06-21 12:17:19,635 [INFO] - 9
+2023-06-21 12:17:19,635 [INFO] - Create header
+2023-06-21 12:17:19,635 [INFO] - Packet data: 90 01 58 02 00 01 08 02 09 0A 00 02 07 08
+2023-06-21 12:17:19,635 [INFO] - Calculate signature for packet
+2023-06-21 12:17:19,635 [INFO] - Calculate signature nullifier to create packet
+2023-06-21 12:17:19,636 [INFO] - Quote packet
+2023-06-21 12:17:19,636 [INFO] - Write: BD 90 01 58 02 00 01 08 02 09 0A 00 02 07 08 7D 80 BD
+2023-06-21 12:17:19,636 [INFO] - Write : <BD 90 01 58 02 00 01 08 02 09 0A 00 02 07 08 7D 80 BD>
+2023-06-21 12:17:19,636 [INFO] - Wait packet with transaction 10
+2023-06-21 12:17:29,647 [INFO] - Read byte: 
+2023-06-21 12:17:29,649 [INFO] - Connection <SerialLink serial:/dev/ttyUSB1:38400:8N1> was closed
+2023-06-21 12:17:29,650 [INFO] - new <SerialLink serial:/dev/ttyUSB1:38400:8N1> was initialized
+2023-06-21 12:17:29,650 [INFO] - 10
+2023-06-21 12:17:29,650 [INFO] - Create header
+2023-06-21 12:17:29,651 [INFO] - Packet data: 90 01 58 02 00 01 08 02 09 0B 00 02 07 08
+2023-06-21 12:17:29,651 [INFO] - Calculate signature for packet
+2023-06-21 12:17:29,651 [INFO] - Calculate signature nullifier to create packet
+2023-06-21 12:17:29,651 [INFO] - Quote packet
+2023-06-21 12:17:29,651 [INFO] - Write: BD 90 01 58 02 00 01 08 02 09 0B 00 02 07 08 37 63 BD
+2023-06-21 12:17:29,651 [INFO] - Write : <BD 90 01 58 02 00 01 08 02 09 0B 00 02 07 08 37 63 BD>
+2023-06-21 12:17:29,652 [INFO] - Wait packet with transaction 11
+2023-06-21 12:17:39,659 [INFO] - Read byte: 
+2023-06-21 12:17:39,661 [INFO] - Connection <SerialLink serial:/dev/ttyUSB1:38400:8N1> was closed
+2023-06-21 12:17:39,663 [INFO] - new <SerialLink serial:/dev/ttyUSB1:38400:8N1> was initialized
+2023-06-21 12:17:39,663 [INFO] - 11
+2023-06-21 12:17:39,663 [INFO] - Create header
+2023-06-21 12:17:39,663 [INFO] - Packet data: 90 01 58 02 00 01 08 02 09 0C 00 02 07 08
+2023-06-21 12:17:39,663 [INFO] - Calculate signature for packet
+2023-06-21 12:17:39,664 [INFO] - Calculate signature nullifier to create packet
+2023-06-21 12:17:39,664 [INFO] - Quote packet
+2023-06-21 12:17:39,664 [INFO] - Write: BD 90 01 58 02 00 01 08 02 09 0C 00 02 07 08 F1 46 BD
+2023-06-21 12:17:39,664 [INFO] - Write : <BD 90 01 58 02 00 01 08 02 09 0C 00 02 07 08 F1 46 BD>
+2023-06-21 12:17:39,664 [INFO] - Wait packet with transaction 12
+2023-06-21 12:17:49,675 [INFO] - Read byte: 
+2023-06-21 12:17:49,676 [INFO] - Connection <SerialLink serial:/dev/ttyUSB1:38400:8N1> was closed
+2023-06-21 12:17:49,678 [INFO] - new <SerialLink serial:/dev/ttyUSB1:38400:8N1> was initialized
+2023-06-21 12:17:49,678 [INFO] - 12
+2023-06-21 12:17:49,678 [INFO] - Create header
+2023-06-21 12:17:49,678 [INFO] - Packet data: 90 01 58 02 00 01 08 02 09 0D 00 02 07 08
+2023-06-21 12:17:49,679 [INFO] - Calculate signature for packet
+2023-06-21 12:17:49,679 [INFO] - Calculate signature nullifier to create packet
+2023-06-21 12:17:49,679 [INFO] - Quote packet
+2023-06-21 12:17:49,679 [INFO] - Write: BD 90 01 58 02 00 01 08 02 09 0D 00 02 07 08 A6 27 BD
+2023-06-21 12:17:49,679 [INFO] - Write : <BD 90 01 58 02 00 01 08 02 09 0D 00 02 07 08 A6 27 BD>
+2023-06-21 12:17:49,679 [INFO] - Wait packet with transaction 13
+2023-06-21 12:17:59,690 [INFO] - Read byte: 
+2023-06-21 12:17:59,692 [INFO] - Connection <SerialLink serial:/dev/ttyUSB1:38400:8N1> was closed
+2023-06-21 12:17:59,693 [INFO] - new <SerialLink serial:/dev/ttyUSB1:38400:8N1> was initialized
+2023-06-21 12:17:59,694 [INFO] - 13
+2023-06-21 12:17:59,694 [INFO] - Create header
+2023-06-21 12:17:59,694 [INFO] - Packet data: 90 01 58 02 00 01 08 02 09 0E 00 02 07 08
+2023-06-21 12:17:59,694 [INFO] - Calculate signature for packet
+2023-06-21 12:17:59,694 [INFO] - Calculate signature nullifier to create packet
+2023-06-21 12:17:59,694 [INFO] - Quote packet
+2023-06-21 12:17:59,694 [INFO] - Write: BD 90 01 58 02 00 01 08 02 09 0E 00 02 07 08 60 0A BD
+2023-06-21 12:17:59,695 [INFO] - Write : <BD 90 01 58 02 00 01 08 02 09 0E 00 02 07 08 60 0A BD>
+2023-06-21 12:17:59,695 [INFO] - Wait packet with transaction 14
+2023-06-21 12:18:09,706 [INFO] - Read byte: 
+2023-06-21 12:18:09,707 [INFO] - Connection <SerialLink serial:/dev/ttyUSB1:38400:8N1> was closed
+2023-06-21 12:18:09,709 [INFO] - new <SerialLink serial:/dev/ttyUSB1:38400:8N1> was initialized
+2023-06-21 12:18:09,709 [INFO] - 14
+2023-06-21 12:18:09,709 [INFO] - Create header
+2023-06-21 12:18:09,710 [INFO] - Packet data: 90 01 58 02 00 01 08 02 09 0F 00 02 07 08
+2023-06-21 12:18:09,710 [INFO] - Calculate signature for packet
+2023-06-21 12:18:09,710 [INFO] - Calculate signature nullifier to create packet
+2023-06-21 12:18:09,710 [INFO] - Quote packet
+2023-06-21 12:18:09,710 [INFO] - Write: BD 90 01 58 02 00 01 08 02 09 0F 00 02 07 08 1B ED BD
+2023-06-21 12:18:09,710 [INFO] - Write : <BD 90 01 58 02 00 01 08 02 09 0F 00 02 07 08 1B ED BD>
+2023-06-21 12:18:09,711 [INFO] - Wait packet with transaction 15
+2023-06-21 12:18:19,719 [INFO] - Read byte: 
+2023-06-21 12:18:19,720 [INFO] - Connection <SerialLink serial:/dev/ttyUSB1:38400:8N1> was closed
+2023-06-21 12:18:19,722 [INFO] - new <SerialLink serial:/dev/ttyUSB1:38400:8N1> was initialized
+2023-06-21 12:18:19,723 [INFO] - 15
+2023-06-21 12:18:19,723 [INFO] - Create header
+2023-06-21 12:18:19,723 [INFO] - Packet data: 90 01 58 02 00 01 08 02 09 10 00 02 07 08
+2023-06-21 12:18:19,723 [INFO] - Calculate signature for packet
+2023-06-21 12:18:19,723 [INFO] - Calculate signature nullifier to create packet
+2023-06-21 12:18:19,723 [INFO] - Quote packet
+2023-06-21 12:18:19,724 [INFO] - Write: BD 90 01 58 02 00 01 08 02 09 10 00 02 07 08 D5 D0 BD
+2023-06-21 12:18:19,724 [INFO] - Write : <BD 90 01 58 02 00 01 08 02 09 10 00 02 07 08 D5 D0 BD>
+2023-06-21 12:18:19,724 [INFO] - Wait packet with transaction 16
+2023-06-21 12:18:29,727 [INFO] - Read byte: 
+2023-06-21 12:18:29,727 [INFO] - Connection <SerialLink serial:/dev/ttyUSB1:38400:8N1> was closed
+2023-06-21 12:18:29,728 [INFO] - new <SerialLink serial:/dev/ttyUSB1:38400:8N1> was initialized
+2023-06-21 12:18:29,729 [INFO] - 16
+2023-06-21 12:18:29,729 [INFO] - Create header
+2023-06-21 12:18:29,729 [INFO] - Packet data: 90 01 58 02 00 01 08 02 09 11 00 02 07 08
+2023-06-21 12:18:29,729 [INFO] - Calculate signature for packet
+2023-06-21 12:18:29,729 [INFO] - Calculate signature nullifier to create packet
+2023-06-21 12:18:29,729 [INFO] - Quote packet
+2023-06-21 12:18:29,729 [INFO] - Write: BD 90 01 58 02 00 01 08 02 09 11 00 02 07 08 8F B3 BD
+2023-06-21 12:18:29,729 [INFO] - Write : <BD 90 01 58 02 00 01 08 02 09 11 00 02 07 08 8F B3 BD>
+2023-06-21 12:18:29,729 [INFO] - Wait packet with transaction 17
+2023-06-21 12:18:39,739 [INFO] - Read byte: 
+2023-06-21 12:18:39,741 [INFO] - Connection <SerialLink serial:/dev/ttyUSB1:38400:8N1> was closed
+2023-06-21 12:18:39,743 [INFO] - new <SerialLink serial:/dev/ttyUSB1:38400:8N1> was initialized
+2023-06-21 12:18:39,743 [INFO] - 17
+2023-06-21 12:18:39,743 [INFO] - Create header
+2023-06-21 12:18:39,743 [INFO] - Packet data: 90 01 58 02 00 01 08 02 09 12 00 02 07 08
+2023-06-21 12:18:39,743 [INFO] - Calculate signature for packet
+2023-06-21 12:18:39,743 [INFO] - Calculate signature nullifier to create packet
+2023-06-21 12:18:39,744 [INFO] - Quote packet
+2023-06-21 12:18:39,744 [INFO] - Write: BD 90 01 58 02 00 01 08 02 09 12 00 02 07 08 49 96 BD
+2023-06-21 12:18:39,744 [INFO] - Write : <BD 90 01 58 02 00 01 08 02 09 12 00 02 07 08 49 96 BD>
+2023-06-21 12:18:39,744 [INFO] - Wait packet with transaction 18
+2023-06-21 12:18:49,755 [INFO] - Read byte: 
+2023-06-21 12:18:49,756 [INFO] - Connection <SerialLink serial:/dev/ttyUSB1:38400:8N1> was closed
+2023-06-21 12:18:49,758 [INFO] - new <SerialLink serial:/dev/ttyUSB1:38400:8N1> was initialized
+2023-06-21 12:18:49,758 [INFO] - 18
+2023-06-21 12:18:49,758 [INFO] - Create header
+2023-06-21 12:18:49,759 [INFO] - Packet data: 90 01 58 02 00 01 08 02 09 13 00 02 07 08
+2023-06-21 12:18:49,759 [INFO] - Calculate signature for packet
+2023-06-21 12:18:49,759 [INFO] - Calculate signature nullifier to create packet
+2023-06-21 12:18:49,759 [INFO] - Quote packet
+2023-06-21 12:18:49,759 [INFO] - Write: BD 90 01 58 02 00 01 08 02 09 13 00 02 07 08 02 79 BD
+2023-06-21 12:18:49,760 [INFO] - Write : <BD 90 01 58 02 00 01 08 02 09 13 00 02 07 08 02 79 BD>
+2023-06-21 12:18:49,760 [INFO] - Wait packet with transaction 19
+2023-06-21 12:18:59,770 [INFO] - Read byte: 
+2023-06-21 12:18:59,772 [INFO] - Connection <SerialLink serial:/dev/ttyUSB1:38400:8N1> was closed
+2023-06-21 12:18:59,774 [INFO] - new <SerialLink serial:/dev/ttyUSB1:38400:8N1> was initialized
+2023-06-21 12:18:59,774 [INFO] - 19
+2023-06-21 12:18:59,774 [INFO] - Create header
+2023-06-21 12:18:59,774 [INFO] - Packet data: 90 01 58 02 00 01 08 02 09 14 00 02 07 08
+2023-06-21 12:18:59,775 [INFO] - Calculate signature for packet
+2023-06-21 12:18:59,775 [INFO] - Calculate signature nullifier to create packet
+2023-06-21 12:18:59,775 [INFO] - Quote packet
+2023-06-21 12:18:59,775 [INFO] - Write: BD 90 01 58 02 00 01 08 02 09 14 00 02 07 08 BC DC 5C BD
+2023-06-21 12:18:59,775 [INFO] - Write : <BD 90 01 58 02 00 01 08 02 09 14 00 02 07 08 BC DC 5C BD>
+2023-06-21 12:18:59,776 [INFO] - Wait packet with transaction 20
+2023-06-21 12:19:09,783 [INFO] - Read byte: 
+2023-06-21 12:19:09,784 [INFO] - Connection <SerialLink serial:/dev/ttyUSB1:38400:8N1> was closed
+2023-06-21 12:19:09,786 [INFO] - new <SerialLink serial:/dev/ttyUSB1:38400:8N1> was initialized
+2023-06-21 12:19:09,787 [ERROR] - An error occurred: Can not access to device.
+Traceback (most recent call last):
+  File "/home/bryan/.Repositories/Datalogger2Cloud/main_query.py", line 25, in main
+    datalogger = CR1000.from_url("serial:/dev/ttyUSB1:38400")
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/pycampbellcr1000/device.py", line 72, in from_url
+    return cls(link, dest_addr, dest, src_addr, src, security_code)     #EGC Add security code to the constructor call
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/pycampbellcr1000/device.py", line 55, in __init__
+    raise NoDeviceException()
+pycampbellcr1000.exceptions.NoDeviceException: Can not access to device.
+2023-06-21 12:19:09,789 [INFO] - Send bye command
+2023-06-21 12:19:09,790 [INFO] - Connection <SerialLink serial:/dev/ttyUSB1:38400:8N1> was closed
+2023-06-21 13:13:46,347 [ERROR] - An error occurred: Can not access to device.
+Traceback (most recent call last):
+  File "/home/bryan/.Repositories/Datalogger2Cloud/main_query.py", line 25, in main
+    datalogger = CR1000.from_url("serial:/dev/ttyUSB1:38400")
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/pycampbellcr1000/device.py", line 72, in from_url
+    return cls(link, dest_addr, dest, src_addr, src, security_code)     #EGC Add security code to the constructor call
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/pycampbellcr1000/device.py", line 55, in __init__
+    raise NoDeviceException()
+pycampbellcr1000.exceptions.NoDeviceException: Can not access to device.
+2023-06-21 17:26:32,577 [ERROR] - An error occurred: [Errno 2] could not open port /dev/ttyUSB0: [Errno 2] No such file or directory: '/dev/ttyUSB0'
+Traceback (most recent call last):
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/serial/serialposix.py", line 322, in open
+    self.fd = os.open(self.portstr, os.O_RDWR | os.O_NOCTTY | os.O_NONBLOCK)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/dev/ttyUSB0'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/bryan/.Repositories/Datalogger2Cloud/main_query.py", line 25, in main
+    datalogger = CR1000.from_url("serial:/dev/ttyUSB0:38400")
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/pycampbellcr1000/device.py", line 71, in from_url
+    link.settimeout(timeout)
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/pylink/link.py", line 241, in settimeout
+    self.serial.timeout = self.timeout
+    ^^^^^^^^^^^
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/pylink/link.py", line 254, in serial
+    self.open()
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/pylink/link.py", line 231, in open
+    self._serial = serial.Serial(self.port, self.baudrate,
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/serial/serialutil.py", line 244, in __init__
+    self.open()
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/serial/serialposix.py", line 325, in open
+    raise SerialException(msg.errno, "could not open port {}: {}".format(self._port, msg))
+serial.serialutil.SerialException: [Errno 2] could not open port /dev/ttyUSB0: [Errno 2] No such file or directory: '/dev/ttyUSB0'
+2023-06-21 17:27:32,651 [ERROR] - An error occurred: [Errno 2] could not open port /dev/ttyUSB2: [Errno 2] No such file or directory: '/dev/ttyUSB2'
+Traceback (most recent call last):
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/serial/serialposix.py", line 322, in open
+    self.fd = os.open(self.portstr, os.O_RDWR | os.O_NOCTTY | os.O_NONBLOCK)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/dev/ttyUSB2'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/bryan/.Repositories/Datalogger2Cloud/main_query.py", line 25, in main
+    datalogger = CR1000.from_url("serial:/dev/ttyUSB2:38400")
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/pycampbellcr1000/device.py", line 71, in from_url
+    link.settimeout(timeout)
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/pylink/link.py", line 241, in settimeout
+    self.serial.timeout = self.timeout
+    ^^^^^^^^^^^
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/pylink/link.py", line 254, in serial
+    self.open()
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/pylink/link.py", line 231, in open
+    self._serial = serial.Serial(self.port, self.baudrate,
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/serial/serialutil.py", line 244, in __init__
+    self.open()
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/serial/serialposix.py", line 325, in open
+    raise SerialException(msg.errno, "could not open port {}: {}".format(self._port, msg))
+serial.serialutil.SerialException: [Errno 2] could not open port /dev/ttyUSB2: [Errno 2] No such file or directory: '/dev/ttyUSB2'
+2023-06-21 17:32:00,588 [ERROR] - An error occurred: [Errno 2] could not open port /dev/ttyUSB1: [Errno 2] No such file or directory: '/dev/ttyUSB1'
+Traceback (most recent call last):
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/serial/serialposix.py", line 322, in open
+    self.fd = os.open(self.portstr, os.O_RDWR | os.O_NOCTTY | os.O_NONBLOCK)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/dev/ttyUSB1'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/bryan/.Repositories/Datalogger2Cloud/main_query.py", line 25, in main
+    datalogger = CR1000.from_url("serial:/dev/ttyUSB1:38400")
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/pycampbellcr1000/device.py", line 71, in from_url
+    link.settimeout(timeout)
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/pylink/link.py", line 241, in settimeout
+    self.serial.timeout = self.timeout
+    ^^^^^^^^^^^
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/pylink/link.py", line 254, in serial
+    self.open()
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/pylink/link.py", line 231, in open
+    self._serial = serial.Serial(self.port, self.baudrate,
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/serial/serialutil.py", line 244, in __init__
+    self.open()
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/serial/serialposix.py", line 325, in open
+    raise SerialException(msg.errno, "could not open port {}: {}".format(self._port, msg))
+serial.serialutil.SerialException: [Errno 2] could not open port /dev/ttyUSB1: [Errno 2] No such file or directory: '/dev/ttyUSB1'
+2023-06-21 17:32:18,429 [ERROR] - An error occurred: [Errno 2] could not open port /dev/ttyUSB0: [Errno 2] No such file or directory: '/dev/ttyUSB0'
+Traceback (most recent call last):
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/serial/serialposix.py", line 322, in open
+    self.fd = os.open(self.portstr, os.O_RDWR | os.O_NOCTTY | os.O_NONBLOCK)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/dev/ttyUSB0'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/bryan/.Repositories/Datalogger2Cloud/main_query.py", line 25, in main
+    datalogger = CR1000.from_url("serial:/dev/ttyUSB0:38400")
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/pycampbellcr1000/device.py", line 71, in from_url
+    link.settimeout(timeout)
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/pylink/link.py", line 241, in settimeout
+    self.serial.timeout = self.timeout
+    ^^^^^^^^^^^
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/pylink/link.py", line 254, in serial
+    self.open()
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/pylink/link.py", line 231, in open
+    self._serial = serial.Serial(self.port, self.baudrate,
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/serial/serialutil.py", line 244, in __init__
+    self.open()
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/serial/serialposix.py", line 325, in open
+    raise SerialException(msg.errno, "could not open port {}: {}".format(self._port, msg))
+serial.serialutil.SerialException: [Errno 2] could not open port /dev/ttyUSB0: [Errno 2] No such file or directory: '/dev/ttyUSB0'
+2023-06-21 17:33:19,251 [ERROR] - An error occurred: [Errno 2] could not open port /dev/ttyUSB3: [Errno 2] No such file or directory: '/dev/ttyUSB3'
+Traceback (most recent call last):
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/serial/serialposix.py", line 322, in open
+    self.fd = os.open(self.portstr, os.O_RDWR | os.O_NOCTTY | os.O_NONBLOCK)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/dev/ttyUSB3'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/bryan/.Repositories/Datalogger2Cloud/main_query.py", line 25, in main
+    datalogger = CR1000.from_url("serial:/dev/ttyUSB3:38400")
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/pycampbellcr1000/device.py", line 71, in from_url
+    link.settimeout(timeout)
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/pylink/link.py", line 241, in settimeout
+    self.serial.timeout = self.timeout
+    ^^^^^^^^^^^
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/pylink/link.py", line 254, in serial
+    self.open()
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/pylink/link.py", line 231, in open
+    self._serial = serial.Serial(self.port, self.baudrate,
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/serial/serialutil.py", line 244, in __init__
+    self.open()
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/serial/serialposix.py", line 325, in open
+    raise SerialException(msg.errno, "could not open port {}: {}".format(self._port, msg))
+serial.serialutil.SerialException: [Errno 2] could not open port /dev/ttyUSB3: [Errno 2] No such file or directory: '/dev/ttyUSB3'
+2023-06-21 17:33:48,801 [ERROR] - An error occurred: [Errno 2] could not open port /dev/ttyUSB0: [Errno 2] No such file or directory: '/dev/ttyUSB0'
+Traceback (most recent call last):
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/serial/serialposix.py", line 322, in open
+    self.fd = os.open(self.portstr, os.O_RDWR | os.O_NOCTTY | os.O_NONBLOCK)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/dev/ttyUSB0'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/bryan/.Repositories/Datalogger2Cloud/main_query.py", line 25, in main
+    datalogger = CR1000.from_url("serial:/dev/ttyUSB0:38400")
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/pycampbellcr1000/device.py", line 71, in from_url
+    link.settimeout(timeout)
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/pylink/link.py", line 241, in settimeout
+    self.serial.timeout = self.timeout
+    ^^^^^^^^^^^
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/pylink/link.py", line 254, in serial
+    self.open()
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/pylink/link.py", line 231, in open
+    self._serial = serial.Serial(self.port, self.baudrate,
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/serial/serialutil.py", line 244, in __init__
+    self.open()
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/serial/serialposix.py", line 325, in open
+    raise SerialException(msg.errno, "could not open port {}: {}".format(self._port, msg))
+serial.serialutil.SerialException: [Errno 2] could not open port /dev/ttyUSB0: [Errno 2] No such file or directory: '/dev/ttyUSB0'
+2023-06-21 17:36:24,608 [ERROR] - An error occurred: Can not access to device.
+Traceback (most recent call last):
+  File "/home/bryan/.Repositories/Datalogger2Cloud/main_query.py", line 28, in main
+    table_names = lqf.get_tables(datalogger)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bryan/.Repositories/Datalogger2Cloud/logger_query_functions.py", line 13, in get_tables
+    table_names = datalogger.list_tables()
+                  ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/pycampbellcr1000/device.py", line 182, in list_tables
+    return [item['Header']['TableName'] for item in self.table_def]
+                                                    ^^^^^^^^^^^^^^
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/pycampbellcr1000/utils.py", line 65, in __get__
+    value = self.func(obj)
+            ^^^^^^^^^^^^^^
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/pycampbellcr1000/device.py", line 175, in table_def
+    data = self.getfile('.TDF')
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/pycampbellcr1000/device.py", line 133, in getfile
+    self.ping_node()
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/pycampbellcr1000/device.py", line 90, in ping_node
+    raise NoDeviceException()
+pycampbellcr1000.exceptions.NoDeviceException: Can not access to device.
+2023-06-22 11:54:45,172 [ERROR] - An error occurred: [Errno 2] could not open port /dev/ttyUSB1: [Errno 2] No such file or directory: '/dev/ttyUSB1'
+Traceback (most recent call last):
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/serial/serialposix.py", line 322, in open
+    self.fd = os.open(self.portstr, os.O_RDWR | os.O_NOCTTY | os.O_NONBLOCK)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/dev/ttyUSB1'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/bryan/.Repositories/Datalogger2Cloud/main_query.py", line 25, in main
+    datalogger = CR1000.from_url("serial:/dev/ttyUSB1:38400")
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/pycampbellcr1000/device.py", line 71, in from_url
+    link.settimeout(timeout)
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/pylink/link.py", line 241, in settimeout
+    self.serial.timeout = self.timeout
+    ^^^^^^^^^^^
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/pylink/link.py", line 254, in serial
+    self.open()
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/pylink/link.py", line 231, in open
+    self._serial = serial.Serial(self.port, self.baudrate,
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/serial/serialutil.py", line 244, in __init__
+    self.open()
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/serial/serialposix.py", line 325, in open
+    raise SerialException(msg.errno, "could not open port {}: {}".format(self._port, msg))
+serial.serialutil.SerialException: [Errno 2] could not open port /dev/ttyUSB1: [Errno 2] No such file or directory: '/dev/ttyUSB1'
+2023-06-22 11:54:59,570 [ERROR] - An error occurred: [Errno 2] could not open port /dev/ttyUSB1: [Errno 2] No such file or directory: '/dev/ttyUSB1'
+Traceback (most recent call last):
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/serial/serialposix.py", line 322, in open
+    self.fd = os.open(self.portstr, os.O_RDWR | os.O_NOCTTY | os.O_NONBLOCK)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/dev/ttyUSB1'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/bryan/.Repositories/Datalogger2Cloud/main_query.py", line 25, in main
+    datalogger = CR1000.from_url("serial:/dev/ttyUSB1:38400")
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/pycampbellcr1000/device.py", line 71, in from_url
+    link.settimeout(timeout)
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/pylink/link.py", line 241, in settimeout
+    self.serial.timeout = self.timeout
+    ^^^^^^^^^^^
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/pylink/link.py", line 254, in serial
+    self.open()
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/pylink/link.py", line 231, in open
+    self._serial = serial.Serial(self.port, self.baudrate,
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/serial/serialutil.py", line 244, in __init__
+    self.open()
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/serial/serialposix.py", line 325, in open
+    raise SerialException(msg.errno, "could not open port {}: {}".format(self._port, msg))
+serial.serialutil.SerialException: [Errno 2] could not open port /dev/ttyUSB1: [Errno 2] No such file or directory: '/dev/ttyUSB1'
+2023-06-22 11:55:04,861 [ERROR] - An error occurred: [Errno 2] could not open port /dev/ttyUSB1: [Errno 2] No such file or directory: '/dev/ttyUSB1'
+Traceback (most recent call last):
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/serial/serialposix.py", line 322, in open
+    self.fd = os.open(self.portstr, os.O_RDWR | os.O_NOCTTY | os.O_NONBLOCK)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/dev/ttyUSB1'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/bryan/.Repositories/Datalogger2Cloud/main_query.py", line 25, in main
+    datalogger = CR1000.from_url("serial:/dev/ttyUSB1:38400")
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/pycampbellcr1000/device.py", line 71, in from_url
+    link.settimeout(timeout)
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/pylink/link.py", line 241, in settimeout
+    self.serial.timeout = self.timeout
+    ^^^^^^^^^^^
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/pylink/link.py", line 254, in serial
+    self.open()
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/pylink/link.py", line 231, in open
+    self._serial = serial.Serial(self.port, self.baudrate,
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/serial/serialutil.py", line 244, in __init__
+    self.open()
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/serial/serialposix.py", line 325, in open
+    raise SerialException(msg.errno, "could not open port {}: {}".format(self._port, msg))
+serial.serialutil.SerialException: [Errno 2] could not open port /dev/ttyUSB1: [Errno 2] No such file or directory: '/dev/ttyUSB1'
+2023-06-22 12:51:51,388 [ERROR] - An error occurred: File /home/bryan/.keys/apt-rite-378417-6c12d7a2260e.json was not found.
+Traceback (most recent call last):
+  File "/home/bryan/.Repositories/Datalogger2Cloud/main_query.py", line 53, in main
+    gcloud.update_bqtable(schema, table_data, project_id, dataset_id, table_id)
+  File "/home/bryan/.Repositories/Datalogger2Cloud/gcloud_functions.py", line 73, in update_bqtable
+    bigquery_client = bigquery.Client(project=project_id)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/google/cloud/bigquery/client.py", line 245, in __init__
+    super(Client, self).__init__(
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/google/cloud/client/__init__.py", line 321, in __init__
+    Client.__init__(
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/google/cloud/client/__init__.py", line 178, in __init__
+    credentials, _ = google.auth.default(scopes=scopes)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/google/auth/_default.py", line 615, in default
+    credentials, project_id = checker()
+                              ^^^^^^^^^
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/google/auth/_default.py", line 608, in <lambda>
+    lambda: _get_explicit_environ_credentials(quota_project_id=quota_project_id),
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/google/auth/_default.py", line 228, in _get_explicit_environ_credentials
+    credentials, project_id = load_credentials_from_file(
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/google/auth/_default.py", line 116, in load_credentials_from_file
+    raise exceptions.DefaultCredentialsError(
+google.auth.exceptions.DefaultCredentialsError: File /home/bryan/.keys/apt-rite-378417-6c12d7a2260e.json was not found.
+2023-06-22 12:52:21,908 [ERROR] - An error occurred: File /home/bryan/.keys/apt-rite-378417-6c12d7a2260e.json was not found.
+Traceback (most recent call last):
+  File "/home/bryan/.Repositories/Datalogger2Cloud/main_query.py", line 53, in main
+    gcloud.update_bqtable(schema, table_data, project_id, dataset_id, table_id)
+  File "/home/bryan/.Repositories/Datalogger2Cloud/gcloud_functions.py", line 73, in update_bqtable
+    bigquery_client = bigquery.Client(project=project_id)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/google/cloud/bigquery/client.py", line 245, in __init__
+    super(Client, self).__init__(
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/google/cloud/client/__init__.py", line 321, in __init__
+    Client.__init__(
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/google/cloud/client/__init__.py", line 178, in __init__
+    credentials, _ = google.auth.default(scopes=scopes)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/google/auth/_default.py", line 615, in default
+    credentials, project_id = checker()
+                              ^^^^^^^^^
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/google/auth/_default.py", line 608, in <lambda>
+    lambda: _get_explicit_environ_credentials(quota_project_id=quota_project_id),
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/google/auth/_default.py", line 228, in _get_explicit_environ_credentials
+    credentials, project_id = load_credentials_from_file(
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/google/auth/_default.py", line 116, in load_credentials_from_file
+    raise exceptions.DefaultCredentialsError(
+google.auth.exceptions.DefaultCredentialsError: File /home/bryan/.keys/apt-rite-378417-6c12d7a2260e.json was not found.
+2023-06-22 12:56:15,335 [ERROR] - An error occurred: File fourth-castle-388922-5eb36f5bdab9.json was not found.
+Traceback (most recent call last):
+  File "/home/bryan/.Repositories/Datalogger2Cloud/main_query.py", line 53, in main
+    gcloud.update_bqtable(schema, table_data, project_id, dataset_id, table_id)
+  File "/home/bryan/.Repositories/Datalogger2Cloud/gcloud_functions.py", line 73, in update_bqtable
+    bigquery_client = bigquery.Client(project=project_id)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/google/cloud/bigquery/client.py", line 245, in __init__
+    super(Client, self).__init__(
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/google/cloud/client/__init__.py", line 321, in __init__
+    Client.__init__(
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/google/cloud/client/__init__.py", line 178, in __init__
+    credentials, _ = google.auth.default(scopes=scopes)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/google/auth/_default.py", line 615, in default
+    credentials, project_id = checker()
+                              ^^^^^^^^^
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/google/auth/_default.py", line 608, in <lambda>
+    lambda: _get_explicit_environ_credentials(quota_project_id=quota_project_id),
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/google/auth/_default.py", line 228, in _get_explicit_environ_credentials
+    credentials, project_id = load_credentials_from_file(
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/google/auth/_default.py", line 116, in load_credentials_from_file
+    raise exceptions.DefaultCredentialsError(
+google.auth.exceptions.DefaultCredentialsError: File fourth-castle-388922-5eb36f5bdab9.json was not found.
+2023-06-22 12:57:49,727 [ERROR] - An error occurred: 404 POST https://bigquery.googleapis.com/upload/bigquery/v2/projects/fourth-castle-388922/jobs?uploadType=resumable: Not found: Dataset fourth-castle-388922:final_test
+Traceback (most recent call last):
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/google/cloud/bigquery/client.py", line 2477, in load_table_from_file
+    response = self._do_resumable_upload(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/google/cloud/bigquery/client.py", line 2891, in _do_resumable_upload
+    upload, transport = self._initiate_resumable_upload(
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/google/cloud/bigquery/client.py", line 2964, in _initiate_resumable_upload
+    upload.initiate(
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/google/resumable_media/requests/upload.py", line 420, in initiate
+    return _request_helpers.wait_and_retry(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/google/resumable_media/requests/_request_helpers.py", line 155, in wait_and_retry
+    response = func()
+               ^^^^^^
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/google/resumable_media/requests/upload.py", line 416, in retriable_request
+    self._process_initiate_response(result)
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/google/resumable_media/_upload.py", line 509, in _process_initiate_response
+    _helpers.require_status_code(
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/google/resumable_media/_helpers.py", line 108, in require_status_code
+    raise common.InvalidResponse(
+google.resumable_media.common.InvalidResponse: ('Request failed with status code', 404, 'Expected one of', <HTTPStatus.OK: 200>, <HTTPStatus.CREATED: 201>)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/bryan/.Repositories/Datalogger2Cloud/main_query.py", line 53, in main
+    gcloud.update_bqtable(schema, table_data, project_id, dataset_id, table_id)
+  File "/home/bryan/.Repositories/Datalogger2Cloud/gcloud_functions.py", line 94, in update_bqtable
+    load_job = bigquery_client.load_table_from_file(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/google/cloud/bigquery/client.py", line 2485, in load_table_from_file
+    raise exceptions.from_http_response(exc.response)
+google.api_core.exceptions.NotFound: 404 POST https://bigquery.googleapis.com/upload/bigquery/v2/projects/fourth-castle-388922/jobs?uploadType=resumable: Not found: Dataset fourth-castle-388922:final_test

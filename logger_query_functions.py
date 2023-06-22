@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, time
 import os
 import sys
 import os.path
@@ -77,34 +77,45 @@ def parse_datetime_input(input_string):
         return None
 
 
-def get_start_time():
-    """Gets the time to start and stop collecting data"""
-
-
-def track_and_manage_time(datalogger, delay=60):
-    """ "Returns the appropriate start and stop time for data collection"""
-    timekeeper_file = os.path.join(os.getcwd(), "./timekeeper.txt")
-
-    # If timekeeper file exists, start collection at stored time and end now
+def load_last_logged_time(timekeeper_file):
     if os.path.exists(timekeeper_file):
         with open(timekeeper_file, "r") as f:
             stored_datetime_str = f.read().strip()
-            stored_datetime = parse_datetime_input(stored_datetime_str)
-            if stored_datetime is None:
-                print("Invalid datetime in timekeeper file.")
-                sys.exit(1)
-            start = stored_datetime
-            stop = datalogger.gettime()
-    # Else, create timekeeper file and collect all data until now
-    else:
-        with open(timekeeper_file, "x") as f:
-            pass
-        start = None
-        stop = None
+            return parse_datetime_input(stored_datetime_str)
+    return None
 
-    # Set next data collection time to current time
+
+def save_new_logged_time(timekeeper_file, datalogger):
     with open(timekeeper_file, "w") as f:
         next_start = datalogger.gettime()
         f.write(next_start.isoformat())
+
+
+def determine_start_stop(last_logged_time, datalogger):
+    if last_logged_time:
+        start = last_logged_time
+        stop = datalogger.gettime()
+    else:
+        start = datetime.combine(datetime(2023, 7, 19), time())
+        stop = datalogger.gettime()
+    return start, stop
+
+
+def track_and_manage_time(datalogger, delay=60):
+    """Returns the appropriate start and stop time for data collection"""
+    timekeeper_file = os.path.join(os.getcwd(), "./timekeeper.txt")
+
+    # Load the last logged time, if it exists
+    last_logged_time = load_last_logged_time(timekeeper_file)
+
+    # If last logged time is invalid and file exists, print an error message and proceed
+    if last_logged_time is None and os.path.exists(timekeeper_file):
+        print("Invalid datetime in timekeeper file. Collecting all data up to now...")
+
+    # Determine the start and stop times
+    start, stop = determine_start_stop(last_logged_time, datalogger)
+
+    # Save the new logged time
+    save_new_logged_time(timekeeper_file, datalogger)
 
     return start, stop

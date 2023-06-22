@@ -4,11 +4,12 @@ import ndjson
 import logger_query_functions as lqf
 import gcloud_functions as gcloud
 import logging
+import datetime
 
 # Configure logging
 logging.basicConfig(
     filename="main_query.log",
-    level=logging.INFO,
+    level=logging.ERROR,
     format="%(asctime)s [%(levelname)s] - %(message)s",
 )
 
@@ -29,6 +30,8 @@ def main():
 
         # Get data collection interval
         start, stop = lqf.track_and_manage_time(datalogger)
+        stop = datetime.datetime(2023, 6, 22, 8, 47, 52)
+        start = datetime.datetime(2023, 6, 22, 8, 0, 0)
 
         # Get table data
         table_data = lqf.get_data(
@@ -42,7 +45,7 @@ def main():
         schema = gcloud.get_schema(table_data)
 
         # IDs and paths for Google Cloud
-        project_id = "apt-rite-378417"
+        project_id = "fourth-castle-388922"
         dataset_id = "final_test"
         table_id = "corn_test"
 
@@ -54,6 +57,7 @@ def main():
 
     except Exception as e:
         logging.error(f"An error occurred: {e}", exc_info=True)
+        print(f"An error occurred: {e}")
 
 
 if __name__ == "__main__":

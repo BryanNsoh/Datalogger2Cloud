@@ -2,7 +2,7 @@ import os
 import pandas as pd
 from datetime import datetime, timedelta
 import threading
-from SDI12toUSB_main import Sensor, sensor_profiles
+from SDI12toUSB import Sensor, sensor_profiles
 from pycampbellcr1000 import CR1000
 import ndjson
 import logger_query_functions as lqf
