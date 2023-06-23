@@ -93,9 +93,10 @@ _2007A2TDR0623_Addr = "b"
 _2007A2TDR1823_Addr = "c"
 _2007A2TDR3023_Addr = "d"
 
-Scan(2,sec,0,0) 
+Scan(1,Min,2,0)  
 Battery(BatV) 
 
+'Collect data from the sensors
 SDI12Recorder(_2001A1IRTXX23,1,_2001A1IRTXX23_Addr,"M!",1,0) 
 SDI12Recorder(_2003A2IRTXX23,1,_2003A2IRTXX23_Addr,"M!",1,0) 
 SDI12Recorder(_2007A2IRTXX23,1,_2007A2IRTXX23_Addr,"M!",1,0) 
