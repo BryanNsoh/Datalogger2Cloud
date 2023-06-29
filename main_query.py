@@ -30,8 +30,6 @@ def main():
 
         # Get data collection interval
         start, stop = lqf.track_and_manage_time(datalogger)
-        stop = datetime.datetime(2023, 6, 22, 8, 47, 52)
-        start = datetime.datetime(2023, 6, 22, 8, 0, 0)
 
         # Get table data
         table_data = lqf.get_data(
