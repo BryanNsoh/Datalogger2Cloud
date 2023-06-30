@@ -1,9 +1,8 @@
-import os
+from pycampbellcr1000 import CR1000
 import pandas as pd
 from datetime import datetime, timedelta
 import threading
-from SDI12toUSB import Sensor, sensor_profiles
-from pycampbellcr1000 import CR1000
+from sensors import sensors, ser
 import ndjson
 import logger_query_functions as lqf
 import gcloud_functions as gcloud
@@ -17,27 +16,29 @@ logging.basicConfig(
 
 logging.getLogger("google").setLevel(logging.WARNING)
 
+# Global sensor dataframe
+sensor_df = pd.DataFrame()
+
 
 def collect_data():
-    # Initialize sensors
-    sensors = [Sensor(id, **params) for id, params in sensor_profiles.items()]
-    # Create a dataframe to hold sensor data
-    sensor_df = pd.DataFrame()
-
     # Start the collection loop
     while True:
         # Collect data every 15 minutes
-        threading.Timer(900, collect_data).start()
+        threading.Timer(60, collect_data).start()  ## changed from 900 to 60 for testing
         sensor_data = {}
         for sensor in sensors:
             try:
-                sensor_data.update(sensor.read())
+                print(type(sensor.read(ser)))  # testing to see if this is the issue
+                sensor_data.update(sensor.read(ser))
             except Exception as e:
                 logging.error(
                     f"An error occurred during sensor reading: {e}", exc_info=True
                 )
         # Append sensor data to dataframe
-        sensor_df = sensor_df.append(sensor_data, ignore_index=True)
+        global sensor_df
+        sensor_df = sensor_df.append(
+            pd.DataFrame(sensor_data, index=[0]), ignore_index=True
+        )
 
 
 def process_data():
@@ -46,7 +47,9 @@ def process_data():
 
     while True:
         # Process data every hour
-        threading.Timer(3600, process_data).start()
+        threading.Timer(
+            60, process_data
+        ).start()  ## changed from 3600 to 60 for testing
 
         # Get names of tables containing data
         table_names = lqf.get_tables(datalogger)
@@ -62,6 +65,7 @@ def process_data():
             table_data = pd.DataFrame(table_data_listdict)
 
             # Merge table_data and sensor_data
+            global sensor_df
             combined_df = pd.concat([sensor_df, table_data], axis=1)
 
             # Calculate rolling average over 1 hour (4*15 minutes)
@@ -71,8 +75,10 @@ def process_data():
             project_id = "apt-rite-378417"
             dataset_id = "final_test"
             table_id = "corn_test"
-            schema = gcloud.get_schema(table_data)
-            gcloud.update_bqtable(schema, averaged_df, project_id, dataset_id, table_id)
+            schema = gcloud.get_schema(averaged_df.to_dict("records"))
+            gcloud.update_bqtable(
+                schema, averaged_df.to_dict("records"), project_id, dataset_id, table_id
+            )
 
             logging.info("Upload success!")
         except Exception as e:

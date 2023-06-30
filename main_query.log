@@ -1237,3 +1237,192 @@ Traceback (most recent call last):
   File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/google/cloud/bigquery/client.py", line 2485, in load_table_from_file
     raise exceptions.from_http_response(exc.response)
 google.api_core.exceptions.NotFound: 404 POST https://bigquery.googleapis.com/upload/bigquery/v2/projects/fourth-castle-388922/jobs?uploadType=resumable: Not found: Dataset fourth-castle-388922:final_test
+2023-06-30 10:14:13,070 [ERROR] - An error occurred during sensor reading: 'dict' object has no attribute 'to_dict'
+Traceback (most recent call last):
+  File "/home/bryan/.Repositories/Datalogger2Cloud/main_query_new.py", line 31, in collect_data
+    sensor_data.update(sensor.read(ser).to_dict())
+                       ^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'dict' object has no attribute 'to_dict'
+2023-06-30 10:14:33,140 [ERROR] - An error occurred during sensor reading: 'dict' object has no attribute 'to_dict'
+Traceback (most recent call last):
+  File "/home/bryan/.Repositories/Datalogger2Cloud/main_query_new.py", line 31, in collect_data
+    sensor_data.update(sensor.read(ser).to_dict())
+                       ^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'dict' object has no attribute 'to_dict'
+2023-06-30 10:14:53,155 [ERROR] - An error occurred during sensor reading: 'dict' object has no attribute 'to_dict'
+Traceback (most recent call last):
+  File "/home/bryan/.Repositories/Datalogger2Cloud/main_query_new.py", line 31, in collect_data
+    sensor_data.update(sensor.read(ser).to_dict())
+                       ^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'dict' object has no attribute 'to_dict'
+2023-06-30 10:15:13,171 [ERROR] - An error occurred during sensor reading: 'dict' object has no attribute 'to_dict'
+Traceback (most recent call last):
+  File "/home/bryan/.Repositories/Datalogger2Cloud/main_query_new.py", line 31, in collect_data
+    sensor_data.update(sensor.read(ser).to_dict())
+                       ^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'dict' object has no attribute 'to_dict'
+2023-06-30 10:15:33,193 [ERROR] - An error occurred during sensor reading: 'dict' object has no attribute 'to_dict'
+Traceback (most recent call last):
+  File "/home/bryan/.Repositories/Datalogger2Cloud/main_query_new.py", line 31, in collect_data
+    sensor_data.update(sensor.read(ser).to_dict())
+                       ^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'dict' object has no attribute 'to_dict'
+2023-06-30 10:15:33,194 [ERROR] - An error occurred while reading analog data: encoding without a string argument
+Traceback (most recent call last):
+  File "/home/bryan/.Repositories/Datalogger2Cloud/sensors.py", line 35, in read_analog
+    ser.write(bytes(self.address, "utf-8") + b"M8!")
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: encoding without a string argument
+2023-06-30 10:15:33,196 [ERROR] - An error occurred during sensor reading: 'dict' object has no attribute 'to_dict'
+Traceback (most recent call last):
+  File "/home/bryan/.Repositories/Datalogger2Cloud/main_query_new.py", line 31, in collect_data
+    sensor_data.update(sensor.read(ser).to_dict())
+                       ^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'dict' object has no attribute 'to_dict'
+2023-06-30 10:15:33,196 [ERROR] - An error occurred while reading analog data: encoding without a string argument
+Traceback (most recent call last):
+  File "/home/bryan/.Repositories/Datalogger2Cloud/sensors.py", line 35, in read_analog
+    ser.write(bytes(self.address, "utf-8") + b"M8!")
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: encoding without a string argument
+2023-06-30 10:15:33,197 [ERROR] - An error occurred during sensor reading: 'dict' object has no attribute 'to_dict'
+Traceback (most recent call last):
+  File "/home/bryan/.Repositories/Datalogger2Cloud/main_query_new.py", line 31, in collect_data
+    sensor_data.update(sensor.read(ser).to_dict())
+                       ^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'dict' object has no attribute 'to_dict'
+2023-06-30 10:15:33,198 [ERROR] - An error occurred while reading analog data: encoding without a string argument
+Traceback (most recent call last):
+  File "/home/bryan/.Repositories/Datalogger2Cloud/sensors.py", line 35, in read_analog
+    ser.write(bytes(self.address, "utf-8") + b"M8!")
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: encoding without a string argument
+2023-06-30 10:15:33,198 [ERROR] - An error occurred during sensor reading: 'dict' object has no attribute 'to_dict'
+Traceback (most recent call last):
+  File "/home/bryan/.Repositories/Datalogger2Cloud/main_query_new.py", line 31, in collect_data
+    sensor_data.update(sensor.read(ser).to_dict())
+                       ^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'dict' object has no attribute 'to_dict'
+2023-06-30 10:15:33,198 [ERROR] - An error occurred while reading analog data: encoding without a string argument
+Traceback (most recent call last):
+  File "/home/bryan/.Repositories/Datalogger2Cloud/sensors.py", line 35, in read_analog
+    ser.write(bytes(self.address, "utf-8") + b"M8!")
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: encoding without a string argument
+2023-06-30 10:15:33,198 [ERROR] - An error occurred during sensor reading: 'dict' object has no attribute 'to_dict'
+Traceback (most recent call last):
+  File "/home/bryan/.Repositories/Datalogger2Cloud/main_query_new.py", line 31, in collect_data
+    sensor_data.update(sensor.read(ser).to_dict())
+                       ^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'dict' object has no attribute 'to_dict'
+2023-06-30 10:46:01,469 [ERROR] - An error occurred: Extra data: line 2 column 1 (char 443)
+Traceback (most recent call last):
+  File "/home/bryan/.Repositories/Datalogger2Cloud/main_query.py", line 32, in main
+    start, stop = lqf.track_and_manage_time(datalogger)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bryan/.Repositories/Datalogger2Cloud/logger_query_functions.py", line 115, in track_and_manage_time
+    last_logged_time = load_last_logged_time(data_file)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bryan/.Repositories/Datalogger2Cloud/logger_query_functions.py", line 85, in load_last_logged_time
+    data = json.load(f)
+           ^^^^^^^^^^^^
+  File "/usr/lib/python3.11/json/__init__.py", line 293, in load
+    return loads(fp.read(),
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/json/decoder.py", line 340, in decode
+    raise JSONDecodeError("Extra data", s, end)
+json.decoder.JSONDecodeError: Extra data: line 2 column 1 (char 443)
+2023-06-30 10:46:43,397 [ERROR] - An error occurred: Extra data: line 2 column 1 (char 443)
+Traceback (most recent call last):
+  File "/home/bryan/.Repositories/Datalogger2Cloud/main_query.py", line 32, in main
+    start, stop = lqf.track_and_manage_time(datalogger)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bryan/.Repositories/Datalogger2Cloud/logger_query_functions.py", line 115, in track_and_manage_time
+    last_logged_time = load_last_logged_time(data_file)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bryan/.Repositories/Datalogger2Cloud/logger_query_functions.py", line 85, in load_last_logged_time
+    data = json.load(f)
+           ^^^^^^^^^^^^
+  File "/usr/lib/python3.11/json/__init__.py", line 293, in load
+    return loads(fp.read(),
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/json/decoder.py", line 340, in decode
+    raise JSONDecodeError("Extra data", s, end)
+json.decoder.JSONDecodeError: Extra data: line 2 column 1 (char 443)
+2023-06-30 10:54:03,742 [ERROR] - An error occurred: Extra data: line 2 column 1 (char 443)
+Traceback (most recent call last):
+  File "/home/bryan/.Repositories/Datalogger2Cloud/main_query.py", line 32, in main
+    start, stop = lqf.track_and_manage_time(datalogger)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bryan/.Repositories/Datalogger2Cloud/logger_query_functions.py", line 115, in track_and_manage_time
+    last_logged_time = load_last_logged_time(data_file)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bryan/.Repositories/Datalogger2Cloud/logger_query_functions.py", line 85, in load_last_logged_time
+    data = json.load(f)
+           ^^^^^^^^^^^^
+  File "/usr/lib/python3.11/json/__init__.py", line 293, in load
+    return loads(fp.read(),
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/json/decoder.py", line 340, in decode
+    raise JSONDecodeError("Extra data", s, end)
+json.decoder.JSONDecodeError: Extra data: line 2 column 1 (char 443)
+2023-06-30 11:00:43,742 [ERROR] - An error occurred: Can not access to device.
+Traceback (most recent call last):
+  File "/home/bryan/.Repositories/Datalogger2Cloud/main_query.py", line 32, in main
+    start, stop = lqf.track_and_manage_time(datalogger)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bryan/.Repositories/Datalogger2Cloud/logger_query_functions.py", line 128, in track_and_manage_time
+    start, stop = determine_start_stop(last_logged_time, datalogger)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bryan/.Repositories/Datalogger2Cloud/logger_query_functions.py", line 105, in determine_start_stop
+    stop = datalogger.gettime()
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/pycampbellcr1000/device.py", line 95, in gettime
+    self.ping_node()
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/pycampbellcr1000/device.py", line 90, in ping_node
+    raise NoDeviceException()
+pycampbellcr1000.exceptions.NoDeviceException: Can not access to device.
+2023-06-30 11:01:11,256 [ERROR] - An error occurred: 400 POST https://bigquery.googleapis.com/upload/bigquery/v2/projects/fourth-castle-388922/jobs?uploadType=resumable: Provided Schema does not match Table fourth-castle-388922:final_test.corn_test. Cannot add fields (field: _2001A1IRTXX23)
+Traceback (most recent call last):
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/google/cloud/bigquery/client.py", line 2477, in load_table_from_file
+    response = self._do_resumable_upload(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/google/cloud/bigquery/client.py", line 2891, in _do_resumable_upload
+    upload, transport = self._initiate_resumable_upload(
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/google/cloud/bigquery/client.py", line 2964, in _initiate_resumable_upload
+    upload.initiate(
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/google/resumable_media/requests/upload.py", line 420, in initiate
+    return _request_helpers.wait_and_retry(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/google/resumable_media/requests/_request_helpers.py", line 155, in wait_and_retry
+    response = func()
+               ^^^^^^
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/google/resumable_media/requests/upload.py", line 416, in retriable_request
+    self._process_initiate_response(result)
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/google/resumable_media/_upload.py", line 509, in _process_initiate_response
+    _helpers.require_status_code(
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/google/resumable_media/_helpers.py", line 108, in require_status_code
+    raise common.InvalidResponse(
+google.resumable_media.common.InvalidResponse: ('Request failed with status code', 400, 'Expected one of', <HTTPStatus.OK: 200>, <HTTPStatus.CREATED: 201>)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/bryan/.Repositories/Datalogger2Cloud/main_query.py", line 51, in main
+    gcloud.update_bqtable(schema, table_data, project_id, dataset_id, table_id)
+  File "/home/bryan/.Repositories/Datalogger2Cloud/gcloud_functions.py", line 94, in update_bqtable
+    load_job = bigquery_client.load_table_from_file(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/google/cloud/bigquery/client.py", line 2485, in load_table_from_file
+    raise exceptions.from_http_response(exc.response)
+google.api_core.exceptions.BadRequest: 400 POST https://bigquery.googleapis.com/upload/bigquery/v2/projects/fourth-castle-388922/jobs?uploadType=resumable: Provided Schema does not match Table fourth-castle-388922:final_test.corn_test. Cannot add fields (field: _2001A1IRTXX23)

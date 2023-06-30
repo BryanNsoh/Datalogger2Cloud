@@ -36,19 +36,19 @@ def main():
             datalogger, table_names[1].decode("utf-8"), start, stop
         )
 
-        # Storing the data to a local ndjson file
-        lqf.store_in_ndjson(table_data)
-
         # Send stored data to GCloud
         schema = gcloud.get_schema(table_data)
 
         # IDs and paths for Google Cloud
         project_id = "fourth-castle-388922"
         dataset_id = "final_test"
-        table_id = "corn_test"
+        table_id = "dry_test"
 
         # Update BigQuery table
         gcloud.update_bqtable(schema, table_data, project_id, dataset_id, table_id)
+
+        # Storing the data to a local ndjson file
+        lqf.store_in_ndjson(table_data)
 
         # Report Success
         logging.info("Upload success!")

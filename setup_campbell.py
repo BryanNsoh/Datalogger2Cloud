@@ -49,6 +49,7 @@ def create_file(file_name, content):
 
 def enable_and_start_systemd(unit_name):
     logger.debug(f"Enabling and starting systemd unit: {unit_name}")
+    run_command("sudo hwclock -w", continue_on_error=True)  # activating rbpi rtc clock
     run_command(f"sudo systemctl enable {unit_name}", continue_on_error=True)
     run_command(f"sudo systemctl start {unit_name}", continue_on_error=True)
 
