@@ -30,8 +30,8 @@ Public _2010B5TDR1823_Addr As String * 8
 Public _2010B5TDR3023_Addr As String * 8 
 
 'DataTable for storing sensor data 
-DataTable(Sensordata,True,-1) 
-DataInterval(0,2,min,10) 
+DataTable(span2nodeB,True,-1) 
+DataInterval(0,15,Min,0) 
 Sample(1,BatV,IEEE4) 
 
 'Sample statements for each sensor 
@@ -86,7 +86,9 @@ _2010B5TDR0623_Addr = "b"
 _2010B5TDR1823_Addr = "c" 
 _2010B5TDR3023_Addr = "d" 
 
-Scan(1,Min,2,0) 
+
+Scan(1,Min,15,0) 
+Battery(BatV) 
 
 'Collect data from the sensors 
 SDI12Recorder(_2009B1IRTXX23,1,_2009B1IRTXX23_Addr,"M!",1,0) 
@@ -105,20 +107,20 @@ SDI12Recorder(_2010B5TDR0623_VWC,1,_2010B5TDR0623_Addr,"M!",1,0)
 SDI12Recorder(_2010B5TDR1823_VWC,1,_2010B5TDR1823_Addr,"M!",1,0) 
 SDI12Recorder(_2010B5TDR3023_VWC,1,_2010B5TDR3023_Addr,"M!",1,0)
 
-SDI12Recorder(_2009B1TDR0623_ST,1,_2009B1TDR0623_Addr,"M!",1,0) 
-SDI12Recorder(_2009B1TDR1823_ST,1,_2009B1TDR1823_Addr,"M!",1,0) 
-SDI12Recorder(_2009B1TDR3023_ST,1,_2009B1TDR3023_Addr,"M!",1,0) 
-SDI12Recorder(_2009B1TDR4223_ST,1,_2009B1TDR4223_Addr,"M!",1,0)
+SDI12Recorder(_2009B1TDR0623_ST,1,_2009B1TDR0623_Addr,"M!",2,0)
+SDI12Recorder(_2009B1TDR1823_ST,1,_2009B1TDR1823_Addr,"M!",2,0)
+SDI12Recorder(_2009B1TDR3023_ST,1,_2009B1TDR3023_Addr,"M!",2,0)
+SDI12Recorder(_2009B1TDR4223_ST,1,_2009B1TDR4223_Addr,"M!",2,0)
 
-SDI12Recorder(_2004B5TDR0623_ST,1,_2004B5TDR0623_Addr,"M!",1,0) 
-SDI12Recorder(_2005B5TDR1823_ST,1,_2005B5TDR1823_Addr,"M!",1,0) 
-SDI12Recorder(_2005B5TDR3023_ST,1,_2005B5TDR3023_Addr,"M!",1,0) 
-SDI12Recorder(_2010B5TDR0623_ST,1,_2010B5TDR0623_Addr,"M!",1,0) 
-SDI12Recorder(_2010B5TDR1823_ST,1,_2010B5TDR1823_Addr,"M!",1,0) 
-SDI12Recorder(_2010B5TDR3023_ST,1,_2010B5TDR3023_Addr,"M!",1,0)
+SDI12Recorder(_2004B5TDR0623_ST,1,_2004B5TDR0623_Addr,"M!",2,0)
+SDI12Recorder(_2005B5TDR1823_ST,1,_2005B5TDR1823_Addr,"M!",2,0)
+SDI12Recorder(_2005B5TDR3023_ST,1,_2005B5TDR3023_Addr,"M!",2,0)
+SDI12Recorder(_2010B5TDR0623_ST,1,_2010B5TDR0623_Addr,"M!",2,0)
+SDI12Recorder(_2010B5TDR1823_ST,1,_2010B5TDR1823_Addr,"M!",2,0)
+SDI12Recorder(_2010B5TDR3023_ST,1,_2010B5TDR3023_Addr,"M!",2,0)
 
 'Add data to the table 
-CallTable(Sensordata) 
+CallTable(span2nodeB) 
 
 NextScan 
 

@@ -36,7 +36,7 @@ Public _2001A1TDR4223_Addr As String * 8
 
 'DataTable for storing sensor data 
 DataTable(span2nodeA,True,-1) 
-DataInterval(0,2,min,10) 
+DataInterval(0,15,Min,0)
 Battery(BatV)
 Sample(1,BatV,IEEE4) 
 
@@ -93,7 +93,7 @@ _2007A2TDR0623_Addr = "b"
 _2007A2TDR1823_Addr = "c"
 _2007A2TDR3023_Addr = "d"
 
-Scan(1,Min,2,0)  
+Scan(1,Min,15,0)  
 Battery(BatV) 
 
 'Collect data from the sensors

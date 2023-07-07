@@ -17,7 +17,7 @@
         },
         {
             "name": "scheduled_shutdown",
-            "timer": "[Unit]\nDescription=Shut down the system every day at 6AM\n\n[Timer]\nOnCalendar=*-*-* 06:00:00\nUnit=scheduled_shutdown.service\n\n[Install]\nWantedBy=timers.target\n",
+            "timer": "[Unit]\nDescription=Shut down the system every day at 6AM\n\n[Timer]\nOnCalendar=*-*-* 06:05:00\nUnit=scheduled_shutdown.service\n\n[Install]\nWantedBy=timers.target\n",
             "service": "[Unit]\nDescription=Shut down the system\n\n[Service]\nType=oneshot\nExecStart=/sbin/shutdown -h now\nStandardOutput=file:{systemd_reports_path}/scheduled_shutdown.stdout\nStandardError=file:{systemd_reports_path}/scheduled_shutdown.stderr\n"
         },
         {
