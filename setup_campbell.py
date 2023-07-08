@@ -1,9 +1,15 @@
+# To run this program, first run:
+# python setup.py main_query disable_sleep scheduled_restart
+# python setup.py scheduled_shutdown
+
+
 import os
 import subprocess
 import shutil
 from pathlib import Path
 import logging
 import json
+import sys
 
 # Set up logging
 logging.basicConfig(
@@ -17,6 +23,11 @@ logger = logging.getLogger()
 # Load configuration from config.json
 with open("./config.json", "r") as config_file:
     config = json.load(config_file)
+
+# check if specific units are passed as arguments
+unit_names = (
+    sys.argv[1:] if len(sys.argv) > 1 else [unit["name"] for unit in config["units"]]
+)
 
 
 def check_permissions():
@@ -75,7 +86,7 @@ for cmd in commands:
 sudo_path = shutil.which("sudo")
 
 # Create and Configure Systemd Services and Timers
-units = config["units"]
+units = [unit for unit in config["units"] if unit["name"] in unit_names]
 
 # Create, enable, and start the systemd units
 for unit in units:
