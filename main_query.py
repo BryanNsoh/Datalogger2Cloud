@@ -40,9 +40,9 @@ def main():
         schema = gcloud.get_schema(table_data)
 
         # IDs and paths for Google Cloud
-        project_id = "fourth-castle-388922"
-        dataset_id = "final_test"
-        table_id = "dry_test"
+        project_id = "crop2cloud"
+        dataset_id = "sensor_data"
+        table_id = "span2corn"
 
         # Update BigQuery table
         gcloud.update_bqtable(schema, table_data, project_id, dataset_id, table_id)

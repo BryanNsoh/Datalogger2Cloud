@@ -16,9 +16,9 @@
             "service": "[Unit]\nDescription=Disable sleep and power management features\n\n[Service]\nType=oneshot\nExecStart=/bin/bash -c 'echo 0 > /sys/devices/platform/soc/3f980000.usb/buspower; echo 0 > /sys/devices/platform/soc/3f980000.usb/power/control; setterm -blank 0 -powersave off -powerdown 0'\nStandardOutput=file:{systemd_reports_path}/disable_sleep.stdout\nStandardError=file:{systemd_reports_path}/disable_sleep.stderr\n"
         },
         {
-            "name": "scheduled_restart",
-            "timer": "[Unit]\nDescription=Restart the system every day at 6PM\n\n[Timer]\nOnCalendar=*-*-* 18:00:00\nUnit=scheduled_restart.service\n\n[Install]\nWantedBy=timers.target\n",
-            "service": "[Unit]\nDescription=Restart the system\n\n[Service]\nType=oneshot\nExecStart=/bin/bash -c 'sleep 10 && /sbin/shutdown -r now'\nStandardOutput=file:{systemd_reports_path}/scheduled_restart.stdout\nStandardError=file:{systemd_reports_path}/scheduled_restart.stderr\n"
+            "name": "wake",
+            "timer": "[Unit]\nDescription=Wake timer\n\n[Timer]\nOnCalendar=daily\nPersistent=true\nUnit=wake.service\n\n[Install]\nWantedBy=timers.target\n",
+            "service": "[Unit]\nDescription=Wake service\n\n[Service]\nType=oneshot\nExecStart=/bin/bash -c 'echo 0 > /sys/class/rtc/rtc0/wakealarm; echo $(date +%s -d \"tomorrow 8:00\") > /sys/class/rtc/rtc0/wakealarm'\n\n[Install]\nWantedBy=multi-user.target\n"
         },
         {
             "name": "scheduled_shutdown",

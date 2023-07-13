@@ -50,8 +50,8 @@ def get_data(datalogger, table_name, start, stop):
 
 
 def store_in_ndjson(list_dict):
-    local_file = "./table_data.ndjson"
-    temp_file = "./temp_table_data.ndjson"
+    local_file = "./span2nodeA.ndjson"
+    temp_file = "./temp_span2nodeA.ndjson"
 
     # Load existing data and remember the RecNbr values
     existing_data = []
@@ -112,7 +112,7 @@ def determine_start_stop(last_logged_time, datalogger):
 
 def track_and_manage_time(datalogger, delay=60):
     """Returns the appropriate start and stop time for data collection"""
-    data_file = os.path.join(os.getcwd(), "./table_data.ndjson")
+    data_file = os.path.join(os.getcwd(), "./span2nodeA.ndjson")
 
     last_logged_time = None
 

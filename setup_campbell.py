@@ -1,8 +1,3 @@
-# To run this program, first run:
-# python setup.py main_query disable_sleep scheduled_restart
-# python setup.py scheduled_shutdown
-
-
 import os
 import subprocess
 import shutil
@@ -61,8 +56,11 @@ def create_file(file_name, content):
 def enable_and_start_systemd(unit_name):
     logger.debug(f"Enabling and starting systemd unit: {unit_name}")
     run_command(
-        "sudo hwclock -w", continue_on_error=True
-    )  # Write the system time to the RTC clock
+        "sudo timedatectl set-timezone America/Chicago", continue_on_error=True
+    )  # set timezone
+    run_command(
+        "sudo timedatectl set-ntp true", continue_on_error=True
+    )  # Update system time over the internet
     run_command(f"sudo systemctl enable {unit_name}", continue_on_error=True)
     run_command(f"sudo systemctl start {unit_name}", continue_on_error=True)
 
