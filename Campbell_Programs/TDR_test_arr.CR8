@@ -1,0 +1,58 @@
+'CR800 Datalogger 
+
+'Declare Public Variables
+Public BatV
+
+'Variable for 1 IRT sensor
+Public _2001A1IRTXX23
+
+'Array for 1 SDI-12 sensor  
+Dim _2003A2TDR0623(2)
+
+'Variables for TDR sensor data
+Public _2003A2TDR0623_VWC,  _2003A2TDR0623_ST  
+
+'Declare SDI-12 Addresses 
+Public _2001A1IRTXX23_Addr As String * 8 
+Public _2003A2TDR0623_Addr As String * 8 
+
+'DataTable
+DataTable(data,True,-1) 
+DataInterval(0,1,min,0)
+
+Sample(1,BatV,IEEE4)
+
+Sample(1,_2003A2TDR0623_VWC,IEEE4)  
+Sample(1,_2003A2TDR0623_ST,IEEE4)
+Sample(1,_2001A1IRTXX23,IEEE4)
+
+
+EndTable
+
+'Main Program
+BeginProg
+
+'Assign SDI-12 Addresses 
+_2001A1IRTXX23_Addr = "0"
+
+_2003A2TDR0623_Addr = "1"
+
+Scan(6,sec,0,0)
+
+Battery(BatV) 
+
+'Read IRT sensor
+SDI12Recorder(_2001A1IRTXX23,1,_2001A1IRTXX23_Addr,"M!",1,0)
+
+'Read TDR sensor
+SDI12Recorder(_2003A2TDR0623(),1,_2003A2TDR0623_Addr,"M!",1,0)   
+
+'Obtain TDR VWC and ST from Array
+_2003A2TDR0623_VWC = _2003A2TDR0623(1)
+_2003A2TDR0623_ST   = _2003A2TDR0623(2)  
+
+CallTable data  
+
+NextScan
+
+EndProg

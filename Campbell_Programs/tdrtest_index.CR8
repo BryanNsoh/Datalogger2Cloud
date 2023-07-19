@@ -1,0 +1,28 @@
+'CR800 Datalogger for one TDR sensor
+
+Public TDR_VWC, TDR_ST  
+
+Public TDR_Addr As String * 8
+
+DataTable(OneSensor,True,-1)  
+DataInterval(0,1,Min,0)
+
+Sample(1,TDR_VWC,IEEE4)
+Sample(1,TDR_ST,IEEE4)  
+
+EndTable
+
+'Main Program
+BeginProg
+
+TDR_Addr = "1" 
+
+Scan(6,sec,0,0)
+
+SDI12Recorder(TDR_VWC,1,TDR_Addr,"M!",2,0)  
+SDI12Recorder(TDR_ST,1,TDR_Addr,"M!",3,0)   
+
+CallTable(OneSensor)
+
+NextScan
+EndProg
