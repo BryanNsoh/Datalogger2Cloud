@@ -46,13 +46,6 @@ try:
             json.dump(sensor_data, f)
             f.write("\n")
 
-        time.sleep(sampling_interval)
-
-        # Graceful shutdown check
-        if datetime.now().hour >= 18:
-            logging.info("It's 6 PM. Program is shutting down...")
-            break
-
 except KeyboardInterrupt:
     logging.info("Interrupted by user. Exiting...")
 except Exception as e:

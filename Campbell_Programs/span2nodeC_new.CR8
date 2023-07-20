@@ -1,0 +1,188 @@
+'CR800 Datalogger for span2nodeC
+
+'Declare Public Variables
+Public BatV   
+
+'IRT computation variables
+Public SBTempC As Float  
+Public TargmV As Float
+Public m As Float
+Public b As Float 
+Public SBTempK As Float
+Public TargTempK As Float
+
+'IRT sensor variables
+Public _2014CIRTXX23_arr(2)
+Public _2014CIRTXX23   
+Public _2013CIRTXX23_arr(2)
+Public _2013CIRTXX23
+Public _2015CIRTXX23_arr(2)  
+Public _2015CIRTXX23
+
+'TDR sensor variables   
+Public _2014CTDR0623(2)
+Public _2014CTDR0623_VWC, _2014CTDR0623_ST
+Public _2014CTDR1823(2)   
+Public _2014CTDR1823_VWC, _2014CTDR1823_ST
+Public _2013CTDR0623(2)
+Public _2013CTDR0623_VWC, _2013CTDR0623_ST
+Public _2013CTDR1823(2)
+Public _2013CTDR1823_VWC, _2013CTDR1823_ST  
+Public _2015CTDR0623(2)
+Public _2015CTDR0623_VWC, _2015CTDR0623_ST
+Public _2015CTDR1823(2)
+Public _2015CTDR1823_VWC, _2015CTDR1823_ST
+Public _2014CTDR3023(2)    
+Public _2014CTDR3023_VWC, _2014CTDR3023_ST
+Public _2013CTDR3023(2)
+Public _2013CTDR3023_VWC, _2013CTDR3023_ST 
+Public _2015CTDR3023(2)
+Public _2015CTDR3023_VWC, _2015CTDR3023_ST
+Public _2014CTDR4223(2)
+Public _2014CTDR4223_VWC, _2014CTDR4223_ST
+
+'IRT Calibration Constants    
+Const mC2_2014CIRTXX23 = 108842
+Const mC1_2014CIRTXX23 = 12194347
+Const mC0_2014CIRTXX23 = 2023062984
+Const bC2_2014CIRTXX23 = 3601
+Const bC1_2014CIRTXX23 = 172277 
+Const bC0_2014CIRTXX23 = 3807842
+
+
+Const mC2_2013CIRTXX23 = 109025
+Const mC1_2013CIRTXX23 = 11932543
+Const mC0_2013CIRTXX23 = 1978840090
+Const bC2_2013CIRTXX23 = 29783
+Const bC1_2013CIRTXX23 = 448393
+Const bC0_2013CIRTXX23 = -6244591
+
+' For the 2015 sensor, as there's no calibration data available
+
+
+
+'SDI-12 Addresses
+Public _2014CIRTXX23_Addr As String * 8 = "8"    
+Public _2014CTDR0623_Addr As String * 8 = "a"
+Public _2014CTDR1823_Addr As String * 8 = "b"  
+Public _2014CTDR3023_Addr As String * 8 = "c"
+Public _2014CTDR4223_Addr As String * 8 = "d"
+Public _2013CIRTXX23_Addr As String * 8 = "4"
+Public _2013CTDR0623_Addr As String * 8 = "5" 
+Public _2013CTDR1823_Addr As String * 8 = "6"
+Public _2013CTDR3023_Addr As String * 8 = "7"   
+Public _2015CIRTXX23_Addr As String * 8 = "e"  
+Public _2015CTDR0623_Addr As String * 8 = "f"
+Public _2015CTDR1823_Addr As String * 8 = "g" 
+Public _2015CTDR3023_Addr As String * 8 = "h"
+
+
+
+'DataTable
+DataTable (data,True,-1)  
+DataInterval(0,15,Min,0)
+Minimum (1,BatV,FP2,False,False)
+
+Sample (1,_2014CIRTXX23,FP2) 
+Sample (1,_2014CTDR0623_VWC,FP2)  
+Sample (1,_2014CTDR0623_ST,FP2)
+Sample (1,_2014CTDR1823_VWC,FP2)
+Sample (1,_2014CTDR1823_ST,FP2) 
+Sample (1,_2014CTDR3023_VWC,FP2)
+Sample (1,_2014CTDR3023_ST,FP2)
+Sample (1,_2014CTDR4223_VWC,FP2) 
+Sample (1,_2014CTDR4223_ST,FP2)
+
+Sample (1,_2013CIRTXX23,FP2)   
+Sample (1,_2013CTDR0623_VWC,FP2)
+Sample (1,_2013CTDR0623_ST,FP2) 
+Sample (1,_2013CTDR1823_VWC,FP2)  
+Sample (1,_2013CTDR1823_ST,FP2) 
+Sample (1,_2013CTDR3023_VWC,FP2)
+Sample (1,_2013CTDR3023_ST,FP2)
+
+Sample (1,_2015CIRTXX23,FP2)  
+Sample (1,_2015CTDR0623_VWC,FP2) 
+Sample (1,_2015CTDR0623_ST,FP2)    
+Sample (1,_2015CTDR1823_VWC,FP2) 
+Sample (1,_2015CTDR1823_ST,FP2)
+Sample (1,_2015CTDR3023_VWC,FP2)  
+Sample (1,_2015CTDR3023_ST,FP2) 
+
+EndTable
+
+'Function for computing IRT values 
+Function ComputeIRTTemp(SBTempC, TargmV, mC2, mC1, mC0, bC2, bC1, bC0) As Float
+  m = mC2 * SBTempC^2 + mC1 * SBTempC + mC0   
+  b = bC2 * SBTempC^2 + bC1 * SBTempC + bC0
+  SBTempK = SBTempC + 273.15
+  TargTempK = ((SBTempK^4) + m * TargmV + b)^0.25 
+  ComputeIRTTemp = TargTempK - 273.15
+EndFunction
+
+'Main Program   
+
+Dim cmdIRT As String * 8 = "M2!"
+Dim cmdTDR As String * 8 = "M!" 
+
+Scan(1,Min,15,0)
+Battery(BatV)
+
+'Read IRT sensors  
+SDI12Recorder(_2014CIRTXX23_arr(),1,_2014CIRTXX23_Addr,cmdIRT,1,0)
+  SBTempC = _2014CIRTXX23_arr(2)    
+  TargmV = _2014CIRTXX23_arr(1)
+  _2014CIRTXX23 = ComputeIRTTemp(SBTempC, TargmV, mC2_2014CIRTXX23, mC1_2014CIRTXX23, mC0_2014CIRTXX23, bC2_2014CIRTXX23, bC1_2014CIRTXX23, bC0_2014CIRTXX23)
+  
+SDI12Recorder(_2013CIRTXX23_arr(),1,_2013CIRTXX23_Addr,cmdIRT,1,0)
+  SBTempC = _2013CIRTXX23_arr(2)  
+  TargmV = _2013CIRTXX23_arr(1)
+  _2013CIRTXX23 = ComputeIRTTemp(SBTempC, TargmV, mC2_2013CIRTXX23, mC1_2013CIRTXX23, mC0_2013CIRTXX23, bC2_2013CIRTXX23, bC1_2013CIRTXX23, bC0_2013CIRTXX23)
+   
+' The 2015 sensor is read directly, eschewing the computation
+SDI12Recorder(_2015CIRTXX23,1,_2015CIRTXX23_Addr,cmdTDR,1,0)
+
+'Read TDR sensors   
+SDI12Recorder(_2014CTDR0623(),1,_2014CTDR0623_Addr,cmdTDR,1,0)
+  _2014CTDR0623_VWC = _2014CTDR0623(1)
+  _2014CTDR0623_ST = _2014CTDR0623(2)
+
+SDI12Recorder(_2014CTDR1823(),1,_2014CTDR1823_Addr,cmdTDR,1,0)  
+  _2014CTDR1823_VWC = _2014CTDR1823(1)   
+  _2014CTDR1823_ST = _2014CTDR1823(2)  
+
+SDI12Recorder(_2013CTDR0623(),1,_2013CTDR0623_Addr,cmdTDR,1,0)
+  _2013CTDR0623_VWC = _2013CTDR0623(1) 
+  _2013CTDR0623_ST = _2013CTDR0623(2)
+  
+SDI12Recorder(_2013CTDR1823(),1,_2013CTDR1823_Addr,cmdTDR,1,0)
+  _2013CTDR1823_VWC = _2013CTDR1823(1)
+  _2013CTDR1823_ST = _2013CTDR1823(2) 
+
+SDI12Recorder(_2015CTDR0623(),1,_2015CTDR0623_Addr,cmdTDR,1,0) 
+  _2015CTDR0623_VWC = _2015CTDR0623(1)
+  _2015CTDR0623_ST = _2015CTDR0623(2)
+  
+SDI12Recorder(_2015CTDR1823(),1,_2015CTDR1823_Addr,cmdTDR,1,0)  
+  _2015CTDR1823_VWC = _2015CTDR1823(1) 
+  _2015CTDR1823_ST = _2015CTDR1823(2)
+
+SDI12Recorder(_2014CTDR3023(),1,_2014CTDR3023_Addr,cmdTDR,1,0)  
+  _2014CTDR3023_VWC = _2014CTDR3023(1)     
+  _2014CTDR3023_ST = _2014CTDR3023(2)
+
+SDI12Recorder(_2013CTDR3023(),1,_2013CTDR3023_Addr,cmdTDR,1,0)
+  _2013CTDR3023_VWC = _2013CTDR3023(1)
+  _2013CTDR3023_ST = _2013CTDR3023(2)
+  
+SDI12Recorder(_2015CTDR3023(),1,_2015CTDR3023_Addr,cmdTDR,1,0)
+  _2015CTDR3023_VWC = _2015CTDR3023(1)  
+  _2015CTDR3023_ST = _2015CTDR3023(2)  
+
+SDI12Recorder(_2014CTDR4223(),1,_2014CTDR4223_Addr,cmdTDR,1,0)
+  _2014CTDR4223_VWC = _2014CTDR4223(1) 
+  _2014CTDR4223_ST = _2014CTDR4223(2)
+
+CallTable data  
+NextScan 
+EndProg
