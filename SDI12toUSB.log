@@ -1,3 +1,67 @@
 2023-05-12 08:43:41,393 [INFO] - Interrupted by user. Exiting...
 2023-06-02 09:56:49,741 [INFO] - Interrupted by user. Exiting...
 2023-06-02 10:14:56,530 [INFO] - Interrupted by user. Exiting...
+2023-07-20 12:41:24,343 [INFO] - Interrupted by user. Exiting...
+2023-07-20 12:42:37,693 [ERROR] - An error occurred while reading digital data: list index out of range
+Traceback (most recent call last):
+  File "/home/bryan/Desktop/Datalogger2Cloud/sensors.py", line 54, in read_digital
+    return {self.id: sensor_values[1]}
+                     ~~~~~~~~~~~~~^^^
+IndexError: list index out of range
+2023-07-20 12:42:37,749 [ERROR] - An error occurred: 'DataFrame' object has no attribute 'append'
+Traceback (most recent call last):
+  File "/home/bryan/Desktop/Datalogger2Cloud/SDI12toUSB.py", line 26, in <module>
+    df = df.append(sensor_data)
+         ^^^^^^^^^
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/pandas/core/generic.py", line 5989, in __getattr__
+    return object.__getattribute__(self, name)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'DataFrame' object has no attribute 'append'
+2023-07-20 13:18:42,238 [INFO] - Interrupted by user. Exiting...
+2023-07-20 13:23:32,569 [ERROR] - An error occurred while reading digital data: list index out of range
+Traceback (most recent call last):
+  File "/home/bryan/Desktop/Datalogger2Cloud/sensors.py", line 54, in read_digital
+    return {self.id: sensor_values[1]}
+                     ~~~~~~~~~~~~~^^^
+IndexError: list index out of range
+2023-07-20 13:23:32,579 [ERROR] - An error occurred: 'DataFrame' object has no attribute 'append'
+Traceback (most recent call last):
+  File "/home/bryan/Desktop/Datalogger2Cloud/SDI12toUSB.py", line 26, in <module>
+    df = df.append(sensor_data)
+         ^^^^^^^^^
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/pandas/core/generic.py", line 5989, in __getattr__
+    return object.__getattribute__(self, name)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'DataFrame' object has no attribute 'append'
+2023-07-20 13:40:42,805 [ERROR] - An error occurred while reading digital data: list index out of range
+Traceback (most recent call last):
+  File "/home/bryan/Desktop/Datalogger2Cloud/sensors.py", line 51, in read_digital
+    return {self.id: sensor_values[0]}
+                     ~~~~~~~~~~~~~^^^
+IndexError: list index out of range
+2023-07-20 13:40:42,816 [ERROR] - An error occurred: 'DataFrame' object has no attribute 'append'
+Traceback (most recent call last):
+  File "/home/bryan/Desktop/Datalogger2Cloud/SDI12toUSB.py", line 26, in <module>
+    df = df.append(sensor_data)
+         ^^^^^^^^^
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/pandas/core/generic.py", line 5989, in __getattr__
+    return object.__getattribute__(self, name)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'DataFrame' object has no attribute 'append'
+2023-07-20 14:04:34,489 [WARNING] - Multiple serial ports detected, using the first one
+2023-07-20 15:53:17,859 [INFO] - Interrupted by user. Exiting...
+2023-07-20 16:12:11,289 [WARNING] - Multiple serial ports detected, using the first one
+2023-07-20 16:13:18,076 [WARNING] - Multiple serial ports detected, using the first one
+2023-07-20 16:13:40,892 [ERROR] - An error occurred: device reports readiness to read but returned no data (device disconnected or multiple access on port?)
+Traceback (most recent call last):
+  File "/home/bryan/Desktop/Datalogger2Cloud/SDI12toUSB_main.py", line 79, in <module>
+    sensor_0_values = read_sensor_data(ser, b"0", b"1")
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bryan/Desktop/Datalogger2Cloud/SDI12toUSB_main.py", line 46, in read_sensor_data
+    sdi_12_line = ser.readline()
+                  ^^^^^^^^^^^^^^
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/serial/serialposix.py", line 595, in read
+    raise SerialException(
+serial.serialutil.SerialException: device reports readiness to read but returned no data (device disconnected or multiple access on port?)
+2023-07-20 16:14:00,579 [WARNING] - Multiple serial ports detected, using the first one
+2023-07-20 16:15:37,512 [WARNING] - Multiple serial ports detected, using the first one

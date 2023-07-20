@@ -30,7 +30,7 @@ sdi_12_line = ser.readline()
 sdi_12_line = sdi_12_line[:-2]  # remove \r and \n
 print("Sensor info:", sdi_12_line.decode("utf-8"))
 
-ser.write(sdi_12_address + b"M!")
+ser.write(sdi_12_address + b"M4!")
 sdi_12_line = ser.readline()
 sdi_12_line = ser.readline()
 ser.write(sdi_12_address + b"D0!")

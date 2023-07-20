@@ -1,9 +1,9 @@
 import sensors
-from datetime import datetime, timedelta
-import time
+from datetime import datetime
 import json
 import gcloud_functions as gcloud
 import logging
+import pandas as pd
 
 # Configure logging
 logging.basicConfig(
@@ -18,33 +18,29 @@ project_id = "apt-rite-378417"
 dataset_id = "loggertest1"
 table_id = "SDI12Test2"
 
-last_upload_time = datetime.now()
-upload_interval = 60  # In seconds, update according to your requirement
-sampling_interval = 1  # In seconds, update according to your requirement
+df = pd.DataFrame()
 
 try:
-    while True:
-        sensor_data = {"Datetime": datetime.now().isoformat()}
-        for sensor in sensors.sensors:
-            sensor_data.update(sensor.read(sensors.ser))
+    sensor_data = sensors.read_all_sensors()
+    sensor_data["Datetime"] = datetime.now().isoformat()
+    df = df.append(sensor_data)
 
-        # Push sensor data to BigQuery and Google Cloud Storage
-        if (datetime.now() - last_upload_time).total_seconds() >= upload_interval:
-            bq_schema = gcloud.get_schema([sensor_data])
-            if bq_schema:
-                gcloud.update_bqtable(
-                    schema=bq_schema,
-                    table_data=[sensor_data],
-                    project_id=project_id,
-                    dataset_id=dataset_id,
-                    table_id=table_id,
-                )
-                last_upload_time = datetime.now()
+    # Push sensor data to BigQuery and Google Cloud Storage
+    bq_schema = gcloud.get_schema([df.to_dict(orient="records")])
+    if bq_schema:
+        gcloud.update_bqtable(
+            schema=bq_schema,
+            table_data=df.to_dict(orient="records"),
+            project_id=project_id,
+            dataset_id=dataset_id,
+            table_id=table_id,
+        )
+    df = pd.DataFrame()
 
-        # Save sensor data to a file
-        with open("./sensor_data.json", "a") as f:
-            json.dump(sensor_data, f)
-            f.write("\n")
+    # Save sensor data to a file
+    with open("./sensor_data.json", "a") as f:
+        json.dump(df.to_dict(orient="records"), f)
+        f.write("\n")
 
 except KeyboardInterrupt:
     logging.info("Interrupted by user. Exiting...")

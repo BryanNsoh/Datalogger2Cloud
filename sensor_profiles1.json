@@ -1,0 +1,26 @@
+[
+    {
+        "Span": 2.0,
+        "Node": "A",
+        "Treatment": 1.0,
+        "field_number": 2001.0,
+        "sensor_model": "TDR-315N",
+        "Depth": 6.0,
+        "Serial Number": "15011621",
+        "SDI-12 Address": "1",
+        "Analog address": null,
+        "sensor_id": "2001A1TDR0623"
+    },
+    {
+        "Span": 2.0,
+        "Node": "A",
+        "Treatment": 1.0,
+        "field_number": 2001.0,
+        "sensor_model": "TDR-315N",
+        "Depth": 18.0,
+        "Serial Number": "15011620",
+        "SDI-12 Address": "2",
+        "Analog address": null,
+        "sensor_id": "2001A1TDR1823"
+    }
+]

@@ -1426,3 +1426,38 @@ Traceback (most recent call last):
   File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/google/cloud/bigquery/client.py", line 2485, in load_table_from_file
     raise exceptions.from_http_response(exc.response)
 google.api_core.exceptions.BadRequest: 400 POST https://bigquery.googleapis.com/upload/bigquery/v2/projects/fourth-castle-388922/jobs?uploadType=resumable: Provided Schema does not match Table fourth-castle-388922:final_test.corn_test. Cannot add fields (field: _2001A1IRTXX23)
+2023-07-13 16:40:48,697 [ERROR] - An error occurred: 400 POST https://bigquery.googleapis.com/upload/bigquery/v2/projects/crop2cloud/jobs?uploadType=resumable: Empty schema specified for the load job. Please specify a schema that describes the data being loaded.
+Traceback (most recent call last):
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/google/cloud/bigquery/client.py", line 2477, in load_table_from_file
+    response = self._do_resumable_upload(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/google/cloud/bigquery/client.py", line 2891, in _do_resumable_upload
+    upload, transport = self._initiate_resumable_upload(
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/google/cloud/bigquery/client.py", line 2964, in _initiate_resumable_upload
+    upload.initiate(
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/google/resumable_media/requests/upload.py", line 420, in initiate
+    return _request_helpers.wait_and_retry(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/google/resumable_media/requests/_request_helpers.py", line 155, in wait_and_retry
+    response = func()
+               ^^^^^^
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/google/resumable_media/requests/upload.py", line 416, in retriable_request
+    self._process_initiate_response(result)
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/google/resumable_media/_upload.py", line 509, in _process_initiate_response
+    _helpers.require_status_code(
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/google/resumable_media/_helpers.py", line 108, in require_status_code
+    raise common.InvalidResponse(
+google.resumable_media.common.InvalidResponse: ('Request failed with status code', 400, 'Expected one of', <HTTPStatus.OK: 200>, <HTTPStatus.CREATED: 201>)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/bryan/Desktop/Datalogger2Cloud/main_query.py", line 48, in main
+    gcloud.update_bqtable(schema, table_data, project_id, dataset_id, table_id)
+  File "/home/bryan/Desktop/Datalogger2Cloud/gcloud_functions.py", line 94, in update_bqtable
+    load_job = bigquery_client.load_table_from_file(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/google/cloud/bigquery/client.py", line 2485, in load_table_from_file
+    raise exceptions.from_http_response(exc.response)
+google.api_core.exceptions.BadRequest: 400 POST https://bigquery.googleapis.com/upload/bigquery/v2/projects/crop2cloud/jobs?uploadType=resumable: Empty schema specified for the load job. Please specify a schema that describes the data being loaded.
