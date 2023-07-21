@@ -416,4 +416,4 @@ SDI12Recorder(_5014C1TDR4223(),1,_5014C1TDR4223_Addr,cmdTDR,1,0)
   
 CallTable data
 NextScan 
-EndProg
+EndProg 
