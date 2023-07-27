@@ -106,3 +106,29 @@ def update_bqtable(
         print(f"Loaded {load_job.output_rows} rows into {dataset_id}:{table_id}.")
 
         return True
+
+
+def get_latest_entry_time(project_id, dataset_id, table_id):
+    client = bigquery.Client(project=project_id)
+
+    # Get table reference
+    dataset_ref = client.dataset(dataset_id)
+    table_ref = dataset_ref.table(table_id)
+    table = client.get_table(table_ref)
+
+    # Get the latest entry
+    query = (
+        f"SELECT MAX(Datetime) as latest FROM `{project_id}.{dataset_id}.{table_id}`"
+    )
+    query_job = client.query(query)
+
+    results = query_job.result()  # Waits for job to complete.
+
+    for row in results:
+        if row.latest is not None:
+            return row.latest
+        else:
+            raise ValueError("The table seems to be empty. No latest time found.")
+
+    # Raise an error if no result is returned (unlikely to be reached)
+    raise ValueError("No result was returned from the query.")

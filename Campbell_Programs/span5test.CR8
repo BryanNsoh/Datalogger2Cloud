@@ -176,7 +176,7 @@ Public _5006A2IRTXX23_Addr As String * 8 = "k"
 
 'DataTable
 DataTable (data,True,-1)
-DataInterval(0,15,Min,0)   
+DataInterval(0,3,Min,0)   
 Minimum (1,BatV,FP2,False,False)
 
 '5001A1
@@ -265,7 +265,7 @@ BeginProg
 Dim cmdIRT As String * 8 = "M2!"
 Dim cmdTDR As String * 8 = "M!" 
 
-Scan(1,Min,15,0)
+Scan(1,Min,3,0)
 Battery(BatV)
 
 'Read IRT sensors  

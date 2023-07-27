@@ -1,4 +1,5 @@
 from datetime import datetime, time, timedelta
+import gcloud_functions as gcloud
 import os
 import json
 import os.path
@@ -110,21 +111,22 @@ def determine_start_stop(last_logged_time, datalogger):
     return start, stop
 
 
-def track_and_manage_time(datalogger, delay=60):
+from datetime import timedelta
+
+
+def track_and_manage_time(datalogger, project_id, dataset_id, table_id, delay=60):
     """Returns the appropriate start and stop time for data collection"""
-    data_file = os.path.join(os.getcwd(), "./span2nodeA.ndjson")
 
-    last_logged_time = None
+    # Fetch the timestamp of the latest entry from BigQuery
+    last_logged_time = gcloud.get_latest_entry_time(project_id, dataset_id, table_id)
 
-    # Load the last logged time only if the file exists
-    if os.path.exists(data_file):
-        last_logged_time = load_last_logged_time(data_file)
+    # If the last logged time exists, increment it by one second
+    if last_logged_time is not None:
+        start = last_logged_time + timedelta(seconds=1)
+    else:
+        # use the current date - 2 days as the default start time
+        start = datetime.combine(datetime.now().date() - timedelta(days=2), time())
 
-    # If last logged time is invalid and file exists, print an error message and proceed
-    if last_logged_time is None and os.path.exists(data_file):
-        print("Invalid datetime in data file. Collecting all data up to now...")
-
-    # Determine the start and stop times
-    start, stop = determine_start_stop(last_logged_time, datalogger)
+    stop = datalogger.gettime()
 
     return start, stop

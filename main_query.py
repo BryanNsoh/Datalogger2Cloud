@@ -18,6 +18,10 @@ logging.getLogger("google").setLevel(logging.WARNING)
 """Program using pycampbell library to collect and store data from a CR800 or CR1000 datalogger.
    See here for documentation: https://pycampbellcr1000.readthedocs.io/en/latest/index.html
 """
+# IDs and paths for Google Cloud
+project_id = "crop2cloud"
+dataset_id = "sensor_data"
+table_id = "span2nodeB"
 
 
 def main():
@@ -29,7 +33,9 @@ def main():
         table_names = lqf.get_tables(datalogger)
 
         # Get data collection interval
-        start, stop = lqf.track_and_manage_time(datalogger)
+        start, stop = lqf.track_and_manage_time(
+            datalogger, project_id, dataset_id, table_id
+        )
 
         # Get table data
         table_data = lqf.get_data(
@@ -38,11 +44,6 @@ def main():
 
         # Send stored data to GCloud
         schema = gcloud.get_schema(table_data)
-
-        # IDs and paths for Google Cloud
-        project_id = "crop2cloud"
-        dataset_id = "sensor_data"
-        table_id = "span2corn"
 
         # Update BigQuery table
         gcloud.update_bqtable(schema, table_data, project_id, dataset_id, table_id)
