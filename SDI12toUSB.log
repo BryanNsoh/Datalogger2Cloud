@@ -65,3 +65,8 @@ Traceback (most recent call last):
 serial.serialutil.SerialException: device reports readiness to read but returned no data (device disconnected or multiple access on port?)
 2023-07-20 16:14:00,579 [WARNING] - Multiple serial ports detected, using the first one
 2023-07-20 16:15:37,512 [WARNING] - Multiple serial ports detected, using the first one
+2023-07-31 13:34:10,101 [WARNING] - Multiple serial ports detected, using the first one
+2023-07-31 13:35:23,447 [WARNING] - Multiple serial ports detected, using the first one
+2023-07-31 13:36:52,880 [WARNING] - Multiple serial ports detected, using the first one
+2023-07-31 13:37:12,838 [WARNING] - Multiple serial ports detected, using the first one
+2023-07-31 13:38:40,270 [WARNING] - Multiple serial ports detected, using the first one

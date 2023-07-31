@@ -3,9 +3,13 @@ import serial
 import time
 import json
 import logging
+import threading
 import pandas as pd
 from datetime import datetime
 import gcloud_functions as gcloud
+
+# Creating a lock for threading
+lock = threading.Lock()
 
 
 def create_serial_port(portname):
@@ -23,10 +27,20 @@ def create_sensor(id: str, address: str, port, analog: bool = False):
 
 
 def read(sensor):
-    if sensor["analog"]:
-        return read_analog(sensor)
-    else:
-        return read_digital(sensor)
+    lock.acquire()  # Start of thread-safe section
+    try:
+        sensor["port"].reset_input_buffer()  # Flushing input buffer before reading
+        if sensor["analog"]:
+            data = read_analog(sensor)
+        else:
+            data = read_digital(sensor)
+        sensor["port"].reset_output_buffer()  # Flushing output buffer after reading
+        return data
+    except Exception as e:
+        logging.error(f"An error occurred while reading data: {e}", exc_info=True)
+        return {}
+    finally:
+        lock.release()  # End of thread-safe section
 
 
 def read_analog(sensor):
