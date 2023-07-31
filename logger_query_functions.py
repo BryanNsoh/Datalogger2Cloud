@@ -1,4 +1,4 @@
-from datetime import datetime, time, timedelta
+from datetime import datetime, time, timedelta, date
 import gcloud_functions as gcloud
 import os
 import json
@@ -36,7 +36,7 @@ def get_data(datalogger, table_name, start, stop):
             key = key.replace("'", "")
             dict_entry[key] = value
             if isinstance(value, datetime):
-                dict_entry[key] = value.isoformat()
+                dict_entry["TIMESTAMP"] = value.isoformat()
             try:
                 if math.isnan(value):
                     dict_entry[key] = -9999
@@ -44,10 +44,17 @@ def get_data(datalogger, table_name, start, stop):
                 continue
         cleaned_data.append(dict_entry)
 
-    # sort the cleaned data by Datetime
-    cleaned_data.sort(key=lambda x: datetime.fromisoformat(x["Datetime"]))
+    # sort the cleaned data by TIMESTAMP
+    cleaned_data.sort(key=lambda x: datetime.fromisoformat(x["TIMESTAMP"]))
 
     return cleaned_data if cleaned_data else []
+
+
+class JSONEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, (datetime, date)):
+            return obj.isoformat()
+        return super().default(obj)
 
 
 def store_in_ndjson(list_dict):
@@ -62,10 +69,12 @@ def store_in_ndjson(list_dict):
             for line in f:
                 item = json.loads(line)
                 existing_data.append(item)
-                existing_recnbrs.add(item["RecNbr"])
+                existing_recnbrs.add(item["TIMESTAMP"])
 
-    # Filter new data, discarding items with RecNbr that already exist
-    list_dict = [item for item in list_dict if item["RecNbr"] not in existing_recnbrs]
+    # Filter new data, discarding items with TIMESTAMP that already exist
+    list_dict = [
+        item for item in list_dict if item["TIMESTAMP"] not in existing_recnbrs
+    ]
 
     # Append new data to existing data
     existing_data.extend(list_dict)
@@ -73,7 +82,7 @@ def store_in_ndjson(list_dict):
     # Write the combined data back to a temporary file
     with open(temp_file, "w") as f:
         for item in existing_data:
-            f.write(json.dumps(item) + "\n")
+            f.write(JSONEncoder().encode(item) + "\n")
 
     # Replace the old file with the new file
     os.replace(temp_file, local_file)
@@ -92,8 +101,8 @@ def load_last_logged_time(data_file):
             with open(data_file, "r") as f:
                 data = list(ndjson.load(f))
                 if data:  # if the list is not empty
-                    # assuming each dictionary has a 'Datetime' field with the isoformat time
-                    stored_datetime_str = data[-1]["Datetime"]
+                    # assuming each dictionary has a 'TIMESTAMP' field with the isoformat time
+                    stored_datetime_str = data[-1]["TIMESTAMP"]
                     return parse_datetime_input(stored_datetime_str)
         except Exception as e:
             print(f"An error occurred while loading last logged time: {e}")

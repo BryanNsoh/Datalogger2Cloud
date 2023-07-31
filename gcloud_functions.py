@@ -1,19 +1,43 @@
 from google.cloud import storage
 from google.cloud import bigquery
+from google.api_core.exceptions import NotFound
 from typing import List, Dict
+import datetime
+import platform
+import pandas as pd
 import os
 import json
 import tempfile
 
-# Load the keys from the JSON file
-with open("/home/bryan/.keys/api_keys.json", "r") as file:
-    keys = json.load(file)
 
-# Access keys for google service
-google_creds = keys["google"]["application_credentials"]
+class JSONEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, (datetime.datetime, datetime.date)):
+            return obj.isoformat()
+        return super().default(obj)
 
-# Set environment variable for Google credentials
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = google_creds
+
+if platform.system() == "Linux":
+    # Load the keys from the JSON file
+    with open("/home/bryan/.keys/api_keys.json", "r") as file:
+        keys = json.load(file)
+
+    # Access keys for google service
+    google_creds = keys["google"]["application_credentials"]
+
+    # Set environment variable for Google credentials
+    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = google_creds
+
+elif platform.system() == "Windows":
+    # Set environment variable for Google credentials
+    os.environ[
+        "GOOGLE_APPLICATION_CREDENTIALS"
+    ] = r"C:\.keys\crop2cloud-a9f1f94184a4.json"
+
+else:
+    raise OSError(
+        "Unsupported operating system. This script runs on Linux and Windows only."
+    )
 
 
 def write_read(bucket_name: str, blob_name: str, local_file: str) -> None:
@@ -62,13 +86,11 @@ def get_schema(list_dicts: List[Dict]) -> List[bigquery.SchemaField]:
 
 
 def update_bqtable(
-    schema: List[bigquery.SchemaField],
-    table_data: List[Dict],
-    project_id: str,
-    dataset_id: str,
-    table_id: str,
+    schema: List[bigquery.SchemaField], table_name: str, table_data: List[Dict]
 ) -> bool:
     """Update the BigQuery table with newly obtained data from the logger."""
+
+    [project_id, dataset_id, table_id] = get_bq_table(table_name)
 
     bigquery_client = bigquery.Client(project=project_id)
 
@@ -79,7 +101,7 @@ def update_bqtable(
     )
 
     # Convert table_data (list of dicts) to newline-delimited JSON format
-    table_data_ndjson = "\n".join(json.dumps(item) for item in table_data)
+    table_data_ndjson = "\n".join(JSONEncoder().encode(item) for item in table_data)
 
     # Write the data to a temporary file
     with tempfile.NamedTemporaryFile(delete=False) as temp_file:
@@ -91,44 +113,85 @@ def update_bqtable(
 
     # Load the data from the temporary file into BigQuery
     with open(temp_file_path, "rb") as temp_file:
-        load_job = bigquery_client.load_table_from_file(
-            temp_file,
-            table_ref,
-            job_config=job_config,
-        )
+        try:
+            load_job = bigquery_client.load_table_from_file(
+                temp_file,
+                table_ref,
+                job_config=job_config,
+            )
 
-        # Wait for the load job to complete
-        load_job.result()
+            # Wait for the load job to complete
+            load_job.result()
+
+            print(f"Loaded {load_job.output_rows} rows into {dataset_id}:{table_id}.")
+
+        except Exception as e:
+            print("Encountered error while loading table: ", e)
+            if hasattr(e, "errors"):
+                print("Detailed errors: ", e.errors)
 
         # Remove the temporary file
-        os.remove(temp_file_path)
-
-        print(f"Loaded {load_job.output_rows} rows into {dataset_id}:{table_id}.")
+        finally:
+            os.remove(temp_file_path)
 
         return True
 
 
-def get_latest_entry_time(project_id, dataset_id, table_id):
+def get_latest_entry_time(table_name: str):
+    [project_id, dataset_id, table_id] = get_bq_table(table_name)
+
     client = bigquery.Client(project=project_id)
 
-    # Get table reference
-    dataset_ref = client.dataset(dataset_id)
-    table_ref = dataset_ref.table(table_id)
-    table = client.get_table(table_ref)
-
-    # Get the latest entry
+    # Construct the query
     query = (
-        f"SELECT MAX(Datetime) as latest FROM `{project_id}.{dataset_id}.{table_id}`"
+        f"SELECT MAX(TIMESTAMP) as latest FROM `{project_id}.{dataset_id}.{table_id}`"
     )
-    query_job = client.query(query)
 
-    results = query_job.result()  # Waits for job to complete.
+    try:
+        query_job = client.query(query)
+        results = query_job.result()  # Waits for job to complete.
 
-    for row in results:
-        if row.latest is not None:
-            return row.latest
-        else:
-            raise ValueError("The table seems to be empty. No latest time found.")
+        for row in results:
+            if row.latest is not None:
+                return row.latest
+    except NotFound:
+        return None  # Return None if table does not exist
 
-    # Raise an error if no result is returned (unlikely to be reached)
-    raise ValueError("No result was returned from the query.")
+    return None  # Return None if the table exists but doesn't contain any entries
+
+
+def get_bq_table(table_name):
+    # Get the table_id, project_id, and dataset_id for table_name
+    table_params = {
+        "span2nodeB": {
+            "project_id": "crop2cloud",
+            "dataset_id": "sensor_data",
+            "table_id": "span2nodeB",
+        },
+        "span2nodeC": {
+            "project_id": "crop2cloud",
+            "dataset_id": "sensor_data",
+            "table_id": "span2nodeC",
+        },
+        "span2nodeA": {
+            "project_id": "crop2cloud",
+            "dataset_id": "sensor_data",
+            "table_id": "span2nodeA",
+        },
+        "span5_all": {
+            "project_id": "crop2cloud",
+            "dataset_id": "sensor_data",
+            "table_id": "span5_all",
+        },
+        "weather": {
+            "project_id": "crop2cloud",
+            "dataset_id": "weather_data",
+            "table_id": "weather",
+        },
+    }
+
+    return [
+        table_params[table_name]["project_id"],
+        table_params[table_name]["dataset_id"],
+        table_params[table_name]["table_id"],
+    ]
