@@ -70,3 +70,84 @@ serial.serialutil.SerialException: device reports readiness to read but returned
 2023-07-31 13:36:52,880 [WARNING] - Multiple serial ports detected, using the first one
 2023-07-31 13:37:12,838 [WARNING] - Multiple serial ports detected, using the first one
 2023-07-31 13:38:40,270 [WARNING] - Multiple serial ports detected, using the first one
+2023-07-31 16:35:55,677 [ERROR] - An error occurred while reading digital data: list index out of range
+Traceback (most recent call last):
+  File "/home/bryan/Desktop/Datalogger2Cloud/sdi12tousb.py", line 67, in read_digital
+    return {sensor["id"]: sensor_values[0]}
+                          ~~~~~~~~~~~~~^^^
+IndexError: list index out of range
+2023-07-31 16:35:55,687 [ERROR] - An error occurred: 'DataFrame' object has no attribute 'append'
+Traceback (most recent call last):
+  File "/home/bryan/Desktop/Datalogger2Cloud/sdi12tousb.py", line 153, in <module>
+    df = df.append(sensor_data)
+         ^^^^^^^^^
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/pandas/core/generic.py", line 5989, in __getattr__
+    return object.__getattribute__(self, name)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'DataFrame' object has no attribute 'append'
+2023-07-31 16:36:04,970 [WARNING] - Multiple serial ports detected, using the first one
+2023-07-31 16:37:00,102 [WARNING] - Multiple serial ports detected, using the first one
+2023-07-31 16:37:12,601 [ERROR] - An error occurred: device reports readiness to read but returned no data (device disconnected or multiple access on port?)
+Traceback (most recent call last):
+  File "/home/bryan/Desktop/Datalogger2Cloud/SDI12toUSB_main.py", line 79, in <module>
+    sensor_0_values = read_sensor_data(ser, b"0", b"1")
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bryan/Desktop/Datalogger2Cloud/SDI12toUSB_main.py", line 40, in read_sensor_data
+    sdi_12_line = ser.readline()
+                  ^^^^^^^^^^^^^^
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/serial/serialposix.py", line 595, in read
+    raise SerialException(
+serial.serialutil.SerialException: device reports readiness to read but returned no data (device disconnected or multiple access on port?)
+2023-07-31 16:37:55,982 [ERROR] - An error occurred: write failed: [Errno 5] Input/output error
+Traceback (most recent call last):
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/serial/serialposix.py", line 621, in write
+    n = os.write(self.fd, d)
+        ^^^^^^^^^^^^^^^^^^^^
+OSError: [Errno 5] Input/output error
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/bryan/Desktop/Datalogger2Cloud/SDI12toUSB_main.py", line 79, in <module>
+    sensor_0_values = read_sensor_data(ser, b"0", b"1")
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bryan/Desktop/Datalogger2Cloud/SDI12toUSB_main.py", line 38, in read_sensor_data
+    ser.write(sdi_12_address + b"M" + measurement_code + b"!")
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/serial/serialposix.py", line 655, in write
+    raise SerialException('write failed: {}'.format(e))
+serial.serialutil.SerialException: write failed: [Errno 5] Input/output error
+2023-07-31 16:58:20,195 [ERROR] - An error occurred: name 'ser' is not defined
+Traceback (most recent call last):
+  File "/home/bryan/Desktop/Datalogger2Cloud/SDI12toUSB_main.py", line 78, in <module>
+    sensor_0_values = read_sensor_data(ser, b"0", b"1")
+                                       ^^^
+NameError: name 'ser' is not defined
+2023-07-31 17:04:22,725 [ERROR] - An error occurred: name 'sensor_1_soil_moisture' is not defined
+Traceback (most recent call last):
+  File "/home/bryan/Desktop/Datalogger2Cloud/SDI12toUSB_main.py", line 100, in <module>
+    "TDR1": sensor_1_soil_moisture,
+            ^^^^^^^^^^^^^^^^^^^^^^
+NameError: name 'sensor_1_soil_moisture' is not defined
+2023-07-31 17:10:14,069 [ERROR] - An error occurred: name 'sensor_1_soil_moisture' is not defined
+Traceback (most recent call last):
+  File "/home/bryan/Desktop/Datalogger2Cloud/SDI12toUSB_main.py", line 100, in <module>
+    "TDR1": sensor_1_soil_moisture,
+            ^^^^^^^^^^^^^^^^^^^^^^
+NameError: name 'sensor_1_soil_moisture' is not defined
+2023-07-31 17:15:53,643 [ERROR] - An error occurred: name 'sensor_1_soil_moisture' is not defined
+Traceback (most recent call last):
+  File "/home/bryan/Desktop/Datalogger2Cloud/SDI12toUSB_main.py", line 111, in <module>
+    "TDR1": sensor_1_soil_moisture,
+            ^^^^^^^^^^^^^^^^^^^^^^
+NameError: name 'sensor_1_soil_moisture' is not defined
+2023-07-31 17:31:20,442 [ERROR] - An error occurred: device reports readiness to read but returned no data (device disconnected or multiple access on port?)
+Traceback (most recent call last):
+  File "/home/bryan/Desktop/Datalogger2Cloud/SDI12toUSB_main.py", line 89, in <module>
+    sensor_1_values = read_sensor_data(ser2, lock2, b"1", b"1")
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bryan/Desktop/Datalogger2Cloud/SDI12toUSB_main.py", line 54, in read_sensor_data
+    sdi_12_line = ser.readline()
+                  ^^^^^^^^^^^^^^
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/serial/serialposix.py", line 595, in read
+    raise SerialException(
+serial.serialutil.SerialException: device reports readiness to read but returned no data (device disconnected or multiple access on port?)

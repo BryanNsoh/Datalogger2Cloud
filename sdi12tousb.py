@@ -106,7 +106,7 @@ def open_port_by_serial_number(serial_number):
     raise Exception("No port found with specified serial number")
 
 
-serial_numbers = ["D30EQ9PU", "D30FETNY"]
+serial_numbers = ["D30FETO3", "D30FETNY"]
 ports = [
     create_serial_port(open_port_by_serial_number(serial_number))
     for serial_number in serial_numbers
