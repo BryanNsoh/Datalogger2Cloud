@@ -24,6 +24,15 @@ sensor_id1 = "D30FETO3"
 sensor_id2 = "D30FETNY"
 
 
+def get_sensor_profiles(file):
+    with open(file, "r") as f:
+        return json.load(f)
+
+
+sensor_profiles1 = get_sensor_profiles("sensor_profiles1.json")
+sensor_profiles2 = get_sensor_profiles("sensor_profiles2.json")
+
+
 def open_port_by_serial_number(sensor_id):
     ports = serial.tools.list_ports.comports()
     for port in ports:
@@ -62,7 +71,8 @@ def read_sensor_data(ser, lock, sdi_12_address, measurement_code):
         else:
             print("Serial port is not open")
         # Send the measurement command to the sensor
-        ser.write(sdi_12_address + b"M" + measurement_code + b"!")
+        ser.write(sdi_12_address + measurement_code + b"!")
+        print(f"Sent command {sdi_12_address + measurement_code + b'!'}")
         # Read and discard the first line of the response
         sdi_12_line = ser.readline()
         # Read and discard the second line of the response
@@ -86,7 +96,6 @@ def read_sensor_data(ser, lock, sdi_12_address, measurement_code):
     return sensor_values
 
 
-sensor_0_temperature = None
 sensor_data_list = []
 sampling_interval = 6  # 1 minute (60)
 upload_interval = 36  # 1 hour(3600)
@@ -95,27 +104,28 @@ last_upload_time = datetime.now() - timedelta(seconds=upload_interval)
 try:
     while True:
         current_time = datetime.now()
-        sensor_0_values = read_sensor_data(ser1, lock1, b"0", b"1")
-        if len(sensor_0_values) >= 2:
-            sensor_0_temperature = float(sensor_0_values[1])
-
-        sensor_1_values = read_sensor_data(ser2, lock2, b"1", b"1")
-        if len(sensor_1_values) >= 2:
-            sensor_1_soil_moisture = float(sensor_1_values[1])
-
-        sensor_2_values = read_sensor_data(ser2, lock2, b"2", b"1")
-        if len(sensor_2_values) >= 2:
-            sensor_2_soil_moisture = float(sensor_2_values[1])
-
         sensor_data = {
             "Datetime": current_time.isoformat(),
-            "ApogeeT": sensor_0_temperature,
-            "TDR1": sensor_1_soil_moisture,
-            "TDR2": sensor_2_soil_moisture,
         }
+
+        # Sensor from sensor_profiles2
+        for i, sensor in enumerate(sensor_profiles2):
+            sdi_12_address = bytes(sensor["SDI-12 Address"], "utf-8")
+            sensor_values = read_sensor_data(ser1, lock1, sdi_12_address, b"M1")
+            if len(sensor_values) >= 2:
+                sensor_data[sensor["sensor_id"]] = float(sensor_values[1])
+
+        # Sensors from sensor_profiles1
+        for i, sensor in enumerate(sensor_profiles1):
+            sdi_12_address = bytes(sensor["SDI-12 Address"], "utf-8")
+            sensor_values = read_sensor_data(ser2, lock2, sdi_12_address, b"M1")
+            if len(sensor_values) >= 2:
+                sensor_data[sensor["sensor_id"]] = float(sensor_values[1])
+
         print(sensor_data)
 
-        if sensor_0_temperature is not None and sensor_1_soil_moisture is not None:
+        # Update this condition to check whether there is any sensor data
+        if any(value is not None for value in sensor_data.values()):
             sensor_data_list.append(sensor_data)
 
         with open("./sensor_data.json", "a") as f:

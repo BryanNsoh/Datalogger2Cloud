@@ -214,3 +214,22 @@ Traceback (most recent call last):
     "TDR1": sensor_1_soil_moisture,
             ^^^^^^^^^^^^^^^^^^^^^^
 NameError: name 'sensor_1_soil_moisture' is not defined
+2023-08-01 10:19:25,711 [ERROR] - An error occurred: encoding without a string argument
+Traceback (most recent call last):
+  File "/home/bryan/Desktop/Datalogger2Cloud/test.py", line 150, in <module>
+    sdi_12_address = bytes(sensor["SDI-12 Address"], "utf-8")
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: encoding without a string argument
+2023-08-01 10:24:51,493 [INFO] - Interrupted by user. Exiting...
+2023-08-01 10:47:21,225 [ERROR] - An error occurred: name 'sensor_0_temperature' is not defined
+Traceback (most recent call last):
+  File "/home/bryan/Desktop/Datalogger2Cloud/test.py", line 163, in <module>
+    "ApogeeT": sensor_0_temperature,
+               ^^^^^^^^^^^^^^^^^^^^
+NameError: name 'sensor_0_temperature' is not defined
+2023-08-01 10:47:57,753 [ERROR] - An error occurred: name 'sensor_0_temperature' is not defined
+Traceback (most recent call last):
+  File "/home/bryan/Desktop/Datalogger2Cloud/test.py", line 164, in <module>
+    "ApogeeT": sensor_0_temperature,
+               ^^^^^^^^^^^^^^^^^^^^
+NameError: name 'sensor_0_temperature' is not defined
