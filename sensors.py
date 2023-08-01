@@ -4,11 +4,29 @@ import time
 import json
 import logging
 import pandas as pd
+import threading
+
+# Constants for communication protocol
+READ_ANALOG = b"M8!"
+READ_DIGITAL = b"M!"
+GET_DATA = b"D0!"
+COMMAND_I = b"I!"
+
+lock = threading.Lock()
 
 
 class SerialPort:
-    def __init__(self, portname):
-        self.ser = serial.Serial(portname, 9600, timeout=10)
+    def __init__(
+        self,
+        portname,
+        baud_rate=9600,
+        timeout=10,
+        bytesize=serial.EIGHTBITS,
+        stopbits=serial.STOPBITS_ONE,
+    ):
+        self.ser = serial.Serial(
+            portname, baud_rate, timeout=timeout, bytesize=bytesize, stopbits=stopbits
+        )
         time.sleep(2.5)
 
 
@@ -27,59 +45,57 @@ class Sensor:
             return self.read_digital()
 
     def read_analog(self):
-        try:
-            self.port.write(bytes(self.address, "utf-8") + b"M8!")
-            sdi_12_line = self.port.readline()
-            sdi_12_line = self.port.readline()
-            self.port.write(bytes(self.address, "utf-8") + b"D0!")
-            sdi_12_line = sdi_12_line[:-2]
-            sensor_values = sdi_12_line.decode("utf-8").split("+")[1:]
-            return {self.id + str(i): value for i, value in enumerate(sensor_values)}
-        except Exception as e:
-            logging.error(
-                f"An error occurred while reading analog data: {e}", exc_info=True
-            )
-            return {}
+        return self.read_sensor_data(READ_ANALOG)
 
     def read_digital(self):
         try:
             sensor_values = self.read_sensor_data(
-                self.port, bytes(self.address, "utf-8"), b"I"
+                bytes(self.address, "utf-8") + READ_DIGITAL
             )
 
-            if "IRT" in self.id:
-                return {self.id: sensor_values[0]}
-            elif "TDR" in self.id and len(sensor_values) > 2:
-                return {
-                    self.id + "_VWC": sensor_values[0],
-                    self.id + "_ST": sensor_values[1],
-                }
+            if sensor_values:  # Check if sensor_values is not empty
+                if "IRT" in self.id:
+                    return {self.id: sensor_values[0]}
+                elif "TDR" in self.id and len(sensor_values) > 2:
+                    return {
+                        self.id + "_VWC": sensor_values[0],
+                        self.id + "_ST": sensor_values[1],
+                    }
+                else:
+                    return {self.id: value for value in sensor_values}
             else:
-                return {self.id: value for value in sensor_values}
+                logging.warning(f"No data received from the sensor {self.id}")
+                return {}
+
         except Exception as e:
             logging.error(
                 f"An error occurred while reading digital data: {e}", exc_info=True
             )
             return {}
 
-    def read_sensor_data(self, ser, sdi_12_address, measurement_code):
-        ser.write(sdi_12_address + measurement_code + b"!")
-        sdi_12_line = ser.readline()
-        print(sdi_12_line)
-        sdi_12_line = ser.readline()
-        print(sdi_12_line)
-        ser.write(sdi_12_address + b"D0!")
-        sdi_12_line = ser.readline()
-        sdi_12_line = sdi_12_line[:-2]
-        sensor_values = sdi_12_line.decode("utf-8").split("+")[1:]
+    def read_sensor_data(self, measurement_code):
+        try:
+            with lock:
+                self.port.reset_input_buffer()
+                self.port.write(bytes(self.address, "utf-8") + measurement_code)
+                sdi_12_line = self.port.readline()
+                sdi_12_line = self.port.readline()
+                self.port.write(bytes(self.address, "utf-8") + GET_DATA)
+                sdi_12_line = sdi_12_line[:-2]
+                self.port.reset_output_buffer()
 
-        for i, value in enumerate(sensor_values):
-            if "-" in value:
-                parts = value.split("-")
-                parts[1] = "-" + parts[1]
-                sensor_values[i] = parts
+            sensor_values = sdi_12_line.decode("utf-8").split("+")[1:]
+            for i, value in enumerate(sensor_values):
+                if "-" in value:
+                    if "-" in value:
+                        parts = value.split("-")
+                        parts[1] = "-" + parts[1]
+                        sensor_values[i] = "".join(parts)
 
-        return sensor_values
+            return sensor_values
+        except serial.SerialException as e:
+            logging.error(f"An error occurred while reading data: {e}", exc_info=True)
+            raise
 
 
 def open_port_by_serial_number(serial_number):
@@ -89,7 +105,7 @@ def open_port_by_serial_number(serial_number):
     raise Exception("No port found with specified serial number")
 
 
-serial_numbers = ["D30EQ9PU", "D30FETNY"]
+serial_numbers = ["D30FETO3", "D30FETNY"]
 ports = [
     SerialPort(open_port_by_serial_number(serial_number))
     for serial_number in serial_numbers
@@ -110,6 +126,21 @@ for i, sensor_file in enumerate(sensor_files):
 def read_all_sensors():
     sensor_data = []
     for sensor in sensors:
-        sensor_data.append(sensor.read())
+        try:
+            sensor_data.append(sensor.read())
+        except serial.SerialException as e:
+            logging.error(
+                f"An error occurred while reading data from sensor {sensor.id}: {e}",
+                exc_info=True,
+            )
     df = pd.DataFrame(sensor_data)
     return df
+
+
+if __name__ == "__main__":
+    try:
+        data = read_all_sensors()
+        print(data)
+    finally:
+        for port in ports:
+            port.ser.close()

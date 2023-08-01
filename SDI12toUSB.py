@@ -30,10 +30,8 @@ try:
     if bq_schema:
         gcloud.update_bqtable(
             schema=bq_schema,
+            table_name="span5_all",
             table_data=df.to_dict(orient="records"),
-            project_id=project_id,
-            dataset_id=dataset_id,
-            table_id=table_id,
         )
     df = pd.DataFrame()
 

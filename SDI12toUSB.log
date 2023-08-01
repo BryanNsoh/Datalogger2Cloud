@@ -151,3 +151,66 @@ Traceback (most recent call last):
   File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/serial/serialposix.py", line 595, in read
     raise SerialException(
 serial.serialutil.SerialException: device reports readiness to read but returned no data (device disconnected or multiple access on port?)
+2023-07-31 18:15:46,173 [WARNING] - No data received from the sensor 2001A1TDR0623
+2023-07-31 18:15:56,181 [WARNING] - No data received from the sensor 2001A1TDR1823
+2023-07-31 18:16:06,189 [WARNING] - No data received from the sensor 2001A1IRTXX23
+2023-07-31 18:16:06,192 [ERROR] - An error occurred: 'DataFrame' object has no attribute 'append'
+Traceback (most recent call last):
+  File "/home/bryan/Desktop/Datalogger2Cloud/SDI12toUSB.py", line 26, in <module>
+    df = df.append(sensor_data)
+         ^^^^^^^^^
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/pandas/core/generic.py", line 5989, in __getattr__
+    return object.__getattribute__(self, name)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'DataFrame' object has no attribute 'append'
+2023-07-31 18:18:35,214 [WARNING] - No data received from the sensor 2001A1TDR0623
+2023-07-31 18:31:50,579 [WARNING] - No data received from the sensor 2001A1TDR0623
+2023-07-31 18:51:31,063 [INFO] - Interrupted by user. Exiting...
+2023-07-31 19:08:30,708 [ERROR] - An error occurred: could not convert string to float: ''
+Traceback (most recent call last):
+  File "/home/bryan/Desktop/Datalogger2Cloud/SDI12toUSB_main.py", line 110, in <module>
+    sensor_values = read_sensor_data(ser, lock, sdi_12_address, b"1")
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bryan/Desktop/Datalogger2Cloud/SDI12toUSB_main.py", line 74, in read_sensor_data
+    response_time = parse_response_time(ack)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bryan/Desktop/Datalogger2Cloud/SDI12toUSB_main.py", line 60, in parse_response_time
+    return float(delay_time)
+           ^^^^^^^^^^^^^^^^^
+ValueError: could not convert string to float: ''
+2023-07-31 19:09:59,529 [ERROR] - An error occurred: could not convert string to float: ''
+Traceback (most recent call last):
+  File "/home/bryan/Desktop/Datalogger2Cloud/SDI12toUSB_main.py", line 110, in <module>
+    sensor_values = read_sensor_data(ser, lock, sdi_12_address, b"1")
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bryan/Desktop/Datalogger2Cloud/SDI12toUSB_main.py", line 74, in read_sensor_data
+    response_time = parse_response_time(ack)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bryan/Desktop/Datalogger2Cloud/SDI12toUSB_main.py", line 60, in parse_response_time
+    return float(delay_time)
+           ^^^^^^^^^^^^^^^^^
+ValueError: could not convert string to float: ''
+2023-07-31 19:26:25,089 [ERROR] - An error occurred: name 'sensor_1_soil_moisture' is not defined
+Traceback (most recent call last):
+  File "/home/bryan/Desktop/Datalogger2Cloud/test.py", line 118, in <module>
+    "TDR1": sensor_1_soil_moisture,
+            ^^^^^^^^^^^^^^^^^^^^^^
+NameError: name 'sensor_1_soil_moisture' is not defined
+2023-07-31 19:27:42,799 [ERROR] - An error occurred: name 'sensor_1_soil_moisture' is not defined
+Traceback (most recent call last):
+  File "/home/bryan/Desktop/Datalogger2Cloud/test.py", line 118, in <module>
+    "TDR1": sensor_1_soil_moisture,
+            ^^^^^^^^^^^^^^^^^^^^^^
+NameError: name 'sensor_1_soil_moisture' is not defined
+2023-08-01 09:55:56,079 [ERROR] - An error occurred: name 'sensor_1_soil_moisture' is not defined
+Traceback (most recent call last):
+  File "/home/bryan/Desktop/Datalogger2Cloud/test.py", line 116, in <module>
+    "TDR1": sensor_1_soil_moisture,
+            ^^^^^^^^^^^^^^^^^^^^^^
+NameError: name 'sensor_1_soil_moisture' is not defined
+2023-08-01 09:58:41,921 [ERROR] - An error occurred: name 'sensor_1_soil_moisture' is not defined
+Traceback (most recent call last):
+  File "/home/bryan/Desktop/Datalogger2Cloud/test.py", line 115, in <module>
+    "TDR1": sensor_1_soil_moisture,
+            ^^^^^^^^^^^^^^^^^^^^^^
+NameError: name 'sensor_1_soil_moisture' is not defined
