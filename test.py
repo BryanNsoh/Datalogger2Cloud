@@ -7,6 +7,7 @@ import threading
 from typing import List, Dict
 import gcloud_functions as gcloud
 import logging
+import pandas as pd
 
 # Configure logging
 logging.basicConfig(
@@ -79,13 +80,14 @@ sensor_data_list = []
 
 
 try:
-    while True:
-        current_time = datetime.now()
-        sensor_data = {
-            "Datetime": current_time.isoformat(),
-        }
+    # Create an empty DataFrame to store sensor data readings
+    df = pd.DataFrame()
 
-        # Sensors from sensor_profiles1
+    # Loop to take readings thrice
+    for readings in range(3):
+        # Initialize an empty dictionary for each reading iteration
+        sensor_data = {"TIMESTAMP": datetime.now().isoformat()}
+
         # Sensors from sensor_profiles1
         for i, sensor in enumerate(sensor_profiles1):
             sdi_12_address_str = sensor.get("SDI-12 Address")
@@ -107,7 +109,36 @@ try:
                     sensor_data[sensor["sensor_id"]] = -9999
                 print(sensor_data)
 
-        print(sensor_data)
+        # Append the sensor data from this iteration to the DataFrame
+        df = df.append(sensor_data, ignore_index=True)
+
+    # Replace -9999 with NaN for averaging
+    df.replace(-9999, pd.NA, inplace=True)
+
+    # Compute averages
+    averaged_data = df.mean(numeric_only=True).to_dict()
+
+    # Replace NaN values with -9999 for compatibility with BigQuery
+    for key, value in averaged_data.items():
+        if pd.isna(value):
+            averaged_data[key] = -9999
+
+    # Update TIMESTAMP with current timestamp
+    averaged_data["TIMESTAMP"] = datetime.now().isoformat()
+
+    # Convert the averaged_data to list of dict
+    averaged_data_list = [averaged_data]
+
+    # Save averaged_data_list to sensor_data.json
+    with open("sensor_data.json", "w") as file:
+        json.dump(averaged_data_list, file)
+
+    # Update bigquery
+    schema = gcloud.get_schema(averaged_data)
+    gcloud.update_bqtable(
+        schema=schema, table_name="span5_all", table_data=averaged_data
+    )
+
 
 except KeyboardInterrupt:
     logging.info("Interrupted by user. Exiting...")

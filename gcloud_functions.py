@@ -142,12 +142,19 @@ def get_latest_entry_time(table_name: str):
 
     client = bigquery.Client(project=project_id)
 
-    # Construct the query
-    query = (
-        f"SELECT MAX(TIMESTAMP) as latest FROM `{project_id}.{dataset_id}.{table_id}`"
-    )
+    full_table_id = f"{project_id}.{dataset_id}.{table_id}"
 
+    # Try block to capture NotFound exception in case table does not exist
     try:
+        table = client.get_table(full_table_id)
+
+        # Check if TIMESTAMP column exists
+        if "TIMESTAMP" not in [field.name for field in table.schema]:
+            return None
+
+        # Construct the query
+        query = f"SELECT MAX(TIMESTAMP) as latest FROM `{project_id}.{dataset_id}.{table_id}`"
+
         query_job = client.query(query)
         results = query_job.result()  # Waits for job to complete.
 
@@ -155,6 +162,7 @@ def get_latest_entry_time(table_name: str):
             if row.latest is not None:
                 return row.latest
     except NotFound:
+        print(f"Table '{full_table_id}' does not exist. A new table will be created.")
         return None  # Return None if table does not exist
 
     return None  # Return None if the table exists but doesn't contain any entries
