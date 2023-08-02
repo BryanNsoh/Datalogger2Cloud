@@ -20,8 +20,8 @@ logging.getLogger("google").setLevel(logging.WARNING)
 lock1 = threading.Lock()
 lock2 = threading.Lock()
 
-sensor_id1 = "D30FETO3"
-sensor_id2 = "D30FETNY"
+serial_id1 = "D30FETO3"
+serial_id2 = "D30FETNY"
 
 
 def get_sensor_profiles(file):
@@ -33,16 +33,16 @@ sensor_profiles1 = get_sensor_profiles("sensor_profiles1.json")
 sensor_profiles2 = get_sensor_profiles("sensor_profiles2.json")
 
 
-def open_port_by_serial_number(sensor_id):
+def open_port_by_serial_number(serial_id):
     ports = serial.tools.list_ports.comports()
     for port in ports:
-        if sensor_id in port.hwid:
+        if serial_id in port.hwid:
             return port.device
-    raise ValueError(f"No serial port found for sensor {sensor_id}")
+    raise ValueError(f"No serial port found for sensor {serial_id}")
 
 
-serial_port1 = open_port_by_serial_number(sensor_id1)
-serial_port2 = open_port_by_serial_number(sensor_id2)
+serial_port1 = open_port_by_serial_number(serial_id1)
+serial_port2 = open_port_by_serial_number(serial_id2)
 
 try:
     ser1 = serial.Serial(serial_port1, 9600, bytesize=8, stopbits=1, timeout=5)
@@ -51,14 +51,6 @@ try:
 except serial.SerialException as e:
     logging.error(f"An error occurred: {e}", exc_info=True)
     exit(1)
-
-
-def parse_response_time(ack):
-    # Remove end line characters
-    ack = ack.strip()
-    # Get the delay time (ttt) which is the 3 characters after the 'a'
-    delay_time = ack.decode("utf-8")[1:4]
-    return float(delay_time)
 
 
 def read_sensor_data(ser, lock, sdi_12_address, measurement_code):
@@ -97,9 +89,6 @@ def read_sensor_data(ser, lock, sdi_12_address, measurement_code):
 
 
 sensor_data_list = []
-sampling_interval = 6  # 1 minute (60)
-upload_interval = 36  # 1 hour(3600)
-last_upload_time = datetime.now() - timedelta(seconds=upload_interval)
 
 try:
     while True:
@@ -132,7 +121,6 @@ try:
             json.dump(sensor_data, f)
             f.write("\n")
 
-        time.sleep(sampling_interval)
 
 except KeyboardInterrupt:
     logging.info("Interrupted by user. Exiting...")

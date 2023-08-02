@@ -18,10 +18,8 @@ logging.getLogger("google").setLevel(logging.WARNING)
 
 # Create a lock for each sensor
 lock1 = threading.Lock()
-lock2 = threading.Lock()
 
-sensor_id1 = "D30FETO3"
-sensor_id2 = "D30FETNY"
+serial_id1 = "D30FETNY"
 
 
 def get_sensor_profiles(file):
@@ -29,59 +27,40 @@ def get_sensor_profiles(file):
         return json.load(f)
 
 
-sensor_profiles1 = get_sensor_profiles("sensor_profiles1.json")
-sensor_profiles2 = get_sensor_profiles("sensor_profiles2.json")
+sensor_profiles1 = get_sensor_profiles("span5_all.json")
 
 
-def open_port_by_serial_number(sensor_id):
+def open_port_by_serial_number(serial_id):
     ports = serial.tools.list_ports.comports()
     for port in ports:
-        if sensor_id in port.hwid:
+        if serial_id in port.hwid:
             return port.device
-    raise ValueError(f"No serial port found for sensor {sensor_id}")
+    raise ValueError(f"No serial port found for sensor {serial_id}")
 
 
-serial_port1 = open_port_by_serial_number(sensor_id1)
-serial_port2 = open_port_by_serial_number(sensor_id2)
+serial_port1 = open_port_by_serial_number(serial_id1)
 
 try:
     ser1 = serial.Serial(serial_port1, 9600, bytesize=8, stopbits=1, timeout=5)
-    ser2 = serial.Serial(serial_port2, 9600, bytesize=8, stopbits=1, timeout=5)
     time.sleep(2.5)
 except serial.SerialException as e:
     logging.error(f"An error occurred: {e}", exc_info=True)
     exit(1)
 
 
-def parse_response_time(ack):
-    # Remove end line characters
-    ack = ack.strip()
-    # Get the delay time (ttt) which is the 3 characters after the 'a'
-    delay_time = ack.decode("utf-8")[1:4]
-    return float(delay_time)
-
-
 def read_sensor_data(ser, lock, sdi_12_address, measurement_code):
     with lock:
-        # Flush buffers
         ser.reset_input_buffer()
-
         if ser.isOpen():
             print("Serial port is open")
         else:
             print("Serial port is not open")
-        # Send the measurement command to the sensor
         ser.write(sdi_12_address + measurement_code + b"!")
         print(f"Sent command {sdi_12_address + measurement_code + b'!'}")
-        # Read and discard the first line of the response
         sdi_12_line = ser.readline()
-        # Read and discard the second line of the response
         sdi_12_line = ser.readline()
-        # Send the data command to the sensor
         ser.write(sdi_12_address + b"D0!")
-        # Read the third line of the response, which contains the data
         sdi_12_line = ser.readline()
-        # Flush buffers
         ser.reset_output_buffer()
 
     sdi_12_line = sdi_12_line[:-2]
@@ -97,9 +76,7 @@ def read_sensor_data(ser, lock, sdi_12_address, measurement_code):
 
 
 sensor_data_list = []
-sampling_interval = 6  # 1 minute (60)
-upload_interval = 36  # 1 hour(3600)
-last_upload_time = datetime.now() - timedelta(seconds=upload_interval)
+
 
 try:
     while True:
@@ -108,37 +85,33 @@ try:
             "Datetime": current_time.isoformat(),
         }
 
-        # Sensor from sensor_profiles2
-        for i, sensor in enumerate(sensor_profiles2):
-            sdi_12_address = bytes(sensor["SDI-12 Address"], "utf-8")
-            sensor_values = read_sensor_data(ser1, lock1, sdi_12_address, b"M1")
-            if len(sensor_values) >= 2:
-                sensor_data[sensor["sensor_id"]] = float(sensor_values[1])
-
+        # Sensors from sensor_profiles1
         # Sensors from sensor_profiles1
         for i, sensor in enumerate(sensor_profiles1):
-            sdi_12_address = bytes(sensor["SDI-12 Address"], "utf-8")
-            sensor_values = read_sensor_data(ser2, lock2, sdi_12_address, b"M1")
-            if len(sensor_values) >= 2:
-                sensor_data[sensor["sensor_id"]] = float(sensor_values[1])
+            sdi_12_address_str = sensor.get("SDI-12 Address")
+            print(sensor["sensor_id"])
+            # Proceed only if the sensor has a non-empty SDI-12 Address
+            if sdi_12_address_str and sdi_12_address_str.strip():
+                sdi_12_address = bytes(sdi_12_address_str.strip(), "utf-8")
+                try:
+                    sensor_values = read_sensor_data(ser1, lock1, sdi_12_address, b"M1")
+                    if len(sensor_values) >= 2:
+                        sensor_data[sensor["sensor_id"]] = float(sensor_values[1])
+                    else:
+                        sensor_data[sensor["sensor_id"]] = -9999
+                except Exception as e:
+                    logging.error(
+                        f"An error occurred when reading sensor {sensor['sensor_id']}: {e}",
+                        exc_info=True,
+                    )
+                    sensor_data[sensor["sensor_id"]] = -9999
+                print(sensor_data)
 
         print(sensor_data)
-
-        # Update this condition to check whether there is any sensor data
-        if any(value is not None for value in sensor_data.values()):
-            sensor_data_list.append(sensor_data)
-
-        with open("./sensor_data.json", "a") as f:
-            json.dump(sensor_data, f)
-            f.write("\n")
-
-        time.sleep(sampling_interval)
 
 except KeyboardInterrupt:
     logging.info("Interrupted by user. Exiting...")
     ser1.close()
-    ser2.close()
 except Exception as e:
     logging.error(f"An error occurred: {e}", exc_info=True)
     ser1.close()
-    ser2.close()
