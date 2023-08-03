@@ -2,12 +2,15 @@ import serial.tools.list_ports
 import serial
 import time
 from datetime import datetime, timedelta
+from google.cloud import bigquery
+from google.api_core.exceptions import NotFound
 import json
 import threading
 from typing import List, Dict
 import gcloud_functions as gcloud
 import logging
 import pandas as pd
+import pandas_gbq
 
 # Configure logging
 logging.basicConfig(
@@ -76,17 +79,46 @@ def read_sensor_data(ser, lock, sdi_12_address, measurement_code):
     return sensor_values
 
 
+def table_exists(
+    client: bigquery.Client, table_ref: bigquery.table.TableReference
+) -> bool:
+    try:
+        client.get_table(table_ref)
+        return True
+    except NotFound:
+        return False
+
+
+def update_bigquery(client, dataset_id, table_id, df):
+    full_table_id = f"{client.project}.{dataset_id}.{table_id}"
+
+    # Check if table exists
+    table_ref = client.dataset(dataset_id).table(table_id)
+    if_exists_value = "append" if table_exists(client, table_ref) else "replace"
+
+    df.to_gbq(
+        full_table_id,
+        project_id=client.project,
+        if_exists=if_exists_value,  # Append to the existing table or replace if it doesn't exist
+        progress_bar=True,
+    )
+
+
 sensor_data_list = []
+
+# Initialize a BigQuery client
+client = bigquery.Client()
 
 
 try:
-    # Create an empty DataFrame to store sensor data readings
-    df = pd.DataFrame()
+    # Create an empty DataFrame with the columns you expect to have
+    columns = ["TIMESTAMP"] + [sensor["sensor_id"] for sensor in sensor_profiles1]
+    df = pd.DataFrame(columns=columns)
 
-    # Loop to take readings thrice
-    for readings in range(3):
-        # Initialize an empty dictionary for each reading iteration
-        sensor_data = {"TIMESTAMP": datetime.now().isoformat()}
+    # Loop to take readings
+    for readings in range(1):
+        # Initialize a dictionary for each reading iteration
+        sensor_data = {"TIMESTAMP": datetime.now()}  # TIMESTAMP as datetime object
 
         # Sensors from sensor_profiles1
         for i, sensor in enumerate(sensor_profiles1):
@@ -97,48 +129,37 @@ try:
                 sdi_12_address = bytes(sdi_12_address_str.strip(), "utf-8")
                 try:
                     sensor_values = read_sensor_data(ser1, lock1, sdi_12_address, b"M1")
+                    print(sensor_values)
                     if len(sensor_values) >= 2:
                         sensor_data[sensor["sensor_id"]] = float(sensor_values[1])
                     else:
-                        sensor_data[sensor["sensor_id"]] = -9999
+                        sensor_data[sensor["sensor_id"]] = pd.NA
                 except Exception as e:
                     logging.error(
                         f"An error occurred when reading sensor {sensor['sensor_id']}: {e}",
                         exc_info=True,
                     )
-                    sensor_data[sensor["sensor_id"]] = -9999
+                    sensor_data[sensor["sensor_id"]] = pd.NA
                 print(sensor_data)
 
         # Append the sensor data from this iteration to the DataFrame
         df = df.append(sensor_data, ignore_index=True)
 
-    # Replace -9999 with NaN for averaging
-    df.replace(-9999, pd.NA, inplace=True)
+    print(df.dtypes)
+    print(df)
 
-    # Compute averages
-    averaged_data = df.mean(numeric_only=True).to_dict()
-
-    # Replace NaN values with -9999 for compatibility with BigQuery
-    for key, value in averaged_data.items():
-        if pd.isna(value):
-            averaged_data[key] = -9999
-
-    # Update TIMESTAMP with current timestamp
-    averaged_data["TIMESTAMP"] = datetime.now().isoformat()
-
-    # Convert the averaged_data to list of dict
-    averaged_data_list = [averaged_data]
+    # Compute averages and append the timestamp
+    averaged_df = df.mean(numeric_only=True).to_frame().T
+    averaged_df.insert(0, "TIMESTAMP", datetime.now())
 
     # Save averaged_data_list to sensor_data.json
-    with open("sensor_data.json", "w") as file:
-        json.dump(averaged_data_list, file)
+    averaged_df.to_json("sensor_data.json", orient="records", date_format="iso")
 
-    # Update bigquery
-    schema = gcloud.get_schema(averaged_data)
-    gcloud.update_bqtable(
-        schema=schema, table_name="span5_all", table_data=averaged_data
-    )
-
+    # Update BigQuery
+    project_id, dataset_id, table_id = gcloud.get_bq_table(
+        "span5_all"
+    )  # Use the right table name
+    update_bigquery(client, dataset_id, table_id, averaged_df)
 
 except KeyboardInterrupt:
     logging.info("Interrupted by user. Exiting...")
