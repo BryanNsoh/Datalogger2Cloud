@@ -11,6 +11,7 @@ import gcloud_functions as gcloud
 import logging
 import pandas as pd
 import pandas_gbq
+import numpy as np
 
 # Configure logging
 logging.basicConfig(
@@ -23,7 +24,7 @@ logging.getLogger("google").setLevel(logging.WARNING)
 # Create a lock for each sensor
 lock1 = threading.Lock()
 
-serial_id1 = "D30FETNY"
+serial_id1 = "D30FEUP2"
 
 
 def get_sensor_profiles(file):
@@ -31,7 +32,7 @@ def get_sensor_profiles(file):
         return json.load(f)
 
 
-sensor_profiles1 = get_sensor_profiles("span5_all.json")
+sensor_profiles1 = get_sensor_profiles("span2nodeB.json")
 
 
 def open_port_by_serial_number(serial_id):
@@ -102,6 +103,7 @@ def update_bigquery(client, dataset_id, table_id, df):
         if_exists=if_exists_value,  # Append to the existing table or replace if it doesn't exist
         progress_bar=True,
     )
+    print(f"Successfully updated table {full_table_id}")
 
 
 sensor_data_list = []
@@ -112,7 +114,16 @@ client = bigquery.Client()
 
 try:
     # Create an empty DataFrame with the columns you expect to have
-    columns = ["TIMESTAMP"] + [sensor["sensor_id"] for sensor in sensor_profiles1]
+    columns = ["TIMESTAMP"] + [
+        "_" + sensor["sensor_id"] + suffix
+        for sensor in sensor_profiles1
+        if str(sensor.get("SDI-12 Address", "")).strip()
+        and ("TDR" in sensor["sensor_id"] or "IRT" in sensor["sensor_id"])
+        for suffix in (["_ST", "_VWC"] if "TDR" in sensor["sensor_id"] else [""])
+    ]
+    print(columns)
+
+    # Create empty dataframe
     df = pd.DataFrame(columns=columns)
 
     # Loop to take readings
@@ -123,27 +134,41 @@ try:
         # Sensors from sensor_profiles1
         for i, sensor in enumerate(sensor_profiles1):
             sdi_12_address_str = sensor.get("SDI-12 Address")
-            print(sensor["sensor_id"])
             # Proceed only if the sensor has a non-empty SDI-12 Address
-            if sdi_12_address_str and sdi_12_address_str.strip():
+            if (
+                sdi_12_address_str
+                and sdi_12_address_str.strip()
+                and ("TDR" in sensor["sensor_id"] or "IRT" in sensor["sensor_id"])
+            ):
                 sdi_12_address = bytes(sdi_12_address_str.strip(), "utf-8")
                 try:
-                    sensor_values = read_sensor_data(ser1, lock1, sdi_12_address, b"M1")
+                    sensor_values = read_sensor_data(ser1, lock1, sdi_12_address, b"M")
                     print(sensor_values)
-                    if len(sensor_values) >= 2:
-                        sensor_data[sensor["sensor_id"]] = float(sensor_values[1])
+                    if "TDR" in sensor["sensor_id"]:
+                        sensor_data["_" + sensor["sensor_id"] + "_ST"] = (
+                            float(sensor_values[1])
+                            if len(sensor_values) >= 2
+                            else np.nan
+                        )
+                        sensor_data["_" + sensor["sensor_id"] + "_VWC"] = (
+                            float(sensor_values[0])
+                            if len(sensor_values) >= 2
+                            else np.nan
+                        )
+                    elif len(sensor_values) >= 1:
+                        sensor_data["_" + sensor["sensor_id"]] = float(sensor_values[0])
                     else:
-                        sensor_data[sensor["sensor_id"]] = pd.NA
+                        sensor_data["_" + sensor["sensor_id"]] = np.nan
                 except Exception as e:
                     logging.error(
                         f"An error occurred when reading sensor {sensor['sensor_id']}: {e}",
                         exc_info=True,
                     )
-                    sensor_data[sensor["sensor_id"]] = pd.NA
+                    sensor_data["_" + sensor["sensor_id"]] = np.nan
                 print(sensor_data)
 
-        # Append the sensor data from this iteration to the DataFrame
-        df = df.append(sensor_data, ignore_index=True)
+        # Append the sensor data from this iteration to the DataFrame using pd.concat
+        df = pd.concat([df, pd.DataFrame([sensor_data])], ignore_index=True)
 
     print(df.dtypes)
     print(df)
@@ -157,7 +182,7 @@ try:
 
     # Update BigQuery
     project_id, dataset_id, table_id = gcloud.get_bq_table(
-        "span5_all"
+        "span2nodeB"
     )  # Use the right table name
     update_bigquery(client, dataset_id, table_id, averaged_df)
 

@@ -2,11 +2,15 @@ import serial.tools.list_ports
 import serial
 import time
 from datetime import datetime, timedelta
+from google.cloud import bigquery
+from google.api_core.exceptions import NotFound
 import json
 import threading
 from typing import List, Dict
 import gcloud_functions as gcloud
 import logging
+import pandas as pd
+import pandas_gbq
 
 # Configure logging
 logging.basicConfig(
@@ -20,8 +24,8 @@ logging.getLogger("google").setLevel(logging.WARNING)
 lock1 = threading.Lock()
 lock2 = threading.Lock()
 
-serial_id1 = "D30FETO3"
-serial_id2 = "D30FETNY"
+serial_id1 = "D30FEUP2"
+serial_id2 = "D30FETO3"
 
 
 def get_sensor_profiles(file):
@@ -45,8 +49,8 @@ serial_port1 = open_port_by_serial_number(serial_id1)
 serial_port2 = open_port_by_serial_number(serial_id2)
 
 try:
-    ser1 = serial.Serial(serial_port1, 9600, bytesize=8, stopbits=1, timeout=5)
-    ser2 = serial.Serial(serial_port2, 9600, bytesize=8, stopbits=1, timeout=5)
+    ser1 = serial.Serial(serial_port1, 9600, bytesize=8, stopbits=1, timeout=2.5)
+    ser2 = serial.Serial(serial_port2, 9600, bytesize=8, stopbits=1, timeout=2.5)
     time.sleep(2.5)
 except serial.SerialException as e:
     logging.error(f"An error occurred: {e}", exc_info=True)
@@ -100,14 +104,16 @@ try:
         # Sensor from sensor_profiles2
         for i, sensor in enumerate(sensor_profiles2):
             sdi_12_address = bytes(sensor["SDI-12 Address"], "utf-8")
-            sensor_values = read_sensor_data(ser1, lock1, sdi_12_address, b"M1")
+            sensor_values = read_sensor_data(ser2, lock2, sdi_12_address, b"M1")
+            print(sensor_values)
             if len(sensor_values) >= 2:
                 sensor_data[sensor["sensor_id"]] = float(sensor_values[1])
 
         # Sensors from sensor_profiles1
         for i, sensor in enumerate(sensor_profiles1):
             sdi_12_address = bytes(sensor["SDI-12 Address"], "utf-8")
-            sensor_values = read_sensor_data(ser2, lock2, sdi_12_address, b"M1")
+            sensor_values = read_sensor_data(ser1, lock1, sdi_12_address, b"M1")
+            print(sensor_values)
             if len(sensor_values) >= 2:
                 sensor_data[sensor["sensor_id"]] = float(sensor_values[1])
 

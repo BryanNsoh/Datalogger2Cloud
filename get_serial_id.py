@@ -1,34 +1,132 @@
 import serial.tools.list_ports
+import serial
+import time
+from datetime import datetime, timedelta
+from google.cloud import bigquery
+from google.api_core.exceptions import NotFound
+import json
+import threading
+from typing import List, Dict
+import gcloud_functions as gcloud
+import logging
+import pandas as pd
+import pandas_gbq
+
+# Configure logging
+logging.basicConfig(
+    filename="SDI12toUSB.log",
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] - %(message)s",
+)
+logging.getLogger("google").setLevel(logging.WARNING)
+
+# Create a lock for each sensor
+lock1 = threading.Lock()
+lock2 = threading.Lock()
+
+serial_id1 = "D30FEUP2"
+serial_id2 = "D30FETO3"
 
 
-def get_connected_devices():
-    connected_devices = []
+def get_sensor_profiles(file):
+    with open(file, "r") as f:
+        return json.load(f)
 
-    for port in serial.tools.list_ports.comports():
-        device = {
-            "name": port.device,
-            "description": port.description,
-            "hwid": port.hwid,
-            "vid": port.vid,
-            "pid": port.pid,
-            "serial_number": port.serial_number,
+
+sensor_profiles1 = get_sensor_profiles("span5_all.json")
+sensor_profiles2 = get_sensor_profiles("sensor_profiles2.json")
+
+
+def open_port_by_serial_number(serial_id):
+    ports = serial.tools.list_ports.comports()
+    for port in ports:
+        if serial_id in port.hwid:
+            return port.device
+    raise ValueError(f"No serial port found for sensor {serial_id}")
+
+
+serial_port1 = open_port_by_serial_number(serial_id1)
+# serial_port2 = open_port_by_serial_number(serial_id2)
+
+try:
+    ser1 = serial.Serial(serial_port1, 9600, bytesize=8, stopbits=1, timeout=2.5)
+    # ser2 = serial.Serial(serial_port2, 9600, bytesize=8, stopbits=1, timeout=2.5)
+    time.sleep(2.5)
+except serial.SerialException as e:
+    logging.error(f"An error occurred: {e}", exc_info=True)
+    exit(1)
+
+
+def read_sensor_data(ser, lock, sdi_12_address, measurement_code):
+    with lock:
+        # Flush buffers
+        ser.reset_input_buffer()
+
+        if ser.isOpen():
+            print("Serial port is open")
+        else:
+            print("Serial port is not open")
+        # Send the measurement command to the sensor
+        ser.write(sdi_12_address + measurement_code + b"!")
+        print(f"Sent command {sdi_12_address + measurement_code + b'!'}")
+        # Read and discard the first line of the response
+        sdi_12_line = ser.readline()
+        # Read and discard the second line of the response
+        sdi_12_line = ser.readline()
+        # Send the data command to the sensor
+        ser.write(sdi_12_address + b"D0!")
+        # Read the third line of the response, which contains the data
+        sdi_12_line = ser.readline()
+        # Flush buffers
+        ser.reset_output_buffer()
+
+    sdi_12_line = sdi_12_line[:-2]
+    sensor_values = sdi_12_line.decode("utf-8").split("+")[1:]
+
+    for i, value in enumerate(sensor_values):
+        if "-" in value:
+            parts = value.split("-")
+            parts[1] = "-" + parts[1]
+            sensor_values[i] = parts
+
+    return sensor_values
+
+
+sensor_data_list = []
+
+try:
+    while True:
+        current_time = datetime.now()
+        sensor_data = {
+            "Datetime": current_time.isoformat(),
         }
-        connected_devices.append(device)
 
-    return connected_devices
+        for i, sensor in enumerate(sensor_profiles1):
+            sdi_12_address = bytes(sensor["SDI-12 Address"], "utf-8")
+            sensor_values = read_sensor_data(ser1, lock1, sdi_12_address, b"M1")
+            print(sensor_values)
+            if len(sensor_values) >= 2:
+                sensor_data[sensor["sensor_id"]] = float(sensor_values[1])
 
+        # for i, sensor in enumerate(sensor_profiles2):
+        #     sdi_12_address = bytes(sensor["SDI-12 Address"], "utf-8")
+        #     sensor_values = read_sensor_data(ser2, lock2, sdi_12_address, b"M1")
+        #     print(sensor_values)
+        #     if len(sensor_values) >= 2:
+        #         sensor_data[sensor["sensor_id"]] = float(sensor_values[1])
 
-def print_devices(devices):
-    for device in devices:
-        print(f"Name: {device['name']}")
-        print(f"Description: {device['description']}")
-        print(f"HWID: {device['hwid']}")
-        print(f"VID: {device['vid']}")
-        print(f"PID: {device['pid']}")
-        print(f"Serial Number: {device['serial_number']}")
-        print("----------------------")
+        # print(sensor_data)
 
+        if any(value is not None for value in sensor_data.values()):
+            sensor_data_list.append(sensor_data)
 
-if __name__ == "__main__":
-    devices = get_connected_devices()
-    print_devices(devices)
+        with open("./sensor_data.json", "a") as f:
+            json.dump(sensor_data, f)
+            f.write("\n")
+
+except KeyboardInterrupt:
+    logging.info("Interrupted by user. Exiting...")
+    ser1.close()
+except Exception as e:
+    logging.error(f"An error occurred: {e}", exc_info=True)
+    ser1.close()
