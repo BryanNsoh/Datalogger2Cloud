@@ -12,6 +12,8 @@ import logging
 import pandas as pd
 import pandas_gbq
 import numpy as np
+import sqlite3
+from sqlite3 import Error
 
 # Configure logging
 logging.basicConfig(
@@ -20,6 +22,18 @@ logging.basicConfig(
     format="%(asctime)s [%(levelname)s] - %(message)s",
 )
 logging.getLogger("google").setLevel(logging.WARNING)
+
+
+def create_conn(db_file):
+    """Create a database connection to a SQLite database"""
+    conn = None
+    try:
+        conn = sqlite3.connect(db_file)
+        print(f"sqlite3 version: {sqlite3.version}")
+    except Error as e:
+        print(e)
+    return conn
+
 
 # Create a lock for each sensor
 lock1 = threading.Lock()
@@ -180,7 +194,12 @@ try:
     # Save averaged_data_list to sensor_data.json
     averaged_df.to_json("sensor_data.json", orient="records", date_format="iso")
 
-    # Update BigQuery
+    # Save averaged_data_list to sensor_data.db using sqlite3
+    conn = create_conn("sensor_data.db")
+    averaged_df.to_sql("sensor_data", conn, if_exists="append", index=False)
+    conn.close()
+
+    # Save averaged_data_list to BigQuery table
     project_id, dataset_id, table_id = gcloud.get_bq_table(
         "span2nodeB"
     )  # Use the right table name
