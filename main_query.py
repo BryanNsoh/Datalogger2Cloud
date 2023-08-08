@@ -6,6 +6,10 @@ import gcloud_functions as gcloud
 import logging
 import datetime
 
+# Importing SQLite3 database functions
+from database_functions import setup_database, insert_data_to_db, get_latest_timestamp
+
+
 # Configure logging
 logging.basicConfig(
     filename="main_query.log",
@@ -18,10 +22,9 @@ logging.getLogger("google").setLevel(logging.WARNING)
 """Program using pycampbell library to collect and store data from a CR800 or CR1000 datalogger.
    See here for documentation: https://pycampbellcr1000.readthedocs.io/en/latest/index.html
 """
-# IDs and paths for Google Cloud
-project_id = "crop2cloud"
-dataset_id = "sensor_data"
-table_id = "span2nodeB"
+# Table name for Google Cloud
+table_name = "span2nodeB"
+local_db_name = "span2nodeB.db"
 
 
 def main():
@@ -32,10 +35,17 @@ def main():
         # Get names of tables containing data
         table_names = lqf.get_tables(datalogger)
 
-        # Get data collection interval
-        start, stop = lqf.track_and_manage_time(
-            datalogger, project_id, dataset_id, table_id
-        )
+        # Check SQLite3 for latest entry time
+        latest_time = get_latest_timestamp(local_db_name)
+
+        # Determine start and stop times
+        if latest_time:
+            start = datetime.datetime.fromisoformat(latest_time)
+            stop = start + datetime.timedelta(minutes=30)
+        else:
+            current_year = datetime.datetime.now().year
+            start = datetime.datetime(current_year, 7, 23)
+            stop = start + datetime.timedelta(minutes=30)
 
         # Get table data
         table_data = lqf.get_data(
@@ -46,10 +56,14 @@ def main():
         schema = gcloud.get_schema(table_data)
 
         # Update BigQuery table
-        gcloud.update_bqtable(schema, table_data, project_id, dataset_id, table_id)
+        gcloud.update_bqtable(schema, table_name, table_data)
 
-        # Storing the data to a local ndjson file
-        lqf.store_in_ndjson(table_data)
+        # Check if database exists, if not create it
+        if not os.path.exists("span2nodeB.db"):
+            setup_database(schema, local_db_name)
+
+        # Store the data in SQLite3 database
+        insert_data_to_db(table_data, local_db_name)
 
         # Report Success
         logging.info("Upload success!")

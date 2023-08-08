@@ -1461,3 +1461,162 @@ Traceback (most recent call last):
   File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/google/cloud/bigquery/client.py", line 2485, in load_table_from_file
     raise exceptions.from_http_response(exc.response)
 google.api_core.exceptions.BadRequest: 400 POST https://bigquery.googleapis.com/upload/bigquery/v2/projects/crop2cloud/jobs?uploadType=resumable: Empty schema specified for the load job. Please specify a schema that describes the data being loaded.
+2023-08-08 15:27:07,161 [ERROR] - An error occurred: [Errno 2] could not open port /dev/ttyUSB0: [Errno 2] No such file or directory: '/dev/ttyUSB0'
+Traceback (most recent call last):
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/serial/serialposix.py", line 322, in open
+    self.fd = os.open(self.portstr, os.O_RDWR | os.O_NOCTTY | os.O_NONBLOCK)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/dev/ttyUSB0'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/bryan/Desktop/Datalogger2Cloud/main_query.py", line 32, in main
+    datalogger = CR1000.from_url("serial:/dev/ttyUSB0:38400")
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/pycampbellcr1000/device.py", line 71, in from_url
+    link.settimeout(timeout)
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/pylink/link.py", line 241, in settimeout
+    self.serial.timeout = self.timeout
+    ^^^^^^^^^^^
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/pylink/link.py", line 254, in serial
+    self.open()
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/pylink/link.py", line 231, in open
+    self._serial = serial.Serial(self.port, self.baudrate,
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/serial/serialutil.py", line 244, in __init__
+    self.open()
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/serial/serialposix.py", line 325, in open
+    raise SerialException(msg.errno, "could not open port {}: {}".format(self._port, msg))
+serial.serialutil.SerialException: [Errno 2] could not open port /dev/ttyUSB0: [Errno 2] No such file or directory: '/dev/ttyUSB0'
+2023-08-08 15:27:20,255 [ERROR] - An error occurred: [Errno 2] could not open port /dev/ttyUSB0: [Errno 2] No such file or directory: '/dev/ttyUSB0'
+Traceback (most recent call last):
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/serial/serialposix.py", line 322, in open
+    self.fd = os.open(self.portstr, os.O_RDWR | os.O_NOCTTY | os.O_NONBLOCK)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/dev/ttyUSB0'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/bryan/Desktop/Datalogger2Cloud/main_query.py", line 32, in main
+    datalogger = CR1000.from_url("serial:/dev/ttyUSB0:38400")
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/pycampbellcr1000/device.py", line 71, in from_url
+    link.settimeout(timeout)
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/pylink/link.py", line 241, in settimeout
+    self.serial.timeout = self.timeout
+    ^^^^^^^^^^^
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/pylink/link.py", line 254, in serial
+    self.open()
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/pylink/link.py", line 231, in open
+    self._serial = serial.Serial(self.port, self.baudrate,
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/serial/serialutil.py", line 244, in __init__
+    self.open()
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/serial/serialposix.py", line 325, in open
+    raise SerialException(msg.errno, "could not open port {}: {}".format(self._port, msg))
+serial.serialutil.SerialException: [Errno 2] could not open port /dev/ttyUSB0: [Errno 2] No such file or directory: '/dev/ttyUSB0'
+2023-08-08 15:29:47,530 [ERROR] - An error occurred: no such table: data_table
+Traceback (most recent call last):
+  File "/home/bryan/Desktop/Datalogger2Cloud/main_query.py", line 38, in main
+    latest_time = get_latest_timestamp()
+                  ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bryan/Desktop/Datalogger2Cloud/database_functions.py", line 48, in get_latest_timestamp
+    cursor.execute("SELECT TIMESTAMP FROM data_table ORDER BY TIMESTAMP DESC LIMIT 1")
+sqlite3.OperationalError: no such table: data_table
+2023-08-08 15:36:44,626 [ERROR] - An error occurred: list index out of range
+Traceback (most recent call last):
+  File "/home/bryan/Desktop/Datalogger2Cloud/main_query.py", line 66, in main
+    insert_data_to_db(table_data, local_db_name)
+  File "/home/bryan/Desktop/Datalogger2Cloud/database_functions.py", line 28, in insert_data_to_db
+    columns = ", ".join(data[0].keys())
+                        ~~~~^^^
+IndexError: list index out of range
+2023-08-08 15:38:43,061 [ERROR] - An error occurred: <class 'datetime.datetime'>
+Traceback (most recent call last):
+  File "/home/bryan/Desktop/Datalogger2Cloud/main_query.py", line 56, in main
+    schema = gcloud.get_schema(table_data)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bryan/Desktop/Datalogger2Cloud/gcloud_functions.py", line 80, in get_schema
+    schema = [
+             ^
+  File "/home/bryan/Desktop/Datalogger2Cloud/gcloud_functions.py", line 81, in <listcomp>
+    bigquery.SchemaField(field_name, type_mapping[type(sample_value)])
+                                     ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+KeyError: <class 'datetime.datetime'>
+2023-08-08 15:39:04,678 [ERROR] - An error occurred: <class 'datetime.datetime'>
+Traceback (most recent call last):
+  File "/home/bryan/Desktop/Datalogger2Cloud/main_query.py", line 56, in main
+    schema = gcloud.get_schema(table_data)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bryan/Desktop/Datalogger2Cloud/gcloud_functions.py", line 80, in get_schema
+    schema = [
+             ^
+  File "/home/bryan/Desktop/Datalogger2Cloud/gcloud_functions.py", line 81, in <listcomp>
+    bigquery.SchemaField(field_name, type_mapping[type(sample_value)])
+                                     ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+KeyError: <class 'datetime.datetime'>
+2023-08-08 15:41:01,350 [ERROR] - An error occurred: no such table: data_table
+Traceback (most recent call last):
+  File "/home/bryan/Desktop/Datalogger2Cloud/main_query.py", line 66, in main
+    insert_data_to_db(table_data, local_db_name)
+  File "/home/bryan/Desktop/Datalogger2Cloud/database_functions.py", line 33, in insert_data_to_db
+    cursor.executemany(insert_stmt, [tuple(row.values()) for row in data])
+sqlite3.OperationalError: no such table: data_table
+2023-08-08 15:54:04,639 [ERROR] - An error occurred: update_bqtable() takes 2 positional arguments but 3 were given
+Traceback (most recent call last):
+  File "/home/bryan/Desktop/Datalogger2Cloud/main_query.py", line 59, in main
+    gcloud.update_bqtable(schema, table_name, table_data)
+TypeError: update_bqtable() takes 2 positional arguments but 3 were given
+2023-08-08 16:00:34,443 [ERROR] - An error occurred: This method requires pyarrow to be installed
+Traceback (most recent call last):
+  File "/home/bryan/Desktop/Datalogger2Cloud/main_query.py", line 59, in main
+    gcloud.update_bqtable(table_name, table_data)
+  File "/home/bryan/Desktop/Datalogger2Cloud/gcloud_functions.py", line 154, in update_bqtable
+    job = client_obj.load_table_from_dataframe(df, table_ref, job_config=job_config)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bryan/.virtualenvs/logger_env/lib/python3.11/site-packages/google/cloud/bigquery/client.py", line 2626, in load_table_from_dataframe
+    raise ValueError("This method requires pyarrow to be installed")
+ValueError: This method requires pyarrow to be installed
+2023-08-08 16:23:00,260 [ERROR] - An error occurred: no such table: data_table
+Traceback (most recent call last):
+  File "/home/bryan/Desktop/Datalogger2Cloud/main_query.py", line 66, in main
+    insert_data_to_db(table_data, local_db_name)
+  File "/home/bryan/Desktop/Datalogger2Cloud/database_functions.py", line 33, in insert_data_to_db
+    cursor.executemany(insert_stmt, [tuple(row.values()) for row in data])
+sqlite3.OperationalError: no such table: data_table
+2023-08-08 16:25:53,051 [ERROR] - An error occurred: name 'type_mapping' is not defined
+Traceback (most recent call last):
+  File "/home/bryan/Desktop/Datalogger2Cloud/main_query.py", line 66, in main
+    insert_data_to_db(table_data, local_db_name)
+  File "/home/bryan/Desktop/Datalogger2Cloud/database_functions.py", line 36, in insert_data_to_db
+    [
+  File "/home/bryan/Desktop/Datalogger2Cloud/database_functions.py", line 37, in <listcomp>
+    f"{col_name} {type_mapping[type(sample_value)]}"
+                  ^^^^^^^^^^^^
+NameError: name 'type_mapping' is not defined
+2023-08-08 16:42:45,998 [ERROR] - An error occurred: list index out of range
+Traceback (most recent call last):
+  File "/home/bryan/Desktop/Datalogger2Cloud/main_query.py", line 66, in main
+    insert_data_to_db(table_data, local_db_name)
+  File "/home/bryan/Desktop/Datalogger2Cloud/database_functions.py", line 56, in insert_data_to_db
+    columns = ", ".join(data[0].keys())
+                        ~~~~^^^
+IndexError: list index out of range
+2023-08-08 16:43:18,049 [ERROR] - An error occurred: list index out of range
+Traceback (most recent call last):
+  File "/home/bryan/Desktop/Datalogger2Cloud/main_query.py", line 66, in main
+    insert_data_to_db(table_data, local_db_name)
+  File "/home/bryan/Desktop/Datalogger2Cloud/database_functions.py", line 56, in insert_data_to_db
+    columns = ", ".join(data[0].keys())
+                        ~~~~^^^
+IndexError: list index out of range
+2023-08-08 16:46:29,836 [ERROR] - An error occurred: list index out of range
+Traceback (most recent call last):
+  File "/home/bryan/Desktop/Datalogger2Cloud/main_query.py", line 66, in main
+    insert_data_to_db(table_data, local_db_name)
+  File "/home/bryan/Desktop/Datalogger2Cloud/database_functions.py", line 56, in insert_data_to_db
+    columns = ", ".join(data[0].keys())
+                        ~~~~^^^
+IndexError: list index out of range

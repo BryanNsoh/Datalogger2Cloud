@@ -71,6 +71,7 @@ def get_schema(list_dicts: List[Dict]) -> List[bigquery.SchemaField]:
         str: "STRING",
         bool: "BOOLEAN",
         bytes: "BYTES",
+        datetime.datetime: "TIMESTAMP",
     }
 
     # Get the first dictionary from the list to infer schema

@@ -25,27 +25,30 @@ def get_tables(datalogger):
 
 
 def get_data(datalogger, table_name, start, stop):
-    table_data = []
     table_data = datalogger.get_data(table_name, start, stop)
     cleaned_data = []
 
     for label in table_data:
         dict_entry = {}
         for key, value in label.items():
-            key = key.replace("b'", "")
-            key = key.replace("'", "")
+            key = key.replace("b'", "").replace("'", "")
+
+            # Convert Datetime key to TIMESTAMP and retain its datetime object value
+            if key == "Datetime":
+                key = "TIMESTAMP"
+
             dict_entry[key] = value
-            if isinstance(value, datetime):
-                dict_entry["TIMESTAMP"] = value.isoformat()
+
             try:
                 if math.isnan(value):
                     dict_entry[key] = -9999
             except TypeError:
                 continue
+
         cleaned_data.append(dict_entry)
 
     # sort the cleaned data by TIMESTAMP
-    cleaned_data.sort(key=lambda x: datetime.fromisoformat(x["TIMESTAMP"]))
+    cleaned_data.sort(key=lambda x: x["TIMESTAMP"])
 
     return cleaned_data if cleaned_data else []
 
