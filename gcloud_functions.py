@@ -8,6 +8,8 @@ import pandas as pd
 import os
 import json
 import tempfile
+import os
+import subprocess
 
 
 class JSONEncoder(json.JSONEncoder):
@@ -192,6 +194,11 @@ def get_bq_table(table_name):
             "dataset_id": "sensor_data",
             "table_id": "span5_all",
         },
+        "span5_sdi12": {
+            "project_id": "crop2cloud",
+            "dataset_id": "sensor_data",
+            "table_id": "span5_sdi12",
+        },
         "weather": {
             "project_id": "crop2cloud",
             "dataset_id": "weather_data",
@@ -204,3 +211,10 @@ def get_bq_table(table_name):
         table_params[table_name]["dataset_id"],
         table_params[table_name]["table_id"],
     ]
+
+
+def update_system_time():
+    # Set the system clock from a network time server
+    subprocess.run(["sudo", "timedatectl", "set-ntp", "true"])
+    # Check the current system clock time
+    subprocess.run(["timedatectl"])

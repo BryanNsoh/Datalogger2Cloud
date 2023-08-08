@@ -22,13 +22,19 @@ logging.getLogger("google").setLevel(logging.WARNING)
 """Program using pycampbell library to collect and store data from a CR800 or CR1000 datalogger.
    See here for documentation: https://pycampbellcr1000.readthedocs.io/en/latest/index.html
 """
-# Table name for Google Cloud
+# Table name for Google Cloud and local database file
 table_name = "span2nodeB"
 local_db_name = "span2nodeB.db"
 
 
 def main():
     try:
+        # Update system time
+        try:
+            gcloud.update_system_time()
+        except:
+            pass
+
         # Establish connection to datalogger
         datalogger = CR1000.from_url("serial:/dev/ttyUSB0:38400")
 
@@ -41,11 +47,11 @@ def main():
         # Determine start and stop times
         if latest_time:
             start = datetime.datetime.fromisoformat(latest_time)
-            stop = start + datetime.timedelta(minutes=30)
+            stop = datetime.datetime.now()
         else:
             current_year = datetime.datetime.now().year
             start = datetime.datetime(current_year, 7, 23)
-            stop = start + datetime.timedelta(minutes=30)
+            stop = datetime.datetime.now()
 
         # Get table data
         table_data = lqf.get_data(

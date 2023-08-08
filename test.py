@@ -9,9 +9,10 @@ import threading
 import logging
 import pandas as pd
 import numpy as np
-import sqlite3
 from sqlite3 import Error
 import platform, os
+from database_functions import insert_data_to_db, setup_database
+from gcloud_functions import get_schema, update_bqtable
 
 # Configure logging
 logging.basicConfig(
@@ -42,17 +43,6 @@ else:
     raise OSError(
         "Unsupported operating system. This script runs on Linux and Windows only."
     )
-
-
-def create_conn(db_file):
-    """Create a database connection to a SQLite database"""
-    conn = None
-    try:
-        conn = sqlite3.connect(db_file)
-        print(f"sqlite3 version: {sqlite3.version}")
-    except Error as e:
-        print(e)
-    return conn
 
 
 # Create a lock for each sensor
@@ -110,78 +100,11 @@ def read_sensor_data(ser, lock, sdi_12_address, measurement_code):
     return sensor_values
 
 
-def table_exists(
-    client: bigquery.Client, table_ref: bigquery.table.TableReference
-) -> bool:
-    try:
-        client.get_table(table_ref)
-        return True
-    except NotFound:
-        return False
-
-
-def update_bigquery(client, dataset_id, table_id, df):
-    dataset_ref = client.dataset(dataset_id)
-    table_ref = dataset_ref.table(table_id)
-
-    # Define job configuration
-    job_config = bigquery.LoadJobConfig()
-    job_config.autodetect = True
-    job_config.write_disposition = "WRITE_APPEND"
-
-    # Load DataFrame to BigQuery
-    job = client.load_table_from_dataframe(df, table_ref, job_config=job_config)
-
-    # Wait for the load job to complete
-    job.result()
-    print(f"Successfully updated table {client.project}.{dataset_id}.{table_id}")
-
-
-def get_bq_table(table_name):
-    # Get the table_id, project_id, and dataset_id for table_name
-    table_params = {
-        "span2nodeB": {
-            "project_id": "crop2cloud",
-            "dataset_id": "sensor_data",
-            "table_id": "span2nodeB",
-        },
-        "span2nodeC": {
-            "project_id": "crop2cloud",
-            "dataset_id": "sensor_data",
-            "table_id": "span2nodeC",
-        },
-        "span2nodeA": {
-            "project_id": "crop2cloud",
-            "dataset_id": "sensor_data",
-            "table_id": "span2nodeA",
-        },
-        "span5_all": {
-            "project_id": "crop2cloud",
-            "dataset_id": "sensor_data",
-            "table_id": "span5_all",
-        },
-        "span5_sdi12": {
-            "project_id": "crop2cloud",
-            "dataset_id": "sensor_data",
-            "table_id": "span5_all",
-        },
-        "weather": {
-            "project_id": "crop2cloud",
-            "dataset_id": "weather_data",
-            "table_id": "weather",
-        },
-    }
-    return [
-        table_params[table_name]["project_id"],
-        table_params[table_name]["dataset_id"],
-        table_params[table_name]["table_id"],
-    ]
-
-
 sensor_data_list = []
 
-# Initialize a BigQuery client
-client = bigquery.Client()
+# Table name for Google Cloud and local database file
+table_name = "span5_sdi12"
+local_db_name = "span5_sdi12.db"
 
 
 try:
@@ -249,19 +172,21 @@ try:
     averaged_df = df.mean(numeric_only=True).to_frame().T
     averaged_df.insert(0, "TIMESTAMP", datetime.now())
 
-    # Save averaged_data_list to sensor_data.json (to be deprecated)
-    averaged_df.to_json("sensor_data.json", orient="records", date_format="iso")
+    # Save averaged_data_list to sensor_data.db using database_functions
+    insert_data_to_db(averaged_df.to_dict(orient="records"))
 
-    # Save averaged_data_list to sensor_data.db using sqlite3
-    conn = create_conn("sensor_data_sdi.db")
-    averaged_df.to_sql("sensor_data", conn, if_exists="append", index=False)
-    conn.close()
+    # Save averaged_data_list to BigQuery table using gcloud_functions
+    schema = get_schema(averaged_df.to_dict(orient="records"))
 
-    # Save averaged_data_list to BigQuery table
-    project_id, dataset_id, table_id = get_bq_table(
-        "span5_sdi12"
-    )  # Use the right table name
-    update_bigquery(client, dataset_id, table_id, averaged_df)
+    update_bqtable(schema, table_name, averaged_df.to_dict(orient="records"))
+
+    # Check if database exists, if not create it
+    if not os.path.exists("span2nodeB.db"):
+        setup_database(schema, local_db_name)
+
+    # Store the data in SQLite3 database
+    insert_data_to_db(averaged_df.to_dict(orient="records"), local_db_name)
+
 
 except KeyboardInterrupt:
     logging.info("Interrupted by user. Exiting...")

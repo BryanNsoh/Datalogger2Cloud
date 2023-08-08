@@ -1,12 +1,26 @@
 {
     "commands": [
-        "pip install --upgrade pip pyserial google-cloud-storage google-cloud-bigquery pandas pandas-gbq numpy pycampbellcr1000 ndjson json"
+        "python -m pip install --upgrade pip",
+        "pip install pyserial google-cloud-storage google-cloud-bigquery pandas pandas-gbq pycampbellcr1000 ndjson json",
+        "pip install pandas",
+        "pip install google",
+        "pip install google-api-core",
+        "pip install --upgrade google-cloud",
+        "pip install --upgrade google-cloud-bigquery",
+        "pip install --upgrade google-cloud-storage",
+        "sudo apt update",
+        "sudo apt install ntp",
+        "sudo systemctl start ntp"
+        
+
+        
+        
     ],
     "units": [
         {
             "name": "main_query",
-            "timer": "[Unit]\nDescription=Run main_query.service every hour and after booting\n\n[Timer]\nOnBootSec=5min\nOnCalendar=*:0/15\nUnit=main_query.service\n\n[Install]\nWantedBy=timers.target\n",
-            "service": "[Unit]\nDescription=Run main_query.py after an Internet connection is established\nWants= main_query.timer\nConflicts=shutdown.service\n\n[Service]\nType=simple\nUser=root\nExecStart=python {project_path}/main_query.py\nRestart=on-failure\nStandardOutput=file:{systemd_reports_path}/main_query.stdout\nStandardError=file:{systemd_reports_path}/main_query.stderr\n"
+            "timer": "[Unit]\nDescription=Run main_query.service every hour and after booting\n\n[Timer]\nOnBootSec=5min\nOnCalendar=hourly\nUnit=main_query.service\n\n[Install]\nWantedBy=timers.target\n",
+            "service": "[Unit]\nDescription=Run main_query.py after an Internet connection is established\nWants= main_query.timer\nConflicts=shutdown.service\n\n[Service]\nWorkingDirectory=/home/bryan\nType=simple\nUser=root\nExecStart=python {project_path}/main_query.py\nRestart=on-failure\nStandardOutput=file:{systemd_reports_path}/main_query.stdout\nStandardError=file:{systemd_reports_path}/main_query.stderr\n"
         }
     ]
 }
