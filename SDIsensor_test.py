@@ -5,18 +5,24 @@ import serial
 import time
 import re
 
+serial_id1 = "D30EQ9PU"
 
-# Serial port detection
-ports = list(serial.tools.list_ports.comports())
-if len(ports) == 0:
-    raise ValueError("No serial ports found")
-elif len(ports) > 1:
-    pass
-serial_port = str(ports[0].device)
 
-# Serial connection
-ser = serial.Serial(serial_port, 9600, timeout=10)
-time.sleep(2.5)
+def open_port_by_serial_number(serial_id):
+    ports = serial.tools.list_ports.comports()
+    for port in ports:
+        if serial_id in port.hwid:
+            return port.device
+    raise ValueError(f"No serial port found for sensor {serial_id}")
+
+
+serial_port1 = open_port_by_serial_number(serial_id1)
+
+try:
+    ser = serial.Serial(serial_port1, 9600, bytesize=8, stopbits=1, timeout=5)
+    time.sleep(2.5)
+except serial.SerialException as e:
+    exit(1)
 
 ser.write(b"?!")
 sdi_12_line = ser.readline()

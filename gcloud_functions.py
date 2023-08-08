@@ -66,7 +66,7 @@ def get_schema(list_dicts: List[Dict]) -> List[bigquery.SchemaField]:
 
     # Define a mapping of Python data types to BigQuery data types
     type_mapping = {
-        int: "INTEGER",
+        int: "FLOAT",
         float: "FLOAT",
         str: "STRING",
         bool: "BOOLEAN",

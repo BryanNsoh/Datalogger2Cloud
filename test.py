@@ -6,14 +6,12 @@ from google.cloud import bigquery
 from google.api_core.exceptions import NotFound
 import json
 import threading
-from typing import List, Dict
-import gcloud_functions as gcloud
 import logging
 import pandas as pd
-import pandas_gbq
 import numpy as np
 import sqlite3
 from sqlite3 import Error
+import platform, os
 
 # Configure logging
 logging.basicConfig(
@@ -22,6 +20,28 @@ logging.basicConfig(
     format="%(asctime)s [%(levelname)s] - %(message)s",
 )
 logging.getLogger("google").setLevel(logging.WARNING)
+
+if platform.system() == "Linux":
+    # Load the keys from the JSON file
+    with open("/home/bryan/.keys/api_keys.json", "r") as file:
+        keys = json.load(file)
+
+    # Access keys for google service
+    google_creds = keys["google"]["application_credentials"]
+
+    # Set environment variable for Google credentials
+    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = google_creds
+
+elif platform.system() == "Windows":
+    # Set environment variable for Google credentials
+    os.environ[
+        "GOOGLE_APPLICATION_CREDENTIALS"
+    ] = r"C:\.keys\crop2cloud-a9f1f94184a4.json"
+
+else:
+    raise OSError(
+        "Unsupported operating system. This script runs on Linux and Windows only."
+    )
 
 
 def create_conn(db_file):
@@ -46,7 +66,7 @@ def get_sensor_profiles(file):
         return json.load(f)
 
 
-sensor_profiles1 = get_sensor_profiles("span2nodeB.json")
+sensor_profiles1 = get_sensor_profiles("span5_sdi12.json")
 
 
 def open_port_by_serial_number(serial_id):
@@ -60,7 +80,7 @@ def open_port_by_serial_number(serial_id):
 serial_port1 = open_port_by_serial_number(serial_id1)
 
 try:
-    ser1 = serial.Serial(serial_port1, 9600, bytesize=8, stopbits=1, timeout=5)
+    ser1 = serial.Serial(serial_port1, 9600, bytesize=8, stopbits=1, timeout=1)
     time.sleep(2.5)
 except serial.SerialException as e:
     logging.error(f"An error occurred: {e}", exc_info=True)
@@ -70,10 +90,6 @@ except serial.SerialException as e:
 def read_sensor_data(ser, lock, sdi_12_address, measurement_code):
     with lock:
         ser.reset_input_buffer()
-        if ser.isOpen():
-            print("Serial port is open")
-        else:
-            print("Serial port is not open")
         ser.write(sdi_12_address + measurement_code + b"!")
         print(f"Sent command {sdi_12_address + measurement_code + b'!'}")
         sdi_12_line = ser.readline()
@@ -105,19 +121,61 @@ def table_exists(
 
 
 def update_bigquery(client, dataset_id, table_id, df):
-    full_table_id = f"{client.project}.{dataset_id}.{table_id}"
+    dataset_ref = client.dataset(dataset_id)
+    table_ref = dataset_ref.table(table_id)
 
-    # Check if table exists
-    table_ref = client.dataset(dataset_id).table(table_id)
-    if_exists_value = "append" if table_exists(client, table_ref) else "replace"
+    # Define job configuration
+    job_config = bigquery.LoadJobConfig()
+    job_config.autodetect = True
+    job_config.write_disposition = "WRITE_APPEND"
 
-    df.to_gbq(
-        full_table_id,
-        project_id=client.project,
-        if_exists=if_exists_value,  # Append to the existing table or replace if it doesn't exist
-        progress_bar=True,
-    )
-    print(f"Successfully updated table {full_table_id}")
+    # Load DataFrame to BigQuery
+    job = client.load_table_from_dataframe(df, table_ref, job_config=job_config)
+
+    # Wait for the load job to complete
+    job.result()
+    print(f"Successfully updated table {client.project}.{dataset_id}.{table_id}")
+
+
+def get_bq_table(table_name):
+    # Get the table_id, project_id, and dataset_id for table_name
+    table_params = {
+        "span2nodeB": {
+            "project_id": "crop2cloud",
+            "dataset_id": "sensor_data",
+            "table_id": "span2nodeB",
+        },
+        "span2nodeC": {
+            "project_id": "crop2cloud",
+            "dataset_id": "sensor_data",
+            "table_id": "span2nodeC",
+        },
+        "span2nodeA": {
+            "project_id": "crop2cloud",
+            "dataset_id": "sensor_data",
+            "table_id": "span2nodeA",
+        },
+        "span5_all": {
+            "project_id": "crop2cloud",
+            "dataset_id": "sensor_data",
+            "table_id": "span5_all",
+        },
+        "span5_sdi12": {
+            "project_id": "crop2cloud",
+            "dataset_id": "sensor_data",
+            "table_id": "span5_all",
+        },
+        "weather": {
+            "project_id": "crop2cloud",
+            "dataset_id": "weather_data",
+            "table_id": "weather",
+        },
+    }
+    return [
+        table_params[table_name]["project_id"],
+        table_params[table_name]["dataset_id"],
+        table_params[table_name]["table_id"],
+    ]
 
 
 sensor_data_list = []
@@ -191,17 +249,17 @@ try:
     averaged_df = df.mean(numeric_only=True).to_frame().T
     averaged_df.insert(0, "TIMESTAMP", datetime.now())
 
-    # Save averaged_data_list to sensor_data.json
+    # Save averaged_data_list to sensor_data.json (to be deprecated)
     averaged_df.to_json("sensor_data.json", orient="records", date_format="iso")
 
     # Save averaged_data_list to sensor_data.db using sqlite3
-    conn = create_conn("sensor_data.db")
+    conn = create_conn("sensor_data_sdi.db")
     averaged_df.to_sql("sensor_data", conn, if_exists="append", index=False)
     conn.close()
 
     # Save averaged_data_list to BigQuery table
-    project_id, dataset_id, table_id = gcloud.get_bq_table(
-        "span2nodeB"
+    project_id, dataset_id, table_id = get_bq_table(
+        "span5_sdi12"
     )  # Use the right table name
     update_bigquery(client, dataset_id, table_id, averaged_df)
 
