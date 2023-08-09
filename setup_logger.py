@@ -16,7 +16,7 @@ logging.basicConfig(
 logger = logging.getLogger()
 
 # Load configuration from config.json
-with open("./config.json", "r") as config_file:
+with open("./logger_config.json", "r") as config_file:
     config = json.load(config_file)
 
 # check if specific units are passed as arguments
