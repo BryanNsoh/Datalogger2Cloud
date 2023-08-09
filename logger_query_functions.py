@@ -4,7 +4,6 @@ import os
 import json
 import os.path
 import math
-import ndjson
 
 
 def get_tables(datalogger):

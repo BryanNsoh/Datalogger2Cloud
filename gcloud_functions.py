@@ -59,6 +59,12 @@ def update_bucket(bucket_name: str, blob_name: str, local_file: str) -> None:
     write_read(bucket_name, blob_name, local_file)
 
 
+from google.cloud import bigquery
+from typing import List, Dict
+import datetime
+import pandas as pd
+
+
 def get_schema(list_dicts: List[Dict]) -> List[bigquery.SchemaField]:
     """Takes a list of dictionaries as input and generates a BigQuery schema
     with appropriate field names and types."""
@@ -66,22 +72,27 @@ def get_schema(list_dicts: List[Dict]) -> List[bigquery.SchemaField]:
     if not list_dicts:
         return []
 
-    # Define a mapping of Python data types to BigQuery data types
-    type_mapping = {
-        int: "FLOAT",
-        float: "FLOAT",
-        str: "STRING",
-        bool: "BOOLEAN",
-        bytes: "BYTES",
-        datetime.datetime: "TIMESTAMP",
-    }
+    # Define a function to determine the BigQuery type
+    def get_bq_type(value):
+        if isinstance(value, (int, float)):
+            return "FLOAT"
+        elif isinstance(value, str):
+            return "STRING"
+        elif isinstance(value, bool):
+            return "BOOLEAN"
+        elif isinstance(value, bytes):
+            return "BYTES"
+        elif isinstance(value, (datetime.datetime, pd.Timestamp)):
+            return "TIMESTAMP"
+        else:
+            raise ValueError(f"Unsupported data type: {type(value)}")
 
     # Get the first dictionary from the list to infer schema
     sample_dict = list_dicts[0]
 
     # Generate BigQuery schema fields based on the sample dictionary
     schema = [
-        bigquery.SchemaField(field_name, type_mapping[type(sample_value)])
+        bigquery.SchemaField(field_name, get_bq_type(sample_value))
         for field_name, sample_value in sample_dict.items()
     ]
 
@@ -114,9 +125,9 @@ def update_bqtable(
     # Define the table reference using dataset_id and table_id
     table_ref = bigquery_client.dataset(dataset_id).table(table_id)
 
-    # Load the data from the temporary file into BigQuery
-    with open(temp_file_path, "rb") as temp_file:
-        try:
+    try:
+        # Load the data from the temporary file into BigQuery
+        with open(temp_file_path, "rb") as temp_file:
             load_job = bigquery_client.load_table_from_file(
                 temp_file,
                 table_ref,
@@ -128,16 +139,15 @@ def update_bqtable(
 
             print(f"Loaded {load_job.output_rows} rows into {dataset_id}:{table_id}.")
 
-        except Exception as e:
-            print("Encountered error while loading table: ", e)
-            if hasattr(e, "errors"):
-                print("Detailed errors: ", e.errors)
+    except Exception as e:
+        print("Encountered error while loading table: ", e)
+        if hasattr(e, "errors"):
+            print("Detailed errors: ", e.errors)
+    finally:
+        # Remove the temporary file outside of the 'with' block
+        os.remove(temp_file_path)
 
-        # Remove the temporary file
-        finally:
-            os.remove(temp_file_path)
-
-        return True
+    return True
 
 
 def get_latest_entry_time(table_name: str):

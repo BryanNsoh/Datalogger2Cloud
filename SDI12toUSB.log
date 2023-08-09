@@ -302,3 +302,67 @@ sqlite3.OperationalError: table sensor_data has no column named _5001A1TDR0623_S
 2023-08-08 11:08:25,815 [WARNING] - Compute Engine Metadata server unavailable on attempt 2 of 3. Reason: timed out
 2023-08-08 11:08:28,824 [WARNING] - Compute Engine Metadata server unavailable on attempt 3 of 3. Reason: timed out
 2023-08-08 11:08:28,824 [WARNING] - Authentication failed using Compute Engine authentication due to unavailable metadata server.
+2023-08-09 07:04:15,697 [ERROR] - An error occurred: Error binding parameter 1: type 'Timestamp' is not supported
+Traceback (most recent call last):
+  File "c:\Users\bnsoh2\OneDrive - University of Nebraska-Lincoln\Documents\Coding Projects\Datalogger2Cloud\test.py", line 176, in <module>
+    insert_data_to_db(averaged_df.to_dict(orient="records"))
+  File "c:\Users\bnsoh2\OneDrive - University of Nebraska-Lincoln\Documents\Coding Projects\Datalogger2Cloud\database_functions.py", line 61, in insert_data_to_db
+    cursor.executemany(insert_stmt, [tuple(row.values()) for row in data])
+sqlite3.ProgrammingError: Error binding parameter 1: type 'Timestamp' is not supported
+2023-08-09 07:12:12,154 [ERROR] - An error occurred: <class 'pandas._libs.tslibs.timestamps.Timestamp'>
+Traceback (most recent call last):
+  File "c:\Users\bnsoh2\OneDrive - University of Nebraska-Lincoln\Documents\Coding Projects\Datalogger2Cloud\test.py", line 176, in <module>
+    schema = get_schema(averaged_df.to_dict(orient="records"))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\bnsoh2\OneDrive - University of Nebraska-Lincoln\Documents\Coding Projects\Datalogger2Cloud\gcloud_functions.py", line 83, in get_schema
+    schema = [
+             ^
+  File "c:\Users\bnsoh2\OneDrive - University of Nebraska-Lincoln\Documents\Coding Projects\Datalogger2Cloud\gcloud_functions.py", line 84, in <listcomp>
+    bigquery.SchemaField(field_name, type_mapping[type(sample_value)])
+                                     ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+KeyError: <class 'pandas._libs.tslibs.timestamps.Timestamp'>
+2023-08-09 07:14:31,261 [ERROR] - An error occurred: [WinError 32] The process cannot access the file because it is being used by another process: 'C:\\Users\\bnsoh2\\AppData\\Local\\Temp\\tmpsdsww_q5'
+Traceback (most recent call last):
+  File "c:\Users\bnsoh2\OneDrive - University of Nebraska-Lincoln\Documents\Coding Projects\Datalogger2Cloud\test.py", line 178, in <module>
+    update_bqtable(schema, table_name, averaged_df.to_dict(orient="records"))
+  File "c:\Users\bnsoh2\OneDrive - University of Nebraska-Lincoln\Documents\Coding Projects\Datalogger2Cloud\gcloud_functions.py", line 138, in update_bqtable
+    os.remove(temp_file_path)
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'C:\\Users\\bnsoh2\\AppData\\Local\\Temp\\tmpsdsww_q5'
+2023-08-09 07:30:59,325 [ERROR] - An error occurred: 'list' object has no attribute 'items'
+Traceback (most recent call last):
+  File "c:\Users\bnsoh2\OneDrive - University of Nebraska-Lincoln\Documents\Coding Projects\Datalogger2Cloud\test.py", line 182, in <module>
+    setup_database(schema, local_db)
+  File "c:\Users\bnsoh2\OneDrive - University of Nebraska-Lincoln\Documents\Coding Projects\Datalogger2Cloud\database_functions.py", line 12, in setup_database
+    [f"{col_name} {col_type}" for col_name, col_type in schema.items()]
+                                                        ^^^^^^^^^^^^
+AttributeError: 'list' object has no attribute 'items'
+2023-08-09 14:01:53,487 [ERROR] - An error occurred: 'list' object has no attribute 'items'
+Traceback (most recent call last):
+  File "c:\Users\bnsoh2\OneDrive - University of Nebraska-Lincoln\Documents\Coding Projects\Datalogger2Cloud\test.py", line 182, in <module>
+    setup_database(schema, local_db)
+  File "c:\Users\bnsoh2\OneDrive - University of Nebraska-Lincoln\Documents\Coding Projects\Datalogger2Cloud\database_functions.py", line 12, in setup_database
+    [f"{col_name} {col_type}" for col_name, col_type in schema.items()]
+                                                        ^^^^^^^^^^^^
+AttributeError: 'list' object has no attribute 'items'
+2023-08-09 14:03:30,507 [ERROR] - An error occurred: <class 'pandas._libs.tslibs.timestamps.Timestamp'>
+Traceback (most recent call last):
+  File "c:\Users\bnsoh2\OneDrive - University of Nebraska-Lincoln\Documents\Coding Projects\Datalogger2Cloud\test.py", line 176, in <module>
+    schema = get_schema(averaged_df.to_dict(orient="records"))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\bnsoh2\OneDrive - University of Nebraska-Lincoln\Documents\Coding Projects\Datalogger2Cloud\gcloud_functions.py", line 83, in get_schema
+    schema = [
+             ^
+  File "c:\Users\bnsoh2\OneDrive - University of Nebraska-Lincoln\Documents\Coding Projects\Datalogger2Cloud\gcloud_functions.py", line 84, in <listcomp>
+    bigquery.SchemaField(field_name, type_mapping[type(sample_value)])
+                                     ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+KeyError: <class 'pandas._libs.tslibs.timestamps.Timestamp'>
+2023-08-09 14:09:20,570 [ERROR] - An error occurred: <class 'pandas._libs.tslibs.timestamps.Timestamp'>
+Traceback (most recent call last):
+  File "c:\Users\bnsoh2\OneDrive - University of Nebraska-Lincoln\Documents\Coding Projects\Datalogger2Cloud\test.py", line 185, in <module>
+    insert_data_to_db(averaged_df.to_dict(orient="records"), local_db)
+  File "c:\Users\bnsoh2\OneDrive - University of Nebraska-Lincoln\Documents\Coding Projects\Datalogger2Cloud\database_functions.py", line 47, in insert_data_to_db
+    [
+  File "c:\Users\bnsoh2\OneDrive - University of Nebraska-Lincoln\Documents\Coding Projects\Datalogger2Cloud\database_functions.py", line 48, in <listcomp>
+    f"{col_name} {type_mapping[type(sample_value)]}"
+                  ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+KeyError: <class 'pandas._libs.tslibs.timestamps.Timestamp'>

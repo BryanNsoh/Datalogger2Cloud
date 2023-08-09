@@ -1,6 +1,5 @@
 from pycampbellcr1000 import CR1000
 import os
-import ndjson
 import logger_query_functions as lqf
 import gcloud_functions as gcloud
 import logging

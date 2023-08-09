@@ -48,7 +48,7 @@ else:
 # Create a lock for each sensor
 lock1 = threading.Lock()
 
-serial_id1 = "D30FEUP2"
+serial_id1 = "D30FETOH"
 
 
 def get_sensor_profiles(file):
@@ -56,7 +56,7 @@ def get_sensor_profiles(file):
         return json.load(f)
 
 
-sensor_profiles1 = get_sensor_profiles("span5_sdi12.json")
+sensor_profiles1 = get_sensor_profiles("span2nodeA_sensors.json")
 
 
 def open_port_by_serial_number(serial_id):
@@ -103,8 +103,8 @@ def read_sensor_data(ser, lock, sdi_12_address, measurement_code):
 sensor_data_list = []
 
 # Table name for Google Cloud and local database file
-table_name = "span5_sdi12"
-local_db_name = "span5_sdi12.db"
+table_name = "span2nodeA"
+local_db = "span2nodeA.db"
 
 
 try:
@@ -172,20 +172,17 @@ try:
     averaged_df = df.mean(numeric_only=True).to_frame().T
     averaged_df.insert(0, "TIMESTAMP", datetime.now())
 
-    # Save averaged_data_list to sensor_data.db using database_functions
-    insert_data_to_db(averaged_df.to_dict(orient="records"))
-
     # Save averaged_data_list to BigQuery table using gcloud_functions
     schema = get_schema(averaged_df.to_dict(orient="records"))
 
     update_bqtable(schema, table_name, averaged_df.to_dict(orient="records"))
 
     # Check if database exists, if not create it
-    if not os.path.exists("span2nodeB.db"):
-        setup_database(schema, local_db_name)
+    if not os.path.exists(local_db):
+        setup_database(schema, local_db)
 
-    # Store the data in SQLite3 database
-    insert_data_to_db(averaged_df.to_dict(orient="records"), local_db_name)
+    # Save averaged_data_list to sensor_data.db using database_functions
+    insert_data_to_db(averaged_df.to_dict(orient="records"), local_db)
 
 
 except KeyboardInterrupt:
