@@ -366,3 +366,13 @@ Traceback (most recent call last):
     f"{col_name} {type_mapping[type(sample_value)]}"
                   ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
 KeyError: <class 'pandas._libs.tslibs.timestamps.Timestamp'>
+2023-08-11 14:38:46,247 [ERROR] - An error occurred: <class 'pandas._libs.tslibs.timestamps.Timestamp'>
+Traceback (most recent call last):
+  File "c:\Users\bnsoh2\OneDrive - University of Nebraska-Lincoln\Documents\Coding Projects\Datalogger2Cloud\test.py", line 185, in <module>
+    insert_data_to_db(averaged_df.to_dict(orient="records"), local_db)
+  File "c:\Users\bnsoh2\OneDrive - University of Nebraska-Lincoln\Documents\Coding Projects\Datalogger2Cloud\database_functions.py", line 47, in insert_data_to_db
+    [
+  File "c:\Users\bnsoh2\OneDrive - University of Nebraska-Lincoln\Documents\Coding Projects\Datalogger2Cloud\database_functions.py", line 48, in <listcomp>
+    f"{col_name} {type_mapping[type(sample_value)]}"
+                  ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+KeyError: <class 'pandas._libs.tslibs.timestamps.Timestamp'>

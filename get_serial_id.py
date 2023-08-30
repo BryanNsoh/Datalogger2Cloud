@@ -1,7 +1,7 @@
 import serial.tools.list_ports
 
 
-def list_ports_with_serial_id():
+def list_ports_with_details():
     # Get list of all connected ports
     ports = serial.tools.list_ports.comports()
 
@@ -13,9 +13,15 @@ def list_ports_with_serial_id():
         port_info = {
             "device": port.device,
             "name": port.name,
+            "description": port.description,
+            "hwid": port.hwid,
+            "vid": port.vid,
+            "pid": port.pid,
             "serial_number": port.serial_number,
             "location": port.location,
             "manufacturer": port.manufacturer,
+            "product": port.product,
+            "interface": port.interface,
         }
         port_info_list.append(port_info)
 
@@ -24,6 +30,6 @@ def list_ports_with_serial_id():
 
 
 # Now we call the function and print out the info
-ports = list_ports_with_serial_id()
+ports = list_ports_with_details()
 for port in ports:
     print(port)

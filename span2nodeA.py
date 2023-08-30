@@ -16,7 +16,7 @@ from gcloud_functions import get_schema, update_bqtable
 
 # Configure logging
 logging.basicConfig(
-    filename="SDI12toUSB.log",
+    filename="span2nodeA.log",
     level=logging.INFO,
     format="%(asctime)s [%(levelname)s] - %(message)s",
 )
@@ -56,7 +56,7 @@ def get_sensor_profiles(file):
         return json.load(f)
 
 
-sensor_profiles1 = get_sensor_profiles("span2nodeA_sensors.json")
+sensor_profiles1 = get_sensor_profiles("./span2nodeA_sensors.json")
 
 
 def open_port_by_serial_number(serial_id):
@@ -70,7 +70,7 @@ def open_port_by_serial_number(serial_id):
 serial_port1 = open_port_by_serial_number(serial_id1)
 
 try:
-    ser1 = serial.Serial(serial_port1, 9600, bytesize=8, stopbits=1, timeout=1)
+    ser1 = serial.Serial(serial_port1, 9600, bytesize=8, stopbits=1, timeout=2.5)
     time.sleep(2.5)
 except serial.SerialException as e:
     logging.error(f"An error occurred: {e}", exc_info=True)
@@ -173,16 +173,22 @@ try:
     averaged_df.insert(0, "TIMESTAMP", datetime.now())
 
     # Save averaged_data_list to BigQuery table using gcloud_functions
-    schema = get_schema(averaged_df.to_dict(orient="records"))
-
-    update_bqtable(schema, table_name, averaged_df.to_dict(orient="records"))
+    try:
+        schema = get_schema(averaged_df.to_dict(orient="records"))
+        update_bqtable(schema, table_name, averaged_df.to_dict(orient="records"))
+    except Exception as e:
+        logging.error(f"Failed to update BigQuery: {e}", exc_info=True)
 
     # Check if database exists, if not create it
     if not os.path.exists(local_db):
+        schema = get_schema(averaged_df.to_dict(orient="records"))
         setup_database(schema, local_db)
 
     # Save averaged_data_list to sensor_data.db using database_functions
-    insert_data_to_db(averaged_df.to_dict(orient="records"), local_db)
+    try:
+        insert_data_to_db(averaged_df.to_dict(orient="records"), local_db)
+    except Exception as e:
+        logging.error(f"Failed to update local SQLite database: {e}", exc_info=True)
 
 
 except KeyboardInterrupt:

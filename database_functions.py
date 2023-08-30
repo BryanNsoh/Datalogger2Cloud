@@ -1,5 +1,6 @@
 import sqlite3
 import datetime
+import pandas
 
 
 def setup_database(schema, db_name="span2nodeB.db"):
@@ -28,8 +29,15 @@ def insert_data_to_db(data, db_name="span2nodeB.db"):
         str: "STRING",
         bool: "BOOLEAN",
         bytes: "BYTES",
-        datetime.datetime: "TIMESTAMP",
+        pandas.Timestamp: "TEXT",
+        datetime.datetime: "TEXT",
     }
+
+    # Convert datetime objects to string format for insertion
+    for row in data:
+        for key, value in row.items():
+            if isinstance(value, (datetime.datetime, pandas.Timestamp)):
+                row[key] = value.strftime('%Y-%m-%d %H:%M:%S')
 
     # Connect to SQLite3 database
     conn = sqlite3.connect(db_name)

@@ -1,7 +1,13 @@
 {
     "commands": [
         "sudo apt update",
+        "sudo apt-get install openssh-server",
+        "sudo systemctl start ssh",
+        "sudo systemctl enable ssh",
+        "sudo ufw allow 22/tcp",
         "sudo apt-get install -y python3-pip libblas-dev liblapack-dev libatlas-base-dev gfortran",
+        "sudo systemctl enable systemd-timesyncd",
+        "sudo systemctl start systemd-timesyncd",
         "python3 -m pip install --upgrade pip",
         "pip3 install pyserial google-cloud-storage google-cloud-bigquery pycampbellcr1000 ndjson json",
         "pip3 install google",
@@ -13,9 +19,24 @@
     ],
     "units": [
         {
-            "name": "main_query",
-            "timer": "[Unit]\nDescription=Run main_query.service every hour and after booting\n\n[Timer]\nOnBootSec=5min\nOnCalendar=*:0/15\nUnit=main_query.service\n\n[Install]\nWantedBy=timers.target\n",
-            "service": "[Unit]\nDescription=Run main_query.py after an Internet connection is established\nWants= main_query.timer\nConflicts=shutdown.service\n\n[Service]\nType=simple\nUser=root\nExecStart=python3 {project_path}/main_query.py\nRestart=on-failure\nRestartSec=5s\nStartLimitBurst=1\nStartLimitIntervalSec=60s\nStandardOutput=file:{systemd_reports_path}/main_query.stdout\nStandardError=file:{systemd_reports_path}/main_query.stderr\n"
+            "name": "span2nodeA",
+            "timer": "[Unit]\nDescription=Run span2nodeA.service every hour and after booting\n\n[Timer]\nOnBootSec=5min\nOnCalendar=*:0/30\nUnit=span2nodeA.service\n\n[Install]\nWantedBy=timers.target\n",
+            "service": "[Unit]\nDescription=Run span2nodeA.py after an Internet connection is established\nWants=span2nodeA.timer\nConflicts=shutdown.service\n\n[Service]\nType=simple\nUser=root\nExecStart=python3 {project_path}/span2nodeA.py\nRestart=no\nStandardOutput=file:{systemd_reports_path}/span2nodeA.stdout\nStandardError=file:{systemd_reports_path}/span2nodeA.stderr\n"
+        },
+        {
+            "name": "span2nodeB",
+            "timer": "[Unit]\nDescription=Run span2nodeB.service every hour and after booting\n\n[Timer]\nOnBootSec=5min\nOnCalendar=*:0/60\nUnit=span2nodeB.service\n\n[Install]\nWantedBy=timers.target\n",
+            "service": "[Unit]\nDescription=Run span2nodeB.py after an Internet connection is established\nWants=span2nodeB.timer\nConflicts=shutdown.service\n\n[Service]\nType=simple\nUser=root\nExecStart=python3 {project_path}/span2nodeB.py\nRestart=no\nStandardOutput=file:{systemd_reports_path}/span2nodeB.stdout\nStandardError=file:{systemd_reports_path}/span2nodeB.stderr\n"
+        },
+        {
+            "name": "span2nodeC",
+            "timer": "[Unit]\nDescription=Run span2nodeC.service every hour and after booting\n\n[Timer]\nOnBootSec=5min\nOnCalendar=*:0/60\nUnit=span2nodeC.service\n\n[Install]\nWantedBy=timers.target\n",
+            "service": "[Unit]\nDescription=Run span2nodeC.py after an Internet connection is established\nWants=span2nodeC.timer\nConflicts=shutdown.service\n\n[Service]\nType=simple\nUser=root\nExecStart=python3 {project_path}/span2nodeC.py\nRestart=no\nStandardOutput=file:{systemd_reports_path}/span2nodeC.stdout\nStandardError=file:{systemd_reports_path}/span2nodeC.stderr\n"
+        },
+        {
+            "name": "reboot_system",
+            "timer": "[Unit]\nDescription=Reboot the system every night at 12am\n\n[Timer]\nOnCalendar=*-*-* 00:00:00\nUnit=reboot_system.service\n\n[Install]\nWantedBy=timers.target\n",
+            "service": "[Unit]\nDescription=Reboot the system\n\n[Service]\nType=oneshot\nUser=root\nExecStart=/bin/systemctl reboot\n"
         }
     ]
 }

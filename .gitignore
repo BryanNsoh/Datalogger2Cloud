@@ -6,3 +6,4 @@ timekeeper.txt
 CR800data.json
 sensor_data.json
 *.db
+*.log

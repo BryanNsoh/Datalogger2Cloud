@@ -1620,3 +1620,83 @@ Traceback (most recent call last):
     columns = ", ".join(data[0].keys())
                         ~~~~^^^
 IndexError: list index out of range
+2023-08-14 14:30:31,459 [ERROR] - An error occurred: could not open port 'None': FileNotFoundError(2, 'The system cannot find the file specified.', None, 2)
+Traceback (most recent call last):
+  File "c:\Users\bnsoh2\OneDrive - University of Nebraska-Lincoln\Documents\Coding Projects\Datalogger2Cloud\span2nodeB.py", line 51, in main
+    datalogger = CR1000.from_url(
+                 ^^^^^^^^^^^^^^^^
+  File "c:\Users\bnsoh2\Desktop\venvs\logger_env\Lib\site-packages\pycampbellcr1000\device.py", line 71, in from_url
+    link.settimeout(timeout)
+  File "c:\Users\bnsoh2\Desktop\venvs\logger_env\Lib\site-packages\pylink\link.py", line 241, in settimeout
+    self.serial.timeout = self.timeout
+    ^^^^^^^^^^^
+  File "c:\Users\bnsoh2\Desktop\venvs\logger_env\Lib\site-packages\pylink\link.py", line 254, in serial
+    self.open()
+  File "c:\Users\bnsoh2\Desktop\venvs\logger_env\Lib\site-packages\pylink\link.py", line 231, in open
+    self._serial = serial.Serial(self.port, self.baudrate,
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\bnsoh2\Desktop\venvs\logger_env\Lib\site-packages\serial\serialwin32.py", line 33, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "c:\Users\bnsoh2\Desktop\venvs\logger_env\Lib\site-packages\serial\serialutil.py", line 244, in __init__
+    self.open()
+  File "c:\Users\bnsoh2\Desktop\venvs\logger_env\Lib\site-packages\serial\serialwin32.py", line 64, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port 'None': FileNotFoundError(2, 'The system cannot find the file specified.', None, 2)
+2023-08-14 14:34:06,493 [ERROR] - An error occurred: 'RecData'
+Traceback (most recent call last):
+  File "c:\Users\bnsoh2\OneDrive - University of Nebraska-Lincoln\Documents\Coding Projects\Datalogger2Cloud\span2nodeB.py", line 71, in main
+    table_data = lqf.get_data(
+                 ^^^^^^^^^^^^^
+  File "c:\Users\bnsoh2\OneDrive - University of Nebraska-Lincoln\Documents\Coding Projects\Datalogger2Cloud\logger_query_functions.py", line 27, in get_data
+    table_data = datalogger.get_data(table_name, start, stop)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\bnsoh2\Desktop\venvs\logger_env\Lib\site-packages\pycampbellcr1000\device.py", line 229, in get_data
+    for items in self.get_data_generator(tablename, start_date, stop_date):
+  File "c:\Users\bnsoh2\Desktop\venvs\logger_env\Lib\site-packages\pycampbellcr1000\device.py", line 249, in get_data_generator
+    data, more = self._collect_data(tablename, start_date, stop_date)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\bnsoh2\Desktop\venvs\logger_env\Lib\site-packages\pycampbellcr1000\device.py", line 216, in _collect_data
+    data, more = self.pakbus.parse_collectdata(msg['RecData'], tabledef)
+                                               ~~~^^^^^^^^^^^
+KeyError: 'RecData'
+2023-08-14 14:37:44,251 [ERROR] - An error occurred: unpack requires a buffer of 4 bytes
+Traceback (most recent call last):
+  File "c:\Users\bnsoh2\OneDrive - University of Nebraska-Lincoln\Documents\Coding Projects\Datalogger2Cloud\span2nodeB.py", line 56, in main
+    table_names = lqf.get_tables(datalogger)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\bnsoh2\OneDrive - University of Nebraska-Lincoln\Documents\Coding Projects\Datalogger2Cloud\logger_query_functions.py", line 13, in get_tables
+    table_names = datalogger.list_tables()
+                  ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\bnsoh2\Desktop\venvs\logger_env\Lib\site-packages\pycampbellcr1000\device.py", line 182, in list_tables
+    return [item['Header']['TableName'] for item in self.table_def]
+                                                    ^^^^^^^^^^^^^^
+  File "c:\Users\bnsoh2\Desktop\venvs\logger_env\Lib\site-packages\pycampbellcr1000\utils.py", line 65, in __get__
+    value = self.func(obj)
+            ^^^^^^^^^^^^^^
+  File "c:\Users\bnsoh2\Desktop\venvs\logger_env\Lib\site-packages\pycampbellcr1000\device.py", line 177, in table_def
+    tabledef = self.pakbus.parse_tabledef(data)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\bnsoh2\Desktop\venvs\logger_env\Lib\site-packages\pycampbellcr1000\pakbus.py", line 700, in parse_tabledef
+    values, size = self.decode_bin(types, raw[offset:])
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\bnsoh2\Desktop\venvs\logger_env\Lib\site-packages\pycampbellcr1000\pakbus.py", line 318, in decode_bin
+    value = struct.unpack(str(fmt), buff[offset:offset + size])
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+struct.error: unpack requires a buffer of 4 bytes
+2023-08-14 14:39:34,160 [ERROR] - An error occurred: 'RecData'
+Traceback (most recent call last):
+  File "c:\Users\bnsoh2\OneDrive - University of Nebraska-Lincoln\Documents\Coding Projects\Datalogger2Cloud\span2nodeB.py", line 71, in main
+    table_data = lqf.get_data(
+                 ^^^^^^^^^^^^^
+  File "c:\Users\bnsoh2\OneDrive - University of Nebraska-Lincoln\Documents\Coding Projects\Datalogger2Cloud\logger_query_functions.py", line 27, in get_data
+    table_data = datalogger.get_data(table_name, start, stop)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\bnsoh2\Desktop\venvs\logger_env\Lib\site-packages\pycampbellcr1000\device.py", line 229, in get_data
+    for items in self.get_data_generator(tablename, start_date, stop_date):
+  File "c:\Users\bnsoh2\Desktop\venvs\logger_env\Lib\site-packages\pycampbellcr1000\device.py", line 249, in get_data_generator
+    data, more = self._collect_data(tablename, start_date, stop_date)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\bnsoh2\Desktop\venvs\logger_env\Lib\site-packages\pycampbellcr1000\device.py", line 216, in _collect_data
+    data, more = self.pakbus.parse_collectdata(msg['RecData'], tabledef)
+                                               ~~~^^^^^^^^^^^
+KeyError: 'RecData'
