@@ -1,103 +1,60 @@
-# Datalogger2Cloud
+```# Datalogger2Cloud
 
-Datalogger2Cloud is a system for cloud-integrated automated datalogging for remotely deployed environmental sensors. It utilizes a Raspberry Pi with Raspbian to collect data from a Campbell CR800 datalogger and upload it to Google BigQuery for storage and analysis. 
+Datalogger2Cloud is a system for cloud-integrated automated datalogging for remotely deployed environmental sensors. It utilizes a Raspberry Pi with Raspbian to collect data from a Campbell CR800 datalogger and upload it to Google BigQuery for storage and analysis.
 
 ## Introduction
 
-This project focuses on the development and implementation of Datalogger2Cloud, specifically the software components responsible for:
+Environmental monitoring often requires collecting data from sensors deployed in remote locations. Traditional dataloggers store data locally, requiring manual retrieval and processing. Datalogger2Cloud addresses this challenge by automating data collection, processing, and uploading to the cloud, enabling real-time access and analysis.
 
-* **Data acquisition from the CR800 datalogger.**
-* **Data processing and averaging.**
-* **Uploading data to Google BigQuery and local storage.**
+This project focuses on the development and implementation of the software components responsible for data acquisition from the CR800 datalogger, data processing and averaging, and uploading data to Google BigQuery and local storage. The system is designed to operate autonomously in remote locations, powered by a solar-powered battery and utilizing a cellular network for internet connectivity.
 
-This system is designed to operate autonomously in remote locations, powered by a solar-powered battery and utilizing a cellular network for internet connectivity. 
-
-## Objectives
-
-The main objectives of this project were:
-
-1. **Develop a reliable and efficient method for collecting data from the CR800 datalogger.**
-2. **Implement data processing techniques to average sensor readings over specific time intervals.**
-3. **Establish a secure and automated process for uploading data to Google BigQuery for storage and analysis.**
-4. **Store data locally for backup and redundancy.**
-
-## Background
-
-Environmental monitoring often requires collecting data from sensors deployed in remote locations. Traditional dataloggers store data locally, requiring manual retrieval and processing. Datalogger2Cloud addresses this challenge by automating data collection, processing, and uploading to the cloud, enabling real-time access and analysis. 
-
-## Methodology
+## System Components
 
 The Datalogger2Cloud system utilizes several Python scripts:
 
-* **`main_query.py`:** This script is responsible for:
-    * Connecting to the CR800 datalogger.
-    * Identifying data tables within the datalogger.
-    * Determining the appropriate start and stop times for data collection based on the latest entry in BigQuery.
-    * Retrieving data from the datalogger.
-    * Merging data from the datalogger with sensor data collected from SDI-12 sensors.
-    * Calculating rolling averages for sensor readings.
-    * Uploading the processed data to Google BigQuery.
-    * Storing the data locally in an SQLite database for backup.
-* **`logger_query_functions.py`:** This script contains functions used by `main_query.py` for:
-    * Communicating with the datalogger.
-    * Extracting and processing data from the datalogger.
-    * Determining appropriate data collection intervals.
-* **`gcloud_functions.py`:** This script handles interactions with Google Cloud services, including:
-    * Uploading data to BigQuery.
-    * Generating BigQuery schema based on the data structure.
-    * Retrieving the latest entry time from BigQuery to determine data collection intervals.
-* **`database_functions.py`:** This script manages the local SQLite database, including:
-    * Creating the database schema based on the data structure.
-    * Inserting data into the database.
-    * Retrieving the latest timestamp from the database.
-* **`setup.py`:** This script automates the setup process on a new Raspberry Pi, including:
-    * Installing necessary software packages.
-    * Creating and configuring systemd services and timers to run the data collection and processing scripts automatically.
+* **`main_query.py`:** This script is the main driver of the system. It connects to the CR800 datalogger, identifies data tables, determines appropriate data collection intervals, retrieves data, merges it with sensor data from SDI-12 sensors, calculates rolling averages, uploads processed data to BigQuery, and stores data locally in an SQLite database for backup.
 
-## Results and Findings
+* **`logger_query_functions.py`:** This script contains functions used by `main_query.py` for communicating with the datalogger, extracting and processing data, and determining data collection intervals.
 
-Datalogger2Cloud successfully:
+* **`gcloud_functions.py`:** This script handles interactions with Google Cloud services, including uploading data to BigQuery, generating BigQuery schema based on the data structure, and retrieving the latest entry time from BigQuery to determine data collection intervals.
 
-* **Collects data from the CR800 datalogger and SDI-12 sensors.**
-* **Processes and averages sensor readings.**
-* **Uploads data to Google BigQuery and local storage.**
-* **Operates autonomously in remote locations.**
+* **`database_functions.py`:** This script manages the local SQLite database, including creating the database schema, inserting data, and retrieving the latest timestamp.
 
-The system provides real-time access to environmental data, enabling researchers and practitioners to monitor and analyze environmental conditions remotely. 
+* **`setup.py`:** This script automates the setup process on a new Raspberry Pi, installing necessary software packages and configuring systemd services and timers to run the data collection and processing scripts automatically.
 
-## Discussion
+## Benefits and Advantages
 
-Datalogger2Cloud offers several advantages:
+Datalogger2Cloud offers several advantages over traditional datalogging systems:
 
-* **Automation:** Automates data collection, processing, and uploading, reducing manual effort and minimizing data loss.
-* **Real-time access:** Enables real-time monitoring and analysis of environmental data through cloud storage.
-* **Remote deployment:** Operates autonomously in remote locations, facilitating data collection from inaccessible areas.
-* **Data security:** Utilizes Google BigQuery for secure and reliable data storage.
-* **Backup and redundancy:** Stores data locally for backup and redundancy in case of internet connectivity issues.
+* **Automation:** The system automates data collection, processing, and uploading, reducing manual effort and minimizing data loss.
 
-## Conclusion
+* **Real-time access:** By uploading data to Google BigQuery, the system enables real-time monitoring and analysis of environmental data through cloud storage.
 
-Datalogger2Cloud provides a robust and efficient solution for cloud-integrated automated datalogging of environmental sensor data. This system facilitates real-time monitoring and analysis, contributing to improved environmental research and management practices. 
+* **Remote deployment:** Datalogger2Cloud is designed to operate autonomously in remote locations, facilitating data collection from inaccessible areas.
+
+* **Data security:** The use of Google BigQuery provides secure and reliable data storage.
+
+* **Backup and redundancy:** The system stores data locally in an SQLite database for backup and redundancy in case of internet connectivity issues.
 
 ## Future Directions
 
-Future work could focus on:
+While Datalogger2Cloud provides a robust solution for automated datalogging and cloud integration, there are several potential areas for future development and improvement:
 
-* **Expanding sensor compatibility:** Integrating additional sensor types and communication protocols.
-* **Data visualization and analysis tools:** Developing dashboards and tools for visualizing and analyzing data stored in BigQuery.
-* **Machine learning and anomaly detection:** Implementing machine learning algorithms for data analysis and anomaly detection.
-* **Edge computing:** Exploring edge computing techniques for data processing and analysis at the data collection site.
+* **Expanding sensor compatibility:** The system could be extended to integrate additional sensor types and communication protocols.
 
-This project provides a foundation for further development and customization to meet specific environmental monitoring needs.
+* **Data visualization and analysis tools:** Developing dashboards and tools for visualizing and analyzing data stored in BigQuery would enhance the usability and value of the system.
 
-## Installation and Setup
+* **Machine learning and anomaly detection:** Implementing machine learning algorithms for data analysis and anomaly detection could provide additional insights and automate the identification of unusual or significant events.
 
-For detailed instructions on installing and setting up Datalogger2Cloud on a Raspberry Pi, please refer to the `INSTALL.md` file in this repository. 
+* **Edge computing:** Exploring edge computing techniques for data processing and analysis at the data collection site could reduce data transmission requirements and enable faster response times.
 
-## Contributing
+## Conclusion
 
-Contributions to this project are welcome! Please see the `CONTRIBUTING.md` file for guidelines on how to contribute. 
+Datalogger2Cloud provides an efficient and reliable solution for cloud-integrated automated datalogging of environmental sensor data. By automating data collection, processing, and uploading, the system enables real-time monitoring and analysis of environmental conditions in remote locations. This project serves as a foundation for further development and customization to meet specific environmental monitoring needs and contributes to improved environmental research and management practices.
 
-## License
+## Repository Contents
 
-This project is licensed under the MIT License - see the `LICENSE.md` file for details.
+This repository contains the source code, configuration files, and documentation for the Datalogger2Cloud system. Please note that this project is a research effort conducted in a lab setting and may require additional configuration and optimization for use in other environments.
+
+Due to its in-progress nature and highly customized needs, I'm not expecting any contributions to the main branch, but you may fork it if you find any part useful. This project is licensed under the MIT License - see the `LICENSE.md` file for details.
+```
