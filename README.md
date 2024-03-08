@@ -48,9 +48,6 @@ While Datalogger2Cloud provides a robust solution for automated datalogging and 
 
 * **Edge computing:** Exploring edge computing techniques for data processing and analysis at the data collection site could reduce data transmission requirements and enable faster response times.
 
-## Conclusion
-
-Datalogger2Cloud provides an efficient and reliable solution for cloud-integrated automated datalogging of environmental sensor data. By automating data collection, processing, and uploading, the system enables real-time monitoring and analysis of environmental conditions in remote locations. This project serves as a foundation for further development and customization to meet specific environmental monitoring needs and contributes to improved environmental research and management practices.
 
 ## Repository Contents
 
