@@ -1,4 +1,4 @@
-```# Datalogger2Cloud
+# Datalogger2Cloud
 
 Datalogger2Cloud is a system for cloud-integrated automated datalogging for remotely deployed environmental sensors. It utilizes a Raspberry Pi with Raspbian to collect data from a Campbell CR800 datalogger and upload it to Google BigQuery for storage and analysis.
 
